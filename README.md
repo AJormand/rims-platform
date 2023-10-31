@@ -4,6 +4,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 Authentication --> @clerk/nextjs
 
+Icons --> Lucide react is an open-source icon library
+
 ## Getting Started
 
 First, run the development server:
