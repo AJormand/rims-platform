@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Product, columns } from "./_components/columns";
 
 import { Button } from "@/components/ui/button";
@@ -39,6 +41,11 @@ export default async function Products() {
 
   return (
     <div className="container mx-auto py-10">
+      <div className="flex">
+        <Link href="/products/create" className="ml-auto">
+          <Button>Create</Button>
+        </Link>
+      </div>
       <DataTable columns={columns} data={data} />
     </div>
   );
