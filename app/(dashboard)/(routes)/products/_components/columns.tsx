@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -53,6 +54,13 @@ export const columns: ColumnDef<Product>[] = [
     id: "actions",
     cell: ({ row }) => {
       const product = row.original;
+      const router = useRouter();
+
+      const handleEdit = (productId: string) => {
+        console.log("click");
+        console.log(productId);
+        router.push(`/products/${productId}`);
+      };
 
       return (
         <DropdownMenu>
@@ -64,9 +72,7 @@ export const columns: ColumnDef<Product>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(product.id)}
-            >
+            <DropdownMenuItem onClick={() => handleEdit(product.id)}>
               Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
