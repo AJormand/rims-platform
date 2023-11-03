@@ -1,12 +1,16 @@
 import Link from "next/link";
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 import { Product, columns } from "./_components/columns";
+import { db } from "@/lib/db";
 
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 
 async function getData(): Promise<Product[]> {
   // Fetch data from your API here.
+
   return [
     {
       id: "PRD-0001",
@@ -37,7 +41,15 @@ async function getData(): Promise<Product[]> {
 }
 
 export default async function Products() {
-  const data = await getData();
+  //const data = await getData();
+
+  const { userId } = auth();
+
+  if (!userId) return redirect("/");
+
+  const data = await db.product.findMany({
+    take: 10,
+  });
 
   return (
     <div className="container mx-auto py-10">

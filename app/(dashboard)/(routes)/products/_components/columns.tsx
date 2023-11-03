@@ -18,26 +18,25 @@ import {
 export type Product = {
   id: string;
   name: string;
-  type: string;
   category: string;
   origin: string;
-  status: "draft" | "valid" | "inactive";
+  status: string;
 };
 
 export const columns: ColumnDef<Product>[] = [
-  {
-    accessorKey: "id",
-    header: "id",
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: "id",
+  // },
 
   {
     accessorKey: "name",
     header: "Name",
   },
-  {
-    accessorKey: "type",
-    header: "Type",
-  },
+  // {
+  //   accessorKey: "type",
+  //   header: "Type",
+  // },
   {
     accessorKey: "category",
     header: "Category",

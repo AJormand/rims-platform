@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { NavbarRoutes } from "../components/navbar-routes";
+import { ToasterProvider } from "@/components/providers/toaster-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <NavbarRoutes />
           {children}
+          <ToasterProvider />
         </body>
       </html>
     </ClerkProvider>

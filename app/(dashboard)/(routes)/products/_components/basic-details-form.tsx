@@ -4,7 +4,12 @@ import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import * as z from "zod";
+import axios from "axios";
+import toast from "react-hot-toast";
+
+import { Product } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,25 +25,42 @@ import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }).max(250),
+  category: z.string(),
+  origin: z.string(),
+  status: z.string(),
 });
 
-export const BasicDetailsForm = () => {
-  const [isEditing, setIsEditing] = useState(false);
+export const BasicDetailsForm: React.FC<{
+  data: Product | null;
+  type: "new" | "edit";
+}> = ({ data, type }) => {
+  const router = useRouter();
+  const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: data?.name || "",
+      category: data?.category || "",
+      origin: data?.origin || "",
+      status: data?.status || "draft",
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-  }
+    try {
+      const response = await axios.post(`/api/products`, values);
+      router.push(`/products/${response.data.id}`);
+      toast.success("Product created successfully");
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
 
   return (
     <Form {...form}>
@@ -47,7 +69,12 @@ export const BasicDetailsForm = () => {
           <Button size="sm" type="submit" disabled={!isEditing}>
             Save
           </Button>
-          <Button size="sm" onClick={() => setIsEditing((prev) => !prev)}>
+          <Button
+            size="sm"
+            type="button"
+            variant="ghost"
+            onClick={() => setIsEditing((prev) => !prev)}
+          >
             {!isEditing ? "Edit" : "Cancel"}
           </Button>
         </div>
@@ -56,11 +83,15 @@ export const BasicDetailsForm = () => {
           <FormField
             control={form.control}
             name="name"
+            disabled={!isEditing}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    placeholder="Active Substance_Dose form_Strength"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -69,12 +100,13 @@ export const BasicDetailsForm = () => {
 
           <FormField
             control={form.control}
-            name="name"
+            name="category"
+            disabled={!isEditing}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -83,26 +115,13 @@ export const BasicDetailsForm = () => {
 
           <FormField
             control={form.control}
-            name="name"
+            name="origin"
+            disabled={!isEditing}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Origin</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
