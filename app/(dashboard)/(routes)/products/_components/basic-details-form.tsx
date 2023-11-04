@@ -49,10 +49,7 @@ export const BasicDetailsForm: React.FC<{
   });
 
   // 2. Define a submit handler.
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const onSubmitNew = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post(`/api/products`, values);
       router.push(`/products/${response.data.id}`);
@@ -62,9 +59,30 @@ export const BasicDetailsForm: React.FC<{
     }
   };
 
+  const onSubmitEdit = async (values: z.infer<typeof formSchema>) => {
+    const productId = data?.id;
+    if (!productId) return;
+
+    try {
+      const response = await axios.put(`/api/products`, { productId, values });
+      router.refresh();
+      toast.success("Product created successfully");
+      setIsEditing(false);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-4">
+      <form
+        onSubmit={
+          type === "new"
+            ? form.handleSubmit(onSubmitNew)
+            : form.handleSubmit(onSubmitEdit)
+        }
+        className="space-y-8 p-4"
+      >
         <div className="flex flex-row-reverse gap-1">
           <Button size="sm" type="submit" disabled={!isEditing}>
             Save
