@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -47,6 +47,16 @@ export const BasicDetailsForm: React.FC<{
       status: data?.status || "draft",
     },
   });
+
+  // 3. Set the form values when editing the form - else react-form doesnt recognize that values are entered
+  useEffect(() => {
+    if (type === "edit" && isEditing === true) {
+      form.setValue("name", data?.name || "");
+      form.setValue("category", data?.category || "");
+      form.setValue("origin", data?.origin || "");
+      form.setValue("status", data?.status || "draft");
+    }
+  }, [isEditing]);
 
   // 2. Define a submit handler.
   const onSubmitNew = async (values: z.infer<typeof formSchema>) => {
