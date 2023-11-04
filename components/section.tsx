@@ -13,7 +13,7 @@ interface SectionProps {
 
 export const Section = ({ name, component, expanded }: SectionProps) => {
   return (
-    <div>
+    <div id={name}>
       <Accordion
         type="single"
         collapsible
