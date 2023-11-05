@@ -19,12 +19,7 @@ export default async function Products() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className="flex">
-        <Link href="/products/create" className="ml-auto">
-          <Button>Create</Button>
-        </Link>
-      </div>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data} createRoute="/products/create" />
     </div>
   );
 }

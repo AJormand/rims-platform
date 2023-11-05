@@ -2,13 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
 import axios from "axios";
 
 import { SideNav } from "./_component/product-side-nav";
+import { applicationColumns } from "./_component/application-columns";
 import { Section } from "@/components/section";
 import { BasicDetailsForm } from "../_components/basic-details-form";
+import { DataTable } from "@/components/ui/data-table";
+import { Button } from "@/components/ui/button";
 
 export default function Product({ params }: { params: { productId: string } }) {
   const [productData, setProductData] = useState(null);
@@ -43,8 +47,28 @@ export default function Product({ params }: { params: { productId: string } }) {
             expanded={true}
           />
         )}
-        <Section name="Applications" component={<div />} expanded={false} />
-        <Section name="Registrations" component={<div />} expanded={false} />
+        <Section
+          name="Applications"
+          component={
+            <DataTable
+              columns={applicationColumns}
+              data={[{ id: "xxx", name: "ccc", status: "success" }]}
+              createRoute="/applications/create"
+            />
+          }
+          expanded={false}
+        />
+        <Section
+          name="Registrations"
+          component={
+            <DataTable
+              columns={applicationColumns}
+              data={[{ id: "xxx", name: "ccc", status: "success" }]}
+              createRoute="/registrations/create"
+            />
+          }
+          expanded={false}
+        />
       </div>
     </div>
   );
