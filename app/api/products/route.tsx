@@ -39,3 +39,12 @@ export async function PUT(request: Request) {
     return new NextResponse("[UPDATE PRODUCT]", { status: 400 });
   }
 }
+
+export async function GET(request: Request) {
+  try {
+    const productData = await db.product.findMany();
+    return NextResponse.json(productData);
+  } catch (error) {
+    return new NextResponse("[GET PRODUCT]", { status: 400 });
+  }
+}

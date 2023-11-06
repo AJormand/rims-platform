@@ -40,7 +40,6 @@ export function DataTable<TData, TValue>({
     []
   );
   const [rowSelection, setRowSelection] = React.useState({});
-  console.log("table rerendered");
 
   const table = useReactTable({
     data,
@@ -142,6 +141,9 @@ export function DataTable<TData, TValue>({
           Next
         </Button>
       </div>
+      <Button size={"sm"} variant={"default"} className="flex ml-auto">
+        Add selected
+      </Button>
     </div>
   );
 }

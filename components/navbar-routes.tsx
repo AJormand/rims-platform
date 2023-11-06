@@ -26,14 +26,14 @@ export const NavbarRoutes = () => {
             <NavigationMenuItem>
               <NavigationMenuTrigger>PRODUCT</NavigationMenuTrigger>
               <NavigationMenuContent className="flex flex-col p-4 gap-4">
-                <NavigationMenuLink>
-                  <Link href={"/products"}>Products</Link>
+                <NavigationMenuLink href={"/products"}>
+                  Products
                 </NavigationMenuLink>
-                <NavigationMenuLink>
-                  <Link href={"/applications"}>Applicaitons</Link>
+                <NavigationMenuLink href={"/applications"}>
+                  Applicaitons
                 </NavigationMenuLink>
-                <NavigationMenuLink>
-                  <Link href={"/registrations"}>Registrations</Link>
+                <NavigationMenuLink href={"/registrations"}>
+                  Registrations
                 </NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
@@ -45,11 +45,11 @@ export const NavbarRoutes = () => {
             <NavigationMenuItem>
               <NavigationMenuTrigger>SUBMISSION</NavigationMenuTrigger>
               <NavigationMenuContent className="flex flex-col p-4 gap-4">
-                <NavigationMenuLink>
-                  <Link href={"/applications"}>Applicaitons</Link>
+                <NavigationMenuLink href={"/applications"}>
+                  Applicaitons
                 </NavigationMenuLink>
-                <NavigationMenuLink>
-                  <Link href={"/submissions"}>Submissions</Link>
+                <NavigationMenuLink href={"/submissions"}>
+                  Submissions
                 </NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
@@ -61,11 +61,11 @@ export const NavbarRoutes = () => {
             <NavigationMenuItem>
               <NavigationMenuTrigger>LIBRARY</NavigationMenuTrigger>
               <NavigationMenuContent className="flex flex-col p-4 gap-4">
-                <NavigationMenuLink>
-                  <Link href={"/substance"}>Substance</Link>
+                <NavigationMenuLink href={"/substance"}>
+                  Substance
                 </NavigationMenuLink>
-                <NavigationMenuLink>
-                  <Link href={"/organization"}>Organization</Link>
+                <NavigationMenuLink href={"/organization"}>
+                  Organization
                 </NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
