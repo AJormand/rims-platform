@@ -3,6 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 
+import axios from "axios";
+import toast from "react-hot-toast";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -54,6 +57,19 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
+
+  const addSelectedPrdToApp = () => {
+    const selectedProductIndexes: string[] = Object.keys(rowSelection);
+    const selectedProducts: TData[] = data.filter((prd, i) =>
+      selectedProductIndexes.includes(i.toString())
+    );
+
+    try {
+      axios.post("/api/applications", selectedProducts);
+    } catch (error) {
+      toast.error(`${error}`);
+    }
+  };
 
   return (
     <div>
@@ -141,7 +157,12 @@ export function DataTable<TData, TValue>({
           Next
         </Button>
       </div>
-      <Button size={"sm"} variant={"default"} className="flex ml-auto">
+      <Button
+        size={"sm"}
+        variant={"default"}
+        className="flex ml-auto"
+        onClick={() => addSelectedPrdToApp()}
+      >
         Add selected
       </Button>
     </div>

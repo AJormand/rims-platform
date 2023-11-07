@@ -23,10 +23,10 @@ export default function Product({ params }: { params: { productId: string } }) {
   // });
 
   useEffect(() => {
-    fetchProducts();
+    fetchProduct();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchProduct = async () => {
     try {
       const response = await axios.get(`/api/products/${params.productId}`);
       console.log(response.data);
