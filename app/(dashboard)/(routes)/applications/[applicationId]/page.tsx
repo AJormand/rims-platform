@@ -40,40 +40,41 @@ export default function Application({
   return (
     <div>
       {application && (
-        <Section
-          name="Basic Details"
-          component={<BasicDetailsForm data={application} type="new" />}
-          expanded={true}
-        />
+        <>
+          <Section
+            name="Basic Details"
+            component={<BasicDetailsForm data={application} type="new" />}
+            expanded={true}
+          />
+          <Section
+            name="Products"
+            component={
+              <>
+                <Button
+                  size={"sm"}
+                  variant={"outline"}
+                  onClick={() => {
+                    setAddProductPopupVisible((prev) => !prev);
+                  }}
+                >
+                  Add Product
+                </Button>
+                <DataTable
+                  columns={columns}
+                  data={[{ id: "ssss", name: "ccc" }]}
+                  createRoute="/registrations/create"
+                />
+                {addProductPopupVisible && (
+                  <AddProductPopup
+                    setAddProductPopupVisible={setAddProductPopupVisible}
+                  />
+                )}
+              </>
+            }
+            expanded={true}
+          />
+        </>
       )}
-
-      <Section
-        name="Products"
-        component={
-          <>
-            <Button
-              size={"sm"}
-              variant={"outline"}
-              onClick={() => {
-                setAddProductPopupVisible((prev) => !prev);
-              }}
-            >
-              Add Product
-            </Button>
-            <DataTable
-              columns={columns}
-              data={[{ id: "ssss", name: "ccc" }]}
-              createRoute="/registrations/create"
-            />
-            {addProductPopupVisible && (
-              <AddProductPopup
-                setAddProductPopupVisible={setAddProductPopupVisible}
-              />
-            )}
-          </>
-        }
-        expanded={true}
-      />
     </div>
   );
 }

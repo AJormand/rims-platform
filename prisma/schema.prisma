@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 //Whenever you update your Prisma schema, you will need to run the prisma "npx prisma db push" command to create new indexes and regenerate Prisma Client. You can also use the --force flag to skip the interactive confirmation prompt.
-
+//to run prisma studio to see data locally: npx prisma studio
 
 // datasource db {
 //   provider = "mongodb"
@@ -25,14 +25,14 @@ model Product {
   category     String
   origin       String
 
-  productApplications ProductApplication[] // Establish a relation with the junction model
+  productApplications Product2Application[] // Establish a relation with the junction model
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
 
 // This is the join table that connects the many-to-many relationship between Products and Applications
-model ProductApplication {
+model Product2Application {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
   product      Product @relation(fields: [productId], references: [id])
   productId    String @db.ObjectId
@@ -47,7 +47,7 @@ model Application {
   procedureType String
   status       String
 
-  productApplications ProductApplication[] // Establish a relation with the junction model
+  products2Application Product2Application[] // Establish a relation with the junction model
   registrations Registration[] // Establish a relation with the junction model
   submissions Submission[] // Establish a relation with the junction model
 

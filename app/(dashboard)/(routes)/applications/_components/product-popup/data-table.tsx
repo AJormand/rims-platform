@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -42,6 +43,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const { applicationId } = useParams();
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -63,9 +65,10 @@ export function DataTable<TData, TValue>({
     const selectedProducts: TData[] = data.filter((prd, i) =>
       selectedProductIndexes.includes(i.toString())
     );
+    console.log("selectedPRd", selectedProducts);
 
     try {
-      axios.post("/api/applications", selectedProducts);
+      axios.post(`/api/applications/${applicationId}`, selectedProducts);
     } catch (error) {
       toast.error(`${error}`);
     }
