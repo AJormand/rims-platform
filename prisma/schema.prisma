@@ -38,6 +38,8 @@ model Product2Application {
   productId    String @db.ObjectId
   application  Application @relation(fields: [applicationId], references: [id])
   applicationId String @db.ObjectId
+
+  createdAt    DateTime @default(now())
 }
 
 model Application {
