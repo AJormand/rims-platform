@@ -13,9 +13,6 @@ export const AddProductPopup = ({
   setAddProductPopupVisible: (value: boolean) => void;
 }) => {
   const [products, setProducts] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState([]);
-
-  console.log(selectedProducts);
 
   const fetchProducts = async () => {
     const response = await axios.get("/api/products");
@@ -49,6 +46,7 @@ export const AddProductPopup = ({
             columns={columns}
             data={products}
             createRoute="/products/create"
+            setAddProductPopupVisible={setAddProductPopupVisible}
           />
         </div>
       </div>

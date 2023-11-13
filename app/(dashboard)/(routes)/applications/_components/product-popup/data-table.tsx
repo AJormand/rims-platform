@@ -28,18 +28,22 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   createRoute: string;
+  setAddProductPopupVisible: (value: boolean) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   createRoute,
+  setAddProductPopupVisible,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter();
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -60,7 +64,7 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const addSelectedPrdToApp = () => {
+  const addProductToApplication = async () => {
     const selectedProductIndexes: string[] = Object.keys(rowSelection);
     const selectedProducts: TData[] = data.filter((prd, i) =>
       selectedProductIndexes.includes(i.toString())
@@ -68,7 +72,13 @@ export function DataTable<TData, TValue>({
     console.log("selectedPRd", selectedProducts);
 
     try {
-      axios.post(`/api/applications/${applicationId}`, selectedProducts);
+      const response = await axios.post(
+        `/api/applications/${applicationId}/product`,
+        selectedProducts
+      );
+      setAddProductPopupVisible(false);
+      toast.success("Products added to application");
+      router.refresh();
     } catch (error) {
       toast.error(`${error}`);
     }
@@ -164,7 +174,7 @@ export function DataTable<TData, TValue>({
         size={"sm"}
         variant={"default"}
         className="flex ml-auto"
-        onClick={() => addSelectedPrdToApp()}
+        onClick={() => addProductToApplication()}
       >
         Add selected
       </Button>

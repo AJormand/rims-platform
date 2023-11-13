@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-import { Application } from "@prisma/client";
+import { Application, Product, Product2Application } from "@prisma/client";
 import { BasicDetailsForm } from "../_components/basic-details-form";
 
 import { Section } from "@/components/section";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { AddProductPopup } from "../_components/product-popup/popup";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "../_components/application-product-columns";
+import { set } from "react-hook-form";
 
 export default function Application({
   params,
@@ -19,6 +20,7 @@ export default function Application({
   params: { applicationId: string };
 }) {
   const [application, setApplication] = useState<Application>();
+  const [products, setProducts] = useState<Product[]>([]);
   const [addProductPopupVisible, setAddProductPopupVisible] =
     useState<boolean>(false);
 
@@ -28,6 +30,11 @@ export default function Application({
         `/api/applications/${params.applicationId}`
       );
       setApplication(response.data);
+
+      const productsArr = response.data.products2Application.map(
+        (item: any) => item.product
+      );
+      setProducts(productsArr);
     } catch (error) {
       toast.error(`"${error}`);
     }
@@ -61,7 +68,7 @@ export default function Application({
                 </Button>
                 <DataTable
                   columns={columns}
-                  data={[{ id: "ssss", name: "ccc" }]}
+                  data={products}
                   createRoute="/registrations/create"
                 />
                 {addProductPopupVisible && (
