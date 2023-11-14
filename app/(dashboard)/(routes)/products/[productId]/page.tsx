@@ -13,14 +13,12 @@ import { Section } from "@/components/section";
 import { BasicDetailsForm } from "../_components/basic-details-form";
 import { DataTable } from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
+import exp from "constants";
+import { set } from "react-hook-form";
 
 export default function Product({ params }: { params: { productId: string } }) {
   const [productData, setProductData] = useState(null);
-  // const productData = await db.product.findUnique({
-  //   where: {
-  //     id: params.productId,
-  //   },
-  // });
+  const [applications, setApplications] = useState([]);
 
   useEffect(() => {
     fetchProduct();
@@ -29,15 +27,18 @@ export default function Product({ params }: { params: { productId: string } }) {
   const fetchProduct = async () => {
     try {
       const response = await axios.get(`/api/products/${params.productId}`);
-      console.log(response.data);
+      console.log(response.data.productApplications);
       setProductData(response.data);
+      setApplications(
+        response.data.productApplications.map((item: any) => item.application)
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full h-screen-minus-navbar">
       <SideNav />
       <div className="w-full px-6">
         {productData && (
@@ -52,7 +53,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           component={
             <DataTable
               columns={applicationColumns}
-              data={[{ id: "xxx", name: "ccc", status: "success" }]}
+              data={applications}
               createRoute="/applications/create"
             />
           }

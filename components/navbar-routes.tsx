@@ -16,7 +16,7 @@ import {
 
 export const NavbarRoutes = () => {
   return (
-    <div className="flex justify-between px-4 py-2 border">
+    <div className="flex justify-between px-4 py-2 border w-full z-50">
       <div className="flex items-center">
         <Link href={"/"} className="mr-[100px]">
           RIMS

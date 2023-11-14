@@ -23,8 +23,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <NavbarRoutes />
-          {children}
+          <div className="flex flex-col h-screen">
+            <NavbarRoutes />
+            <div className="overflow-y-auto">{children}</div>
+          </div>
           <ToasterProvider />
         </body>
       </html>

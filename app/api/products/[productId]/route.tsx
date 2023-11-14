@@ -11,12 +11,21 @@ export const GET = async (
   const { userId } = auth();
   if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
+  //get Product and linked applications
   try {
     const product = await db.product.findUnique({
       where: {
         id: productId,
       },
+      include: {
+        productApplications: {
+          include: {
+            application: true,
+          },
+        },
+      },
     });
+
     return NextResponse.json(product);
   } catch (error) {
     return new NextResponse("[GET PRODUCT]", { status: 400 });
