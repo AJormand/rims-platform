@@ -18,7 +18,7 @@ export const NavbarRoutes = () => {
   return (
     <div className="flex justify-between px-4 py-2 border w-full z-50">
       <div className="flex items-center">
-        <Link href={"/"} className="mr-[100px]">
+        <Link href={"/"} className="mr-[100px] text-sky-700 font-bold">
           RIMS
         </Link>
         <NavigationMenu>

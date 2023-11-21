@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { NavbarRoutes } from "../components/navbar-routes";
+import { TopNavigationBar } from "@/components/top-navigation-bar";
 import { ToasterProvider } from "@/components/providers/toaster-provider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,6 +26,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <div className="flex flex-col h-screen">
             <NavbarRoutes />
+            <TopNavigationBar />
             <div className="overflow-y-auto">{children}</div>
           </div>
           <ToasterProvider />
