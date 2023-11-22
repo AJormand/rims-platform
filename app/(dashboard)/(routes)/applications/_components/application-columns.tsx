@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -25,14 +26,27 @@ export type Application = {
 };
 
 export const columns: ColumnDef<Application>[] = [
-  {
-    accessorKey: "id",
-    header: "id",
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: "id",
+  // },
 
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+      const application = row.original;
+      return (
+        <div className="flex flex-col">
+          <Link
+            href={`/applications/${application.id}`}
+            className="underline text-sky-700"
+          >
+            {application.name}
+          </Link>
+        </div>
+      );
+    },
   },
 
   {

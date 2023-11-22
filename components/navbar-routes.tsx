@@ -21,6 +21,11 @@ export const NavbarRoutes = () => {
         <Link href={"/"} className="mr-[100px] text-sky-700 font-bold">
           RIMS
         </Link>
+
+        <Link href={"/"} className="text-sm font-bold mr-2 text-sky-700">
+          [DASHBOARD]
+        </Link>
+
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>

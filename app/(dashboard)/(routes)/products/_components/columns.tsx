@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -33,6 +34,19 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+      const product = row.original;
+      return (
+        <div className="flex flex-col">
+          <Link
+            href={`/products/${product.id}`}
+            className="underline text-sky-700"
+          >
+            {product.name}
+          </Link>
+        </div>
+      );
+    },
   },
   // {
   //   accessorKey: "type",
