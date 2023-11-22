@@ -6,7 +6,7 @@ import { Section } from "@/components/section";
 
 export default function CreateApplication() {
   return (
-    <div>
+    <div className="container mx-auto py-10">
       <Section
         name="Basic Details"
         component={<BasicDetailsForm data={null} type="new" />}

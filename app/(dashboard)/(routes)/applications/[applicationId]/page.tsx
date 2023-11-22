@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 import { Application, Product, Product2Application } from "@prisma/client";
+import { SideNav } from "@/components/side-nav";
 import { BasicDetailsForm } from "../_components/basic-details-form";
 
 import { Section } from "@/components/section";
@@ -12,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { AddProductPopup } from "../_components/product-popup/popup";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "../_components/application-product-columns";
-import { set } from "react-hook-form";
 
 export default function Application({
   params,
@@ -44,44 +44,49 @@ export default function Application({
     fetchApplication();
   }, []);
 
+  const sideNavSections = ["Basic Details", "Products"];
+
   return (
-    <div>
-      {application && (
-        <>
-          <Section
-            name="Basic Details"
-            component={<BasicDetailsForm data={application} type="new" />}
-            expanded={true}
-          />
-          <Section
-            name="Products"
-            component={
-              <>
-                <Button
-                  size={"sm"}
-                  variant={"outline"}
-                  onClick={() => {
-                    setAddProductPopupVisible((prev) => !prev);
-                  }}
-                >
-                  Add Product
-                </Button>
-                <DataTable
-                  columns={columns}
-                  data={products}
-                  createRoute="/registrations/create"
-                />
-                {addProductPopupVisible && (
-                  <AddProductPopup
-                    setAddProductPopupVisible={setAddProductPopupVisible}
+    <div className="flex w-full h-screen-minus-navbar">
+      <SideNav sections={sideNavSections} />
+      <div className="w-full px-6">
+        {application && (
+          <>
+            <Section
+              name="Basic Details"
+              component={<BasicDetailsForm data={application} type="new" />}
+              expanded={true}
+            />
+            <Section
+              name="Products"
+              component={
+                <>
+                  <Button
+                    size={"sm"}
+                    variant={"outline"}
+                    onClick={() => {
+                      setAddProductPopupVisible((prev) => !prev);
+                    }}
+                  >
+                    Add Product
+                  </Button>
+                  <DataTable
+                    columns={columns}
+                    data={products}
+                    createRoute="/registrations/create"
                   />
-                )}
-              </>
-            }
-            expanded={true}
-          />
-        </>
-      )}
+                  {addProductPopupVisible && (
+                    <AddProductPopup
+                      setAddProductPopupVisible={setAddProductPopupVisible}
+                    />
+                  )}
+                </>
+              }
+              expanded={true}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 }

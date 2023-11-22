@@ -37,14 +37,12 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const product = row.original;
       return (
-        <div className="flex flex-col">
-          <Link
-            href={`/products/${product.id}`}
-            className="underline text-sky-700"
-          >
-            {product.name}
-          </Link>
-        </div>
+        <Link
+          href={`/products/${product.id}`}
+          className="underline text-sky-700"
+        >
+          {product.name}
+        </Link>
       );
     },
   },

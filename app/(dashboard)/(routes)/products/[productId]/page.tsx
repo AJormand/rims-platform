@@ -1,20 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { auth } from "@clerk/nextjs";
-import { db } from "@/lib/db";
+
 import axios from "axios";
 
-import { SideNav } from "./_component/product-side-nav";
+import { SideNav } from "@/components/side-nav";
 import { applicationColumns } from "./_component/application-columns";
 import { Section } from "@/components/section";
 import { BasicDetailsForm } from "../_components/basic-details-form";
 import { DataTable } from "@/components/ui/data-table";
-import { Button } from "@/components/ui/button";
-import exp from "constants";
-import { set } from "react-hook-form";
 
 export default function Product({ params }: { params: { productId: string } }) {
   const [productData, setProductData] = useState(null);
@@ -37,9 +31,11 @@ export default function Product({ params }: { params: { productId: string } }) {
     }
   };
 
+  const sideNavSections = ["Basic Details", "Applications", "Registrations"];
+
   return (
     <div className="flex w-full h-screen-minus-navbar">
-      <SideNav />
+      <SideNav sections={sideNavSections} />
       <div className="w-full px-6">
         {productData && (
           <Section
