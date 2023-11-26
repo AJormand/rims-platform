@@ -82,3 +82,25 @@ model Submission {
   updatedAt   DateTime @updatedAt
 }
 
+model Substance {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  type        String
+  EVcode      String
+
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Organization {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  country     String
+  address     String
+
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+

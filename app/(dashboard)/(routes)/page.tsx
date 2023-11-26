@@ -8,7 +8,14 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-import { Pill, FileStack, AppWindow, SendToBack } from "lucide-react";
+import {
+  Pill,
+  FileStack,
+  AppWindow,
+  SendToBack,
+  TestTube2,
+  Building2,
+} from "lucide-react";
 
 export default function Home() {
   const quickNavigations = [
@@ -39,22 +46,65 @@ export default function Home() {
     },
   ];
 
+  const libraries = [
+    {
+      name: "Substance",
+      description: "Substance Library",
+      href: "/substances",
+      icon: <TestTube2 size={50} className="text-sky-700" />,
+    },
+    {
+      name: "Organization",
+      description: "Organization Library",
+      href: "/organizations",
+      icon: <Building2 size={50} className="text-sky-700" />,
+    },
+  ];
+
   return (
     <div className="flex flex-col justify-center items-center mt-20">
-      <h1 className="text-2xl">What do you want to work with?</h1>
+      <div className="flex gap-28">
+        <div>
+          <h1 className="text-center text-xl">Quick Navigation</h1>
+          <div className="gap-5 grid grid-cols-2 justify-center items-center mt-10">
+            {quickNavigations.map((item) => (
+              <Link
+                href={item.href}
+                key={item.name}
+                className="hover:bg-slate-600"
+              >
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{item.name}</CardTitle>
+                    <CardDescription>{item.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>{item.icon}</CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
 
-      <div className="gap-5 grid grid-cols-2 justify-center items-center w-1/2 mt-10">
-        {quickNavigations.map((item) => (
-          <Link href={item.href} className="hover:bg-slate-600">
-            <Card>
-              <CardHeader>
-                <CardTitle>{item.name}</CardTitle>
-                <CardDescription>{item.description}</CardDescription>
-              </CardHeader>
-              <CardContent>{item.icon}</CardContent>
-            </Card>
-          </Link>
-        ))}
+        <div>
+          <h1 className="text-center text-xl">Libraries</h1>
+          <div className="gap-5 grid grid-cols-1 justify-center items-center mt-10">
+            {libraries.map((item) => (
+              <Link
+                href={item.href}
+                key={item.name}
+                className="hover:bg-slate-600"
+              >
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{item.name}</CardTitle>
+                    <CardDescription>{item.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>{item.icon}</CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
