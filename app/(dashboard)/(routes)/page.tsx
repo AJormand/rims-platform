@@ -66,12 +66,12 @@ export default function Home() {
       <div className="flex gap-28">
         <div>
           <h1 className="text-center text-xl">Quick Navigation</h1>
-          <div className="gap-5 grid grid-cols-2 justify-center items-center mt-10">
+          <div className="gap-5 grid grid-cols-2 justify-center items-center m-10">
             {quickNavigations.map((item) => (
               <Link
                 href={item.href}
                 key={item.name}
-                className="hover:bg-slate-600"
+                className="hover:shadow-lg"
               >
                 <Card>
                   <CardHeader>
@@ -92,7 +92,7 @@ export default function Home() {
               <Link
                 href={item.href}
                 key={item.name}
-                className="hover:bg-slate-600"
+                className="hover:shadow-lg"
               >
                 <Card>
                   <CardHeader>

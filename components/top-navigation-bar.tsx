@@ -34,8 +34,18 @@ export const TopNavigationBar = () => {
       case "/submissions":
         return "Submissions";
 
+      case "/substances":
+        return "Substance Library";
+      case "/substances/create":
+        return "Create Substance";
+
+      case "/organizations":
+        return "Organization Library";
+      case "/organizations/create":
+        return "Create Organization";
+
       default:
-        return "Unknown";
+        return pathname;
     }
   };
   let currentPageName = getCurrentPageName();
