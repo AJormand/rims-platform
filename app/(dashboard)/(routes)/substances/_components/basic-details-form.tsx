@@ -21,6 +21,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
@@ -74,8 +83,7 @@ export const BasicDetailsForm: React.FC<{
     if (!substanceId) return;
 
     try {
-      const response = await axios.put(`/api/substances`, {
-        substanceId,
+      const response = await axios.put(`/api/substances/${substanceId}`, {
         values,
       });
       router.refresh();
@@ -134,7 +142,25 @@ export const BasicDetailsForm: React.FC<{
               <FormItem>
                 <FormLabel>Type</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={!isEditing}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Active Substance">
+                        Active Substance
+                      </SelectItem>
+                      <SelectItem value="Inactive Substance">
+                        Inactive Substance
+                      </SelectItem>
+                      <SelectItem value="Excipient">Excipient</SelectItem>
+                      <SelectItem value="Colorant">Colorant</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

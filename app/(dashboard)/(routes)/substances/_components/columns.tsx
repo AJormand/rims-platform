@@ -51,12 +51,12 @@ export const columns: ColumnDef<Substance>[] = [
   //   header: "Type",
   // },
   {
-    accessorKey: "category",
-    header: "Category",
+    accessorKey: "type",
+    header: "Type",
   },
   {
-    accessorKey: "origin",
-    header: "Origin",
+    accessorKey: "EVcode",
+    header: "EVcode",
   },
   {
     accessorKey: "status",
