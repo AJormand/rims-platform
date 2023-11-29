@@ -70,10 +70,10 @@ export const NavbarRoutes = () => {
             <NavigationMenuItem>
               <NavigationMenuTrigger>LIBRARY</NavigationMenuTrigger>
               <NavigationMenuContent className="flex flex-col p-4 gap-4">
-                <NavigationMenuLink href={"/substance"}>
+                <NavigationMenuLink href={"/substances"}>
                   Substance
                 </NavigationMenuLink>
-                <NavigationMenuLink href={"/organization"}>
+                <NavigationMenuLink href={"/organizations"}>
                   Organization
                 </NavigationMenuLink>
               </NavigationMenuContent>

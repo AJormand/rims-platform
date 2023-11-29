@@ -27,7 +27,6 @@ export const PUT = async (
 ) => {
   const { substanceId } = params;
   const { values } = await request.json();
-  console.log(values);
 
   try {
     const updatedSubstance = await db.substance.update({

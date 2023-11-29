@@ -31,3 +31,28 @@ export const GET = async (
     return new NextResponse("[GET PRODUCT]", { status: 400 });
   }
 };
+
+export async function PUT(
+  request: Request,
+  { params }: { params: { productId: string } }
+) {
+  const { values } = await request.json();
+  const { productId } = params;
+  console.log("values:", values);
+  console.log("productId:", productId);
+
+  try {
+    const updatedProduct = await db.product.update({
+      where: {
+        id: productId,
+      },
+      data: {
+        ...values,
+      },
+    });
+
+    return NextResponse.json(updatedProduct);
+  } catch (error) {
+    return new NextResponse("[UPDATE PRODUCT]", { status: 400 });
+  }
+}

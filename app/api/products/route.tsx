@@ -21,25 +21,6 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
-  const { values, productId } = await request.json();
-
-  try {
-    const updatedProduct = await db.product.update({
-      where: {
-        id: productId,
-      },
-      data: {
-        ...values,
-      },
-    });
-
-    return NextResponse.json(updatedProduct);
-  } catch (error) {
-    return new NextResponse("[UPDATE PRODUCT]", { status: 400 });
-  }
-}
-
 export async function GET(request: Request) {
   try {
     const productData = await db.product.findMany();

@@ -45,6 +45,30 @@ export default function Product({ params }: { params: { productId: string } }) {
           />
         )}
         <Section
+          name="Active Substances"
+          component={
+            <DataTable
+              columns={applicationColumns}
+              data={applications}
+              createRoute="/substances/create"
+            />
+          }
+          expanded={false}
+        />
+
+        <Section
+          name="Inactive Substances"
+          component={
+            <DataTable
+              columns={applicationColumns}
+              data={applications}
+              createRoute="/substances/create"
+            />
+          }
+          expanded={false}
+        />
+
+        <Section
           name="Applications"
           component={
             <DataTable

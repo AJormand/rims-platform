@@ -26,6 +26,7 @@ model Product {
   origin       String
 
   productApplications Product2Application[] // Establish a relation with the junction model
+  productSubstances Product2Substance[] // Establish a relation with the junction model
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -38,6 +39,19 @@ model Product2Application {
   productId    String @db.ObjectId
   application  Application @relation(fields: [applicationId], references: [id])
   applicationId String @db.ObjectId
+
+  createdAt    DateTime @default(now())
+}
+
+model Product2Substance{
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  product      Product @relation(fields: [productId], references: [id])
+  productId    String @db.ObjectId
+  substance    Substance @relation(fields: [substanceId], references: [id])
+  substanceId  String @db.ObjectId
+
+  quantity     String
+  unit         String
 
   createdAt    DateTime @default(now())
 }
@@ -87,6 +101,8 @@ model Substance {
   name        String   @unique
   type        String
   EVcode      String
+
+  product2Substance Product2Substance[] // Establish a relation with the junction model
 
   status      String
   createdAt   DateTime @default(now())

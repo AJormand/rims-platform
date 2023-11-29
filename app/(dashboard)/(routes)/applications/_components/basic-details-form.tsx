@@ -48,15 +48,10 @@ export const BasicDetailsForm: React.FC<{
     },
   });
 
-  // 3. Set the form values when editing the form - else react-form doesnt recognize that values are entered
   useEffect(() => {
-    if (type === "edit" && isEditing === true) {
-      form.setValue("name", data?.name || "");
-      form.setValue("country", data?.country || "");
-      form.setValue("procedureType", data?.procedureType || "");
-      form.setValue("status", data?.status || "draft");
-    }
-  }, [isEditing]);
+    //reseting the form so that data is loaded in the default values properly - at time of form load data may not be available
+    form.reset();
+  }, []);
 
   // 2. Define a submit handler.
   const onSubmitNew = async (values: z.infer<typeof formSchema>) => {
@@ -78,7 +73,7 @@ export const BasicDetailsForm: React.FC<{
         applicationId,
         values,
       });
-      router.refresh();
+      //router.refresh();
       toast.success("Application created successfully");
       setIsEditing(false);
     } catch (error) {

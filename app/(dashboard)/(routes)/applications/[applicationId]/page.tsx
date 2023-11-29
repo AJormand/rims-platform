@@ -54,7 +54,7 @@ export default function Application({
           <>
             <Section
               name="Basic Details"
-              component={<BasicDetailsForm data={application} type="new" />}
+              component={<BasicDetailsForm data={application} type="edit" />}
               expanded={true}
             />
             <Section

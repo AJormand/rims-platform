@@ -48,17 +48,12 @@ export const BasicDetailsForm: React.FC<{
     },
   });
 
-  // 3. Set the form values when editing the form - else react-form doesnt recognize that values are entered
   useEffect(() => {
-    if (type === "edit" && isEditing === true) {
-      form.setValue("name", data?.name || "");
-      form.setValue("category", data?.category || "");
-      form.setValue("origin", data?.origin || "");
-      form.setValue("status", data?.status || "draft");
-    }
-  }, [isEditing]);
+    //reseting the form so that data is loaded in the default values properly - at time of form load data may not be available
+    form.reset();
+  }, []);
 
-  // 2. Define a submit handler.
+  // Define a submit handler.
   const onSubmitNew = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post(`/api/products`, values);
@@ -74,8 +69,10 @@ export const BasicDetailsForm: React.FC<{
     if (!productId) return;
 
     try {
-      const response = await axios.put(`/api/products`, { productId, values });
-      router.refresh();
+      console.log(data);
+      const response = await axios.put(`/api/products/${productId}`, {
+        values,
+      });
       toast.success("Product created successfully");
       setIsEditing(false);
     } catch (error) {
