@@ -50,6 +50,7 @@ model Product2Substance{
   substance    Substance @relation(fields: [substanceId], references: [id])
   substanceId  String @db.ObjectId
 
+  substanceType String
   quantity     String
   unit         String
 

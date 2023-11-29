@@ -4,15 +4,22 @@ import { useState, useEffect } from "react";
 
 import axios from "axios";
 
-import { SideNav } from "@/components/side-nav";
 import { applicationColumns } from "./_component/application-columns";
-import { Section } from "@/components/section";
+import { substanceColumns } from "./_component/substance-columns";
 import { BasicDetailsForm } from "../_components/basic-details-form";
+import { AddSubstancePopup } from "./_component/substance-popup/popup";
+import { columns } from "./_component/substance-popup/columns";
+
 import { DataTable } from "@/components/ui/data-table";
+import { Button } from "@/components/ui/button";
+import { Section } from "@/components/section";
+import { SideNav } from "@/components/side-nav";
 
 export default function Product({ params }: { params: { productId: string } }) {
   const [productData, setProductData] = useState(null);
   const [applications, setApplications] = useState([]);
+  const [addSubstancePopupVisible, setAddSubstancePopupVisible] =
+    useState(false);
 
   useEffect(() => {
     fetchProduct();
@@ -21,7 +28,7 @@ export default function Product({ params }: { params: { productId: string } }) {
   const fetchProduct = async () => {
     try {
       const response = await axios.get(`/api/products/${params.productId}`);
-      console.log(response.data.productApplications);
+      console.log(response.data);
       setProductData(response.data);
       setApplications(
         response.data.productApplications.map((item: any) => item.application)
@@ -47,11 +54,27 @@ export default function Product({ params }: { params: { productId: string } }) {
         <Section
           name="Active Substances"
           component={
-            <DataTable
-              columns={applicationColumns}
-              data={applications}
-              createRoute="/substances/create"
-            />
+            <>
+              <Button
+                size={"sm"}
+                variant={"outline"}
+                onClick={() => {
+                  setAddSubstancePopupVisible((prev) => !prev);
+                }}
+              >
+                Add Product
+              </Button>
+              <DataTable
+                columns={columns}
+                data={[]}
+                createRoute="/registrations/create"
+              />
+              {addSubstancePopupVisible && (
+                <AddSubstancePopup
+                  setPopVisible={setAddSubstancePopupVisible}
+                />
+              )}
+            </>
           }
           expanded={false}
         />
@@ -60,7 +83,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           name="Inactive Substances"
           component={
             <DataTable
-              columns={applicationColumns}
+              columns={substanceColumns}
               data={applications}
               createRoute="/substances/create"
             />
