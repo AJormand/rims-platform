@@ -7,15 +7,21 @@ import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { Button } from "@/components/ui/button";
 
-export const AddSubstancePopup = ({
+export const AddRecordPopup = ({
+  name,
   setPopVisible,
+  fetchDataRoute,
+  storeDataRoute,
 }: {
+  name: string;
   setPopVisible: (value: boolean) => void;
+  fetchDataRoute: string;
+  storeDataRoute: string;
 }) => {
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
-    const response = await axios.get("/api/products");
+    const response = await axios.get(fetchDataRoute);
     setData(response.data);
     console.log(response.data);
   };
@@ -30,7 +36,7 @@ export const AddSubstancePopup = ({
       <div className="absolute w-full h-full flex items-center justify-center">
         <div className="border rounded-lg bg-white p-10">
           <div className="flex justify-between">
-            <h1>Select Products to be linked with Application</h1>
+            <h1>{`Select ${name} to be linked`}</h1>
             <Button
               onClick={() => {
                 setPopVisible(false);
@@ -47,6 +53,7 @@ export const AddSubstancePopup = ({
             data={data}
             createRoute="/products/create"
             setPopVisible={setPopVisible}
+            storeDataRoute={storeDataRoute}
           />
         </div>
       </div>

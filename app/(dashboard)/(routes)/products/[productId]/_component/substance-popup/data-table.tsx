@@ -35,6 +35,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   createRoute: string;
   setPopVisible: (value: boolean) => void;
+  storeDataRoute: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -42,6 +43,7 @@ export function DataTable<TData, TValue>({
   data,
   createRoute,
   setPopVisible,
+  storeDataRoute,
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -65,17 +67,14 @@ export function DataTable<TData, TValue>({
   });
 
   const addProductToApplication = async () => {
-    const selectedProductIndexes: string[] = Object.keys(rowSelection);
-    const selectedProducts: TData[] = data.filter((prd, i) =>
-      selectedProductIndexes.includes(i.toString())
+    const selectedRecordIndexes: string[] = Object.keys(rowSelection);
+    const selectedRecords: TData[] = data.filter((prd, i) =>
+      selectedRecordIndexes.includes(i.toString())
     );
-    console.log("selectedPRd", selectedProducts);
+    console.log("selectedRecords", selectedRecords);
 
     try {
-      const response = await axios.post(
-        `/api/applications/${applicationId}/product`,
-        selectedProducts
-      );
+      const response = await axios.post(storeDataRoute, selectedRecords);
       setPopVisible(false);
       toast.success("Products added to application");
       router.refresh();

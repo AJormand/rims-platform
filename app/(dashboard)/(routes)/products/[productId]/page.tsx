@@ -7,7 +7,7 @@ import axios from "axios";
 import { applicationColumns } from "./_component/application-columns";
 import { substanceColumns } from "./_component/substance-columns";
 import { BasicDetailsForm } from "../_components/basic-details-form";
-import { AddSubstancePopup } from "./_component/substance-popup/popup";
+import { AddRecordPopup } from "./_component/substance-popup/popup";
 import { columns } from "./_component/substance-popup/columns";
 
 import { DataTable } from "@/components/ui/data-table";
@@ -62,7 +62,7 @@ export default function Product({ params }: { params: { productId: string } }) {
                   setAddSubstancePopupVisible((prev) => !prev);
                 }}
               >
-                Add Product
+                Add Substance
               </Button>
               <DataTable
                 columns={columns}
@@ -70,8 +70,11 @@ export default function Product({ params }: { params: { productId: string } }) {
                 createRoute="/registrations/create"
               />
               {addSubstancePopupVisible && (
-                <AddSubstancePopup
+                <AddRecordPopup
+                  name="Substances"
                   setPopVisible={setAddSubstancePopupVisible}
+                  fetchDataRoute={`/api/substances`}
+                  storeDataRoute={`/api/products/${params.productId}/substances`}
                 />
               )}
             </>
