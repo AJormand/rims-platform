@@ -12,7 +12,7 @@ export type Product = {
   status: string;
 };
 
-export const columns: ColumnDef<Product>[] = [
+export const productAddRecordPopupColumns: ColumnDef<Product>[] = [
   // {
   //   accessorKey: "id",
   //   header: "id",

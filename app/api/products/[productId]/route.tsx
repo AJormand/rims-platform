@@ -23,6 +23,11 @@ export const GET = async (
             application: true,
           },
         },
+        productSubstances: {
+          include: {
+            substance: true,
+          },
+        },
       },
     });
 

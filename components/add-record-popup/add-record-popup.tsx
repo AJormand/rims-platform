@@ -1,27 +1,33 @@
 import { useEffect, useState } from "react";
 
 import axios from "axios";
-import { db } from "@/lib/db";
 
 import { DataTable } from "./data-table";
-import { columns } from "./columns";
 import { Button } from "@/components/ui/button";
 
-export const AddProductPopup = ({
-  setAddProductPopupVisible,
+export const AddRecordPopup = ({
+  name,
+  setPopVisible,
+  fetchDataRoute,
+  storeDataRoute,
+  columns,
 }: {
-  setAddProductPopupVisible: (value: boolean) => void;
+  name: string;
+  setPopVisible: (value: boolean) => void;
+  fetchDataRoute: string;
+  storeDataRoute: string;
+  columns: any; //shadcnui columns component passed in as required for the data table component
 }) => {
-  const [products, setProducts] = useState([]);
+  const [data, setData] = useState([]);
 
-  const fetchProducts = async () => {
-    const response = await axios.get("/api/products");
-    setProducts(response.data);
+  const fetchData = async () => {
+    const response = await axios.get(fetchDataRoute);
+    setData(response.data);
     console.log(response.data);
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchData();
   }, []);
 
   return (
@@ -30,10 +36,10 @@ export const AddProductPopup = ({
       <div className="absolute w-full h-full flex items-center justify-center">
         <div className="border rounded-lg bg-white p-10">
           <div className="flex justify-between">
-            <h1>Select Products to be linked with Application</h1>
+            <h1>{`Select ${name} to be linked`}</h1>
             <Button
               onClick={() => {
-                setAddProductPopupVisible(false);
+                setPopVisible(false);
               }}
               variant={"ghost"}
               className="bold"
@@ -44,9 +50,10 @@ export const AddProductPopup = ({
 
           <DataTable
             columns={columns}
-            data={products}
+            data={data}
             createRoute="/products/create"
-            setAddProductPopupVisible={setAddProductPopupVisible}
+            setPopVisible={setPopVisible}
+            storeDataRoute={storeDataRoute}
           />
         </div>
       </div>

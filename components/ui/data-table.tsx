@@ -28,7 +28,7 @@ import { Input } from "@/components/ui/input";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  createRoute: string;
+  createRoute?: string | null;
 }
 
 export function DataTable<TData, TValue>({
@@ -67,11 +67,13 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <Link href={createRoute}>
-          <Button size="sm" variant="outline">
-            Create
-          </Button>
-        </Link>
+        {createRoute && (
+          <Link href={createRoute}>
+            <Button size="sm" variant="outline">
+              Create
+            </Button>
+          </Link>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

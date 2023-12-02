@@ -10,9 +10,10 @@ import { BasicDetailsForm } from "../_components/basic-details-form";
 import { Section } from "@/components/section";
 
 import { Button } from "@/components/ui/button";
-import { AddProductPopup } from "../_components/product-popup/popup";
+import { AddRecordPopup } from "@/components/add-record-popup/add-record-popup";
 import { DataTable } from "@/components/ui/data-table";
-import { columns } from "../_components/application-product-columns";
+import { productAddRecordPopupColumns } from "./_components/product-add-record-popup-columns";
+import { applicationProductColumns } from "./_components/application-product-columns";
 
 export default function Application({
   params,
@@ -71,13 +72,16 @@ export default function Application({
                     Add Product
                   </Button>
                   <DataTable
-                    columns={columns}
+                    columns={applicationProductColumns}
                     data={products}
-                    createRoute="/registrations/create"
                   />
                   {addProductPopupVisible && (
-                    <AddProductPopup
-                      setAddProductPopupVisible={setAddProductPopupVisible}
+                    <AddRecordPopup
+                      name="Products"
+                      setPopVisible={setAddProductPopupVisible}
+                      fetchDataRoute={`/api/products`}
+                      storeDataRoute={`/api/applications/${params.applicationId}/products`}
+                      columns={productAddRecordPopupColumns}
                     />
                   )}
                 </>
