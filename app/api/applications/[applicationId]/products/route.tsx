@@ -60,3 +60,39 @@ export async function POST(
     return new NextResponse("[PUT APPLICATION]", { status: 400 });
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { applicationId: string } }
+) {
+  const { applicationId } = params;
+  const { userId } = auth();
+  if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+
+  try {
+    const { productId } = await request.json();
+    console.log(productId);
+
+    const product2Application = await db.product2Application.findUnique({
+      where: {
+        productId_applicationId: {
+          productId: productId,
+          applicationId: applicationId,
+        },
+      },
+    });
+
+    console.log(product2Application);
+
+    console.log(product2Application);
+
+    db.product2Application.delete({
+      where: {
+        id: productId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return new NextResponse("[DELETE APPLICATION]", { status: 400 });
+  }
+}

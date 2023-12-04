@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -13,6 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import axios from "axios";
+import path from "path";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -40,11 +42,19 @@ export const applicationProductColumns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const product = row.original;
       const router = useRouter();
+      const pathname = usePathname();
+      const applicationId = pathname.split("/")[2];
 
       const handleEdit = (productId: string) => {
         console.log("click");
         console.log(productId);
         router.push(`/products/${productId}`);
+      };
+
+      const handleDelete = async (productId: string) => {
+        await axios.delete(`/api/applications/${applicationId}/products`, {
+          data: { productId },
+        });
       };
 
       return (
@@ -62,7 +72,9 @@ export const applicationProductColumns: ColumnDef<Product>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Copy</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDelete(product.id)}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
