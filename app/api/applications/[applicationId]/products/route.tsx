@@ -73,12 +73,10 @@ export async function DELETE(
     const { productId } = await request.json();
     console.log(productId);
 
-    const product2Application = await db.product2Application.findUnique({
+    const product2Application = await db.product2Application.findMany({
       where: {
-        productId_applicationId: {
-          productId: productId,
-          applicationId: applicationId,
-        },
+        productId: productId,
+        applicationId: applicationId,
       },
     });
 
@@ -86,10 +84,21 @@ export async function DELETE(
 
     console.log(product2Application);
 
-    db.product2Application.delete({
-      where: {
-        id: productId,
-      },
+    product2Application.forEach(async (product2Application) => {
+      await db.product2Application.delete({
+        where: {
+          id: product2Application.id,
+        },
+      });
+    });
+
+    // db.product2Application.delete({
+    //   where: {
+    //     id: productId,
+    //   },
+    // });
+    return new NextResponse(JSON.stringify(product2Application), {
+      status: 200,
     });
   } catch (error) {
     console.log(error);

@@ -1,6 +1,8 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
 
+import toast from "react-hot-toast";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
@@ -52,9 +54,16 @@ export const applicationProductColumns: ColumnDef<Product>[] = [
       };
 
       const handleDelete = async (productId: string) => {
-        await axios.delete(`/api/applications/${applicationId}/products`, {
-          data: { productId },
-        });
+        const res = await axios.delete(
+          `/api/applications/${applicationId}/products`,
+          {
+            data: { productId },
+          }
+        );
+        console.log(res.data);
+        toast.success("Product deleted");
+        router.refresh();
+        router.push(`/applications/${applicationId}`);
       };
 
       return (
