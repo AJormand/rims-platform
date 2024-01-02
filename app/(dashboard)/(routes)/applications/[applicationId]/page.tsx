@@ -15,11 +15,17 @@ import { DataTable } from "@/components/ui/data-table";
 import { productAddRecordPopupColumns } from "./_components/product-add-record-popup-columns";
 import { applicationProductColumns } from "./_components/application-product-columns";
 
+import { useQuery } from "@tanstack/react-query";
+
 export default function Application({
   params,
 }: {
   params: { applicationId: string };
 }) {
+  // const { data: applicaiton, isLoading } = useQuery({
+  //   queryFn: () => fetchApplication(),
+  //   queryKey: ["application"],
+  // });
   const [application, setApplication] = useState<Application>();
   const [products, setProducts] = useState<Product[]>([]);
   const [addProductPopupVisible, setAddProductPopupVisible] =
@@ -46,6 +52,8 @@ export default function Application({
   }, []);
 
   const sideNavSections = ["Basic Details", "Products"];
+
+  // if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="flex w-full h-screen-minus-navbar">

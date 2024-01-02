@@ -62,8 +62,6 @@ export const applicationProductColumns: ColumnDef<Product>[] = [
         );
         console.log(res.data);
         toast.success("Product deleted");
-        router.refresh();
-        router.push(`/applications/${applicationId}`);
       };
 
       return (
