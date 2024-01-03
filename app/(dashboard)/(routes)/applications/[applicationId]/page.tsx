@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 import { Application, Product, Product2Application } from "@prisma/client";
 import { SideNav } from "@/components/side-nav";
@@ -15,45 +16,59 @@ import { DataTable } from "@/components/ui/data-table";
 import { productAddRecordPopupColumns } from "./_components/product-add-record-popup-columns";
 import { applicationProductColumns } from "./_components/application-product-columns";
 
-import { useQuery } from "@tanstack/react-query";
-
 export default function Application({
   params,
 }: {
   params: { applicationId: string };
 }) {
-  // const { data: applicaiton, isLoading } = useQuery({
-  //   queryFn: () => fetchApplication(),
-  //   queryKey: ["application"],
-  // });
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["application"],
+    queryFn: async () => {
+      try {
+        const { data } = await axios.get(
+          `/api/applications/${params.applicationId}`
+        );
+        console.log("usequery", data);
+        const productsArr = data?.products2Application?.map(
+          (item: any) => item.product
+        );
+        setApplication(data);
+        setProducts(productsArr);
+        return data;
+      } catch (error) {
+        toast.error(`"${error}`);
+      }
+    },
+  });
+
   const [application, setApplication] = useState<Application>();
   const [products, setProducts] = useState<Product[]>([]);
   const [addProductPopupVisible, setAddProductPopupVisible] =
     useState<boolean>(false);
 
-  const fetchApplication = async () => {
-    try {
-      const response = await axios.get(
-        `/api/applications/${params.applicationId}`
-      );
-      setApplication(response.data);
+  // const fetchApplication = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `/api/applications/${params.applicationId}`
+  //     );
+  //     setApplication(response.data);
 
-      const productsArr = response.data.products2Application.map(
-        (item: any) => item.product
-      );
-      setProducts(productsArr);
-    } catch (error) {
-      toast.error(`"${error}`);
-    }
-  };
+  //     const productsArr = response.data.products2Application.map(
+  //       (item: any) => item.product
+  //     );
+  //     setProducts(productsArr);
+  //   } catch (error) {
+  //     toast.error(`"${error}`);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchApplication();
-  }, []);
+  // useEffect(() => {
+  //   fetchApplication();
+  // }, []);
 
   const sideNavSections = ["Basic Details", "Products"];
 
-  // if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="flex w-full h-screen-minus-navbar">
