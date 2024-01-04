@@ -4,6 +4,8 @@ import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -46,6 +48,7 @@ export function DataTable<TData, TValue>({
   storeDataRoute,
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -66,22 +69,23 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const addProductToApplication = async () => {
-    const selectedRecordIndexes: string[] = Object.keys(rowSelection);
-    const selectedRecords: TData[] = data.filter((prd, i) =>
-      selectedRecordIndexes.includes(i.toString())
-    );
-    console.log("selectedRecords", selectedRecords);
-
-    try {
-      const response = await axios.post(storeDataRoute, selectedRecords);
+  const { mutate: createRecord } = useMutation({
+    mutationFn: async () => {
+      const selectedRecordIndexes: string[] = Object.keys(rowSelection);
+      const selectedRecords: TData[] = data.filter((prd, i) =>
+        selectedRecordIndexes.includes(i.toString())
+      );
+      await axios.post(storeDataRoute, selectedRecords);
+    },
+    onSuccess: () => {
+      toast.success("Records added");
       setPopVisible(false);
-      toast.success("Products added to application");
-      router.refresh();
-    } catch (error) {
-      toast.error(`${error}`);
-    }
-  };
+      queryClient.invalidateQueries({ queryKey: ["application"] });
+    },
+    onError: () => {
+      toast.error("Something went wrong");
+    },
+  });
 
   return (
     <div>
@@ -173,7 +177,7 @@ export function DataTable<TData, TValue>({
         size={"sm"}
         variant={"default"}
         className="flex ml-auto"
-        onClick={() => addProductToApplication()}
+        onClick={() => createRecord()}
       >
         Add selected
       </Button>

@@ -1,6 +1,8 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
 
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+
 import toast from "react-hot-toast";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -43,6 +45,7 @@ export const applicationProductColumns: ColumnDef<Product>[] = [
     id: "actions",
     cell: ({ row }) => {
       const product = row.original;
+      const queryClient = useQueryClient();
       const router = useRouter();
       const pathname = usePathname();
       const applicationId = pathname.split("/")[2];
@@ -53,16 +56,20 @@ export const applicationProductColumns: ColumnDef<Product>[] = [
         router.push(`/products/${productId}`);
       };
 
-      const handleDelete = async (productId: string) => {
-        const res = await axios.delete(
-          `/api/applications/${applicationId}/products`,
-          {
+      const { mutate: handleDeleteMutation } = useMutation({
+        mutationFn: async (productId: string) =>
+          await axios.delete(`/api/applications/${applicationId}/products`, {
             data: { productId },
-          }
-        );
-        console.log(res.data);
-        toast.success("Product deleted");
-      };
+          }),
+        onSuccess: () => {
+          console.log("record deleted");
+          queryClient.invalidateQueries({ queryKey: ["application"] });
+          toast.success("Product deleted");
+        },
+        onError: (err: any) => {
+          toast.error("Product not deleted");
+        },
+      });
 
       return (
         <DropdownMenu>
@@ -79,7 +86,7 @@ export const applicationProductColumns: ColumnDef<Product>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Copy</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(product.id)}>
+            <DropdownMenuItem onClick={() => handleDeleteMutation(product.id)}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

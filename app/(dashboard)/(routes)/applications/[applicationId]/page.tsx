@@ -21,7 +21,20 @@ export default function Application({
 }: {
   params: { applicationId: string };
 }) {
-  const { data, isLoading, isError } = useQuery({
+  // const [application, setApplication] = useState<Application>();
+  const [linkedProducts, setLinkedProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [addProductPopupVisible, setAddProductPopupVisible] =
+    useState<boolean>(false);
+
+  const sideNavSections = ["Basic Details", "Products"];
+
+  const {
+    data: application,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["application"],
     queryFn: async () => {
       try {
@@ -32,8 +45,8 @@ export default function Application({
         const productsArr = data?.products2Application?.map(
           (item: any) => item.product
         );
-        setApplication(data);
-        setProducts(productsArr);
+        // setApplication(data);
+        setLinkedProducts(productsArr);
         return data;
       } catch (error) {
         toast.error(`"${error}`);
@@ -41,39 +54,26 @@ export default function Application({
     },
   });
 
-  const [application, setApplication] = useState<Application>();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [addProductPopupVisible, setAddProductPopupVisible] =
-    useState<boolean>(false);
+  const addProduct = async () => {
+    setAddProductPopupVisible((prev) => !prev);
+    try {
+      const { data } = await axios.get(`/api/products`);
+      setProducts(data);
+    } catch (error) {
+      toast.error(`"${error}`);
+    }
+  };
 
-  // const fetchApplication = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `/api/applications/${params.applicationId}`
-  //     );
-  //     setApplication(response.data);
-
-  //     const productsArr = response.data.products2Application.map(
-  //       (item: any) => item.product
-  //     );
-  //     setProducts(productsArr);
-  //   } catch (error) {
-  //     toast.error(`"${error}`);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchApplication();
-  // }, []);
-
-  const sideNavSections = ["Basic Details", "Products"];
-
-  if (isLoading) return <div>Loading...</div>;
+  const TestComponent = () => {
+    console.log(application);
+    return <div>{application.name}</div>;
+  };
 
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />
       <div className="w-full px-6">
+        {application && <TestComponent />}
         {application && (
           <>
             <Section
@@ -88,21 +88,20 @@ export default function Application({
                   <Button
                     size={"sm"}
                     variant={"outline"}
-                    onClick={() => {
-                      setAddProductPopupVisible((prev) => !prev);
-                    }}
+                    onClick={() => addProduct()}
                   >
                     Add Product
                   </Button>
                   <DataTable
                     columns={applicationProductColumns}
-                    data={products}
+                    data={linkedProducts}
                   />
                   {addProductPopupVisible && (
                     <AddRecordPopup
                       name="Products"
                       setPopVisible={setAddProductPopupVisible}
-                      fetchDataRoute={`/api/products`}
+                      data={products}
+                      //fetchDataRoute={`/api/products`}
                       storeDataRoute={`/api/applications/${params.applicationId}/products`}
                       columns={productAddRecordPopupColumns}
                     />

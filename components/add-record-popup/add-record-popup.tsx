@@ -8,28 +8,16 @@ import { Button } from "@/components/ui/button";
 export const AddRecordPopup = ({
   name,
   setPopVisible,
-  fetchDataRoute,
+  data,
   storeDataRoute,
   columns,
 }: {
   name: string;
   setPopVisible: (value: boolean) => void;
-  fetchDataRoute: string;
+  data: any;
   storeDataRoute: string;
   columns: any; //shadcnui columns component passed in as required for the data table component
 }) => {
-  const [data, setData] = useState([]);
-
-  const fetchData = async () => {
-    const response = await axios.get(fetchDataRoute);
-    setData(response.data);
-    console.log(response.data);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className="absolute top-0 bottom-0 left-0 right-0 z-50">
       <div className="absolute w-full h-full bg-slate-300 opacity-60 " />
