@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
+import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import { applicationColumns } from "./_components/application-columns";
@@ -22,49 +23,67 @@ import {
   Product2Substance,
 } from "@prisma/client";
 
-// type ProductData = Product & {
-//   productSubstances: Substance[];
-//   productApplications: Application[];
-// };
 type ProductData = Product & {
   include: { application: true; substance: true };
   productSubstances: Substance[];
   productApplications: Application[];
 };
 
+type ObjectWithId = {
+  id: string;
+};
+
 export default function Product({ params }: { params: { productId: string } }) {
   const [productData, setProductData] = useState<ProductData>();
   const [applications, setApplications] = useState([]);
-  const [addRecordPopupVisible, setAddRecordPopupVisible] = useState(false);
-  let productSubstances;
+  const [popUpData, setPopUpData] = useState([]);
+  const [addRecordPopupVisible, setAddRecordPopupVisible] =
+    useState<string>("");
+  let productSubstances: Substance[] = [];
 
-  useEffect(() => {
-    fetchProduct();
-  }, []);
+  const { data: productData2 } = useQuery({
+    queryKey: ["product"],
+    queryFn: async () => {
+      try {
+        const { data } = await axios.get(`/api/products/${params.productId}`);
+        setProductData(data);
 
-  const fetchProduct = async () => {
+        productSubstances = data.productSubstances;
+        console.log(productSubstances);
+
+        setApplications(
+          data.productApplications.map((item: any) => item.application)
+        );
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
+  const fetchPopUpData = async (url: string, linkedRecords: ObjectWithId[]) => {
     try {
-      const response = await axios.get(`/api/products/${params.productId}`);
-      console.log(response.data);
-      setProductData(response.data);
-
-      // setProductData({
-      //   ...response.data,
-      //   applications: response.data.productApplications.map(
-      //     (item: any) => item.application
-      //   ),
-      //   substances: response.data.productSubstances.map(
-      //     (item: any) => item.substance
-      //   ),
-      // });
-      productSubstances = response.data.productSubstances;
-
-      setApplications(
-        response.data.productApplications.map((item: any) => item.application)
+      const { data } = await axios.get(url);
+      const filteredData = data.filter(
+        (itemAll: ObjectWithId) =>
+          !linkedRecords.some(
+            (itemLinked: ObjectWithId) => itemLinked.id === itemAll.id
+          )
       );
+      return filteredData;
     } catch (error) {
-      console.log(error);
+      toast.error(`"${error}`);
     }
+  };
+
+  const onAddClick = async (
+    popupName: string,
+    fetchRoute: string,
+    linkedRecords: ObjectWithId[]
+  ) => {
+    setAddRecordPopupVisible(popupName);
+    const data = await fetchPopUpData(fetchRoute, linkedRecords);
+    setPopUpData(data);
   };
 
   const sideNavSections = [
@@ -80,105 +99,90 @@ export default function Product({ params }: { params: { productId: string } }) {
       <SideNav sections={sideNavSections} />
       {productData && (
         <div className="w-full px-6">
-          <Section
-            name="Basic Details"
-            component={<BasicDetailsForm data={productData} type="edit" />}
-            expanded={true}
-          />
+          <Section name="Basic Details" expanded={true}>
+            <BasicDetailsForm data={productData} type="edit" />
+          </Section>
 
-          <Section
-            name="Active Substances"
-            component={
-              <>
-                <Button
-                  size={"sm"}
-                  variant={"outline"}
-                  onClick={() => {
-                    setAddRecordPopupVisible((prev) => !prev);
-                  }}
-                >
-                  Add
-                </Button>
-                <DataTable
-                  columns={activeSubstanceColumns}
-                  data={
-                    productData.productSubstances.filter(
-                      (el: any) => el.substance.type === "Active Substance"
-                    ) as any
-                  }
-                />
-                {addRecordPopupVisible && (
-                  <AddRecordPopup
-                    name="Substances"
-                    setPopVisible={setAddRecordPopupVisible}
-                    fetchDataRoute={`/api/substances`}
-                    storeDataRoute={`/api/products/${params.productId}/substances`}
-                    columns={activeSubstanceAddRecordPopupColumns}
-                  />
-                )}
-              </>
-            }
-            expanded={false}
-          />
-
-          <Section
-            name="Inactive Substances"
-            component={
-              <>
-                <Button
-                  size={"sm"}
-                  variant={"outline"}
-                  onClick={() => {
-                    setAddRecordPopupVisible((prev) => !prev);
-                  }}
-                >
-                  Add
-                </Button>
-                {console.log(productData.productSubstances)}
-                <DataTable
-                  columns={activeSubstanceColumns}
-                  data={
-                    productData.productSubstances.filter(
-                      (el: any) => el.substance.type !== "Active Substance"
-                    ) as any
-                  }
-                />
-                {addRecordPopupVisible && (
-                  <AddRecordPopup
-                    name="Inactive Substances"
-                    setPopVisible={setAddRecordPopupVisible}
-                    fetchDataRoute={`/api/substances`}
-                    storeDataRoute={`/api/products/${params.productId}/substances`}
-                    columns={activeSubstanceAddRecordPopupColumns}
-                  />
-                )}
-              </>
-            }
-            expanded={false}
-          />
-
-          <Section
-            name="Applications"
-            component={
-              <DataTable
-                columns={applicationColumns}
-                data={applications}
-                createRoute="/applications/create"
+          <Section name="Active Substances" expanded={false}>
+            <Button
+              size={"sm"}
+              variant={"outline"}
+              onClick={() => {
+                onAddClick(
+                  "activeSubstance",
+                  "/api/substances",
+                  productSubstances
+                );
+              }}
+            >
+              Add
+            </Button>
+            <DataTable
+              columns={activeSubstanceColumns}
+              data={
+                productData.productSubstances.filter(
+                  (el: any) => el.substance.type === "Active Substance"
+                ) as any
+              }
+            />
+            {addRecordPopupVisible === "activeSubstance" && (
+              <AddRecordPopup
+                name="Substances"
+                setPopVisible={setAddRecordPopupVisible}
+                data={[]}
+                //fetchDataRoute={`/api/substances`}
+                storeDataRoute={`/api/products/${params.productId}/substances`}
+                columns={activeSubstanceAddRecordPopupColumns}
+                queryKey="product"
               />
-            }
-            expanded={false}
-          />
-          <Section
-            name="Registrations"
-            component={
-              <DataTable
-                columns={applicationColumns}
-                data={[{ id: "xxx", name: "ccc", status: "success" }]}
-                createRoute="/registrations/create"
+            )}
+          </Section>
+
+          <Section name="Inactive Substances" expanded={false}>
+            <Button
+              size={"sm"}
+              variant={"outline"}
+              onClick={() => {
+                setAddRecordPopupVisible("inactiveSubstance");
+              }}
+            >
+              Add
+            </Button>
+            <DataTable
+              columns={activeSubstanceColumns}
+              data={
+                productData.productSubstances.filter(
+                  (el: any) => el.substance.type !== "Active Substance"
+                ) as any
+              }
+            />
+            {addRecordPopupVisible === "inactiveSubstance" && (
+              <AddRecordPopup
+                name="Inactive Substances"
+                setPopVisible={setAddRecordPopupVisible}
+                data={[]}
+                //fetchDataRoute={`/api/substances`}
+                storeDataRoute={`/api/products/${params.productId}/substances`}
+                columns={activeSubstanceAddRecordPopupColumns}
+                queryKey="product"
               />
-            }
-            expanded={false}
-          />
+            )}
+          </Section>
+
+          <Section name="Applications" expanded={false}>
+            <DataTable
+              columns={applicationColumns}
+              data={applications}
+              createRoute="/applications/create"
+            />
+          </Section>
+          <Section name="Registrations" expanded={false}>
+            <DataTable
+              columns={applicationColumns}
+              data={[{ id: "xxx", name: "ccc", status: "success" }]}
+              createRoute="/registrations/create"
+            />
+          </Section>
         </div>
       )}
     </div>

@@ -11,12 +11,14 @@ export const AddRecordPopup = ({
   data,
   storeDataRoute,
   columns,
+  queryKey,
 }: {
   name: string;
-  setPopVisible: (value: boolean) => void;
+  setPopVisible: (value: string) => void;
   data: any;
   storeDataRoute: string;
   columns: any; //shadcnui columns component passed in as required for the data table component
+  queryKey: string;
 }) => {
   return (
     <div className="absolute top-0 bottom-0 left-0 right-0 z-50">
@@ -27,7 +29,7 @@ export const AddRecordPopup = ({
             <h1>{`Select ${name} to be linked`}</h1>
             <Button
               onClick={() => {
-                setPopVisible(false);
+                setPopVisible("");
               }}
               variant={"ghost"}
               className="bold"
@@ -42,6 +44,7 @@ export const AddRecordPopup = ({
             createRoute="/products/create"
             setPopVisible={setPopVisible}
             storeDataRoute={storeDataRoute}
+            queryKey={queryKey}
           />
         </div>
       </div>

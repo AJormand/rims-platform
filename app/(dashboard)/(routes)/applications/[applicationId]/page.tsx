@@ -21,16 +21,16 @@ export default function Application({
 }: {
   params: { applicationId: string };
 }) {
-  // const [application, setApplication] = useState<Application>();
+  const [application, setApplication] = useState<Application>();
   const [linkedProducts, setLinkedProducts] = useState<Product[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [addProductPopupVisible, setAddProductPopupVisible] =
-    useState<boolean>(false);
+  const [addRecordPopupVisible, setAddRecordPopupVisible] =
+    useState<string>("");
+  const [popUpData, setPopUpData] = useState([]);
 
   const sideNavSections = ["Basic Details", "Products"];
 
   const {
-    data: application,
+    data: applicationData,
     isLoading,
     isError,
     refetch,
@@ -45,7 +45,7 @@ export default function Application({
         const productsArr = data?.products2Application?.map(
           (item: any) => item.product
         );
-        // setApplication(data);
+        setApplication(data);
         setLinkedProducts(productsArr);
         return data;
       } catch (error) {
@@ -54,62 +54,64 @@ export default function Application({
     },
   });
 
-  const addProduct = async () => {
-    setAddProductPopupVisible((prev) => !prev);
+  type ObjectWithId = {
+    id: string;
+  };
+
+  const fetchPopUpData = async (url: string, linkedRecords: ObjectWithId[]) => {
     try {
-      const { data } = await axios.get(`/api/products`);
-      setProducts(data);
+      const { data } = await axios.get(url);
+      const filteredData = data.filter(
+        (itemAll: ObjectWithId) =>
+          !linkedRecords.some(
+            (itemLinked: ObjectWithId) => itemLinked.id === itemAll.id
+          )
+      );
+      return filteredData;
     } catch (error) {
       toast.error(`"${error}`);
     }
   };
 
-  const TestComponent = () => {
-    console.log(application);
-    return <div>{application.name}</div>;
+  const addProduct = async () => {
+    setAddRecordPopupVisible("product");
+    const data = await fetchPopUpData(`/api/products`, linkedProducts);
+    setPopUpData(data);
   };
 
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />
       <div className="w-full px-6">
-        {application && <TestComponent />}
         {application && (
           <>
-            <Section
-              name="Basic Details"
-              component={<BasicDetailsForm data={application} type="edit" />}
-              expanded={true}
-            />
-            <Section
-              name="Products"
-              component={
-                <>
-                  <Button
-                    size={"sm"}
-                    variant={"outline"}
-                    onClick={() => addProduct()}
-                  >
-                    Add Product
-                  </Button>
-                  <DataTable
-                    columns={applicationProductColumns}
-                    data={linkedProducts}
-                  />
-                  {addProductPopupVisible && (
-                    <AddRecordPopup
-                      name="Products"
-                      setPopVisible={setAddProductPopupVisible}
-                      data={products}
-                      //fetchDataRoute={`/api/products`}
-                      storeDataRoute={`/api/applications/${params.applicationId}/products`}
-                      columns={productAddRecordPopupColumns}
-                    />
-                  )}
-                </>
-              }
-              expanded={true}
-            />
+            <Section name="Basic Details" expanded={true}>
+              <BasicDetailsForm data={applicationData} type="edit" />
+            </Section>
+            <Section name="Products" expanded={true}>
+              <Button
+                size={"sm"}
+                variant={"outline"}
+                onClick={() => addProduct()}
+              >
+                Add Product
+              </Button>
+              <DataTable
+                columns={applicationProductColumns}
+                data={linkedProducts}
+              />
+              {addRecordPopupVisible === "product" && (
+                <AddRecordPopup
+                  name="Products"
+                  setPopVisible={setAddRecordPopupVisible}
+                  data={popUpData}
+                  //fetchDataRoute={`/api/products`}
+                  storeDataRoute={`/api/applications/${params.applicationId}/products`}
+                  columns={productAddRecordPopupColumns}
+                  queryKey="application"
+                />
+              )}
+            </Section>
           </>
         )}
       </div>

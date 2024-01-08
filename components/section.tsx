@@ -7,11 +7,11 @@ import {
 
 interface SectionProps {
   name: string;
-  component: React.ReactNode;
+  children: React.ReactNode;
   expanded: boolean;
 }
 
-export const Section = ({ name, component, expanded }: SectionProps) => {
+export const Section = ({ name, children, expanded }: SectionProps) => {
   return (
     <div id={name}>
       <Accordion
@@ -21,7 +21,7 @@ export const Section = ({ name, component, expanded }: SectionProps) => {
       >
         <AccordionItem value="item-1">
           <AccordionTrigger>{name}</AccordionTrigger>
-          <AccordionContent>{component}</AccordionContent>
+          <AccordionContent>{children}</AccordionContent>
         </AccordionItem>
       </Accordion>
     </div>

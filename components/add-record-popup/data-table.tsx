@@ -36,8 +36,9 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   createRoute: string;
-  setPopVisible: (value: boolean) => void;
+  setPopVisible: (value: string) => void;
   storeDataRoute: string;
+  queryKey: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -46,6 +47,7 @@ export function DataTable<TData, TValue>({
   createRoute,
   setPopVisible,
   storeDataRoute,
+  queryKey,
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -80,7 +82,7 @@ export function DataTable<TData, TValue>({
     onSuccess: () => {
       toast.success("Records added");
       setPopVisible(false);
-      queryClient.invalidateQueries({ queryKey: ["application"] });
+      queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
     onError: () => {
       toast.error("Something went wrong");
