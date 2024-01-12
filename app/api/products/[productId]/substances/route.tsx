@@ -59,3 +59,40 @@ export async function POST(
     return new NextResponse("[PUT APPLICATION]", { status: 400 });
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { productId: string } }
+) {
+  const { productId } = params;
+  const { substanceId } = await request.json();
+  console.log(productId, substanceId);
+
+  const { userId } = auth();
+  if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+
+  try {
+    const product2Substance = await db.product2Substance.findMany({
+      where: {
+        productId,
+        substanceId,
+      },
+    });
+
+    console.log(product2Substance);
+    product2Substance.forEach(async (product2Substance) => {
+      await db.product2Substance.delete({
+        where: {
+          id: product2Substance.id,
+        },
+      });
+    });
+
+    return new NextResponse(JSON.stringify(product2Substance), {
+      status: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    return new NextResponse("[DELETE SUBSTANCE]", { status: 400 });
+  }
+}

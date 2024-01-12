@@ -83,6 +83,7 @@ export default function Product({ params }: { params: { productId: string } }) {
   ) => {
     setAddRecordPopupVisible(popupName);
     const data = await fetchPopUpData(fetchRoute, linkedRecords);
+    console.log(data);
     setPopUpData(data);
   };
 
@@ -129,7 +130,9 @@ export default function Product({ params }: { params: { productId: string } }) {
               <AddRecordPopup
                 name="Substances"
                 setPopVisible={setAddRecordPopupVisible}
-                data={[]}
+                data={popUpData.filter(
+                  (el: Substance) => el.type === "Active Substance"
+                )}
                 //fetchDataRoute={`/api/substances`}
                 storeDataRoute={`/api/products/${params.productId}/substances`}
                 columns={activeSubstanceAddRecordPopupColumns}
@@ -160,7 +163,9 @@ export default function Product({ params }: { params: { productId: string } }) {
               <AddRecordPopup
                 name="Inactive Substances"
                 setPopVisible={setAddRecordPopupVisible}
-                data={[]}
+                data={popUpData.filter(
+                  (el: Substance) => el.type !== "Active Substance"
+                )}
                 //fetchDataRoute={`/api/substances`}
                 storeDataRoute={`/api/products/${params.productId}/substances`}
                 columns={activeSubstanceAddRecordPopupColumns}

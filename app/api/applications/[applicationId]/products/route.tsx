@@ -66,21 +66,17 @@ export async function DELETE(
   { params }: { params: { applicationId: string } }
 ) {
   const { applicationId } = params;
+  const { productId } = await request.json();
   const { userId } = auth();
   if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
   try {
-    const { productId } = await request.json();
-    console.log(productId);
-
     const product2Application = await db.product2Application.findMany({
       where: {
         productId: productId,
         applicationId: applicationId,
       },
     });
-
-    console.log(product2Application);
 
     console.log(product2Application);
 
