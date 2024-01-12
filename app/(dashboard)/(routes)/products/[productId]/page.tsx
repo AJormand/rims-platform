@@ -33,13 +33,22 @@ type ObjectWithId = {
   id: string;
 };
 
+interface ProductSubstance extends Product2Substance {
+  substance: Substance;
+}
+
 export default function Product({ params }: { params: { productId: string } }) {
   const [productData, setProductData] = useState<ProductData>();
+  const [activeSubstances, setActiveSubstances] = useState<ProductSubstance[]>(
+    []
+  );
+  const [inactiveSubstances, setInactiveSubstances] = useState<
+    ProductSubstance[]
+  >([]);
   const [applications, setApplications] = useState([]);
   const [popUpData, setPopUpData] = useState([]);
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
-  let productSubstances: Substance[] = [];
 
   const { data: productData2 } = useQuery({
     queryKey: ["product"],
@@ -48,8 +57,18 @@ export default function Product({ params }: { params: { productId: string } }) {
         const { data } = await axios.get(`/api/products/${params.productId}`);
         setProductData(data);
 
-        productSubstances = data.productSubstances;
-        console.log(productSubstances);
+        setActiveSubstances(
+          data.productSubstances.filter(
+            (productSubstance: ProductSubstance) =>
+              productSubstance.substance.type === "Active Substance"
+          )
+        );
+        setInactiveSubstances(
+          data.productSubstances.filter(
+            (productSubstance: ProductSubstance) =>
+              productSubstance.substance.type !== "Active Substance"
+          )
+        );
 
         setApplications(
           data.productApplications.map((item: any) => item.application)
@@ -64,6 +83,8 @@ export default function Product({ params }: { params: { productId: string } }) {
   const fetchPopUpData = async (url: string, linkedRecords: ObjectWithId[]) => {
     try {
       const { data } = await axios.get(url);
+      console.log(data);
+      console.log(linkedRecords);
       const filteredData = data.filter(
         (itemAll: ObjectWithId) =>
           !linkedRecords.some(
@@ -81,6 +102,7 @@ export default function Product({ params }: { params: { productId: string } }) {
     fetchRoute: string,
     linkedRecords: ObjectWithId[]
   ) => {
+    console.log("linked", linkedRecords);
     setAddRecordPopupVisible(popupName);
     const data = await fetchPopUpData(fetchRoute, linkedRecords);
     console.log(data);
@@ -100,10 +122,12 @@ export default function Product({ params }: { params: { productId: string } }) {
       <SideNav sections={sideNavSections} />
       {productData && (
         <div className="w-full px-6">
+          {/* BASIC DETAILS */}
           <Section name="Basic Details" expanded={true}>
             <BasicDetailsForm data={productData} type="edit" />
           </Section>
 
+          {/* ACTIVE SUBSTANCES */}
           <Section name="Active Substances" expanded={false}>
             <Button
               size={"sm"}
@@ -112,7 +136,7 @@ export default function Product({ params }: { params: { productId: string } }) {
                 onAddClick(
                   "activeSubstance",
                   "/api/substances",
-                  productSubstances
+                  activeSubstances.map((el) => el.substance)
                 );
               }}
             >
@@ -120,18 +144,14 @@ export default function Product({ params }: { params: { productId: string } }) {
             </Button>
             <DataTable
               columns={activeSubstanceColumns}
-              data={
-                productData.productSubstances.filter(
-                  (el: any) => el.substance.type === "Active Substance"
-                ) as any
-              }
+              data={activeSubstances}
             />
             {addRecordPopupVisible === "activeSubstance" && (
               <AddRecordPopup
                 name="Substances"
                 setPopVisible={setAddRecordPopupVisible}
                 data={popUpData.filter(
-                  (el: Substance) => el.type === "Active Substance"
+                  (el: any) => el.type === "Active Substance"
                 )}
                 //fetchDataRoute={`/api/substances`}
                 storeDataRoute={`/api/products/${params.productId}/substances`}
@@ -141,30 +161,31 @@ export default function Product({ params }: { params: { productId: string } }) {
             )}
           </Section>
 
+          {/* INACTIVE SUBSTANCES */}
           <Section name="Inactive Substances" expanded={false}>
             <Button
               size={"sm"}
               variant={"outline"}
               onClick={() => {
-                setAddRecordPopupVisible("inactiveSubstance");
+                onAddClick(
+                  "inactiveSubstance",
+                  "/api/substances",
+                  inactiveSubstances.map((el) => el.substance)
+                );
               }}
             >
               Add
             </Button>
             <DataTable
               columns={activeSubstanceColumns}
-              data={
-                productData.productSubstances.filter(
-                  (el: any) => el.substance.type !== "Active Substance"
-                ) as any
-              }
+              data={inactiveSubstances}
             />
             {addRecordPopupVisible === "inactiveSubstance" && (
               <AddRecordPopup
                 name="Inactive Substances"
                 setPopVisible={setAddRecordPopupVisible}
                 data={popUpData.filter(
-                  (el: Substance) => el.type !== "Active Substance"
+                  (el: any) => el.type !== "Active Substance"
                 )}
                 //fetchDataRoute={`/api/substances`}
                 storeDataRoute={`/api/products/${params.productId}/substances`}
@@ -173,6 +194,8 @@ export default function Product({ params }: { params: { productId: string } }) {
               />
             )}
           </Section>
+
+          {/* APPLICATIONS */}
 
           <Section name="Applications" expanded={false}>
             <DataTable
@@ -181,6 +204,8 @@ export default function Product({ params }: { params: { productId: string } }) {
               createRoute="/applications/create"
             />
           </Section>
+
+          {/* REGISTRATIONS */}
           <Section name="Registrations" expanded={false}>
             <DataTable
               columns={applicationColumns}
