@@ -7,11 +7,9 @@ import { Section } from "@/components/section";
 export default function CreateApplication() {
   return (
     <div className="container mx-auto py-10">
-      <Section
-        name="Basic Details"
-        component={<BasicDetailsForm data={null} type="new" />}
-        expanded={true}
-      />
+      <Section name="Basic Details" expanded={true}>
+        <BasicDetailsForm data={null} type="new" />
+      </Section>
     </div>
   );
 }
