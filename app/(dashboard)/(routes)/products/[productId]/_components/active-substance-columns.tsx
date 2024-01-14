@@ -25,6 +25,7 @@ import { Popup } from "@/components/popup";
 import { Product, Product2Substance, Substance } from "@prisma/client";
 import { set } from "react-hook-form";
 import { BasicDetailsForm } from "../../_components/basic-details-form";
+import { ActiveSubstanceEditForm } from "./active-sibstance-edit-form";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -116,7 +117,7 @@ export const activeSubstanceColumns: ColumnDef<ActiveSubstance>[] = [
           {editRecord && (
             <Popup setPopupVisible={setEditRecord}>
               <h1>Edit Record</h1>
-              <BasicDetailsForm
+              <ActiveSubstanceEditForm data={substance} type="edit" />
             </Popup>
           )}
         </>
