@@ -8,6 +8,7 @@ import { NavbarRoutes } from "../components/navbar-routes";
 import { TopNavigationBar } from "@/components/top-navigation-bar";
 import { ToasterProvider } from "@/components/providers/toaster-provider";
 import { TenstackProvider } from "@/components/providers/tenstack-query-provider";
+import { AppContextProvider } from "@/context/app-context-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,9 @@ export default function RootLayout({
             <div className="flex flex-col h-screen">
               <NavbarRoutes />
               <TopNavigationBar />
-              <div className="overflow-y-auto">{children}</div>
+              <AppContextProvider>
+                <div className="overflow-y-auto">{children}</div>
+              </AppContextProvider>
             </div>
             <ToasterProvider />
           </TenstackProvider>

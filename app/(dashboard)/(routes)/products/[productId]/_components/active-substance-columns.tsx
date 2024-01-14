@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import axios from "axios";
@@ -19,9 +20,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Popup } from "@/components/popup";
 
 import { Product, Product2Substance, Substance } from "@prisma/client";
-import { on } from "events";
+import { set } from "react-hook-form";
+import { BasicDetailsForm } from "../../_components/basic-details-form";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -58,6 +61,8 @@ export const activeSubstanceColumns: ColumnDef<ActiveSubstance>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const [editRecord, setEditRecord] = useState(false);
+
       const substance = row.original;
       const queryClient = useQueryClient();
       const pathname = usePathname();
@@ -85,23 +90,36 @@ export const activeSubstanceColumns: ColumnDef<ActiveSubstance>[] = [
       });
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => handleDeleteMutation(substance.substanceId)}
-            >
-              Delete
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem onClick={() => setEditRecord(true)}>
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleDeleteMutation(substance.substanceId)}
+              >
+                Delete
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* EDIT RECORD POPUP */}
+          {editRecord && (
+            <Popup setPopupVisible={setEditRecord}>
+              <h1>Edit Record</h1>
+              <BasicDetailsForm
+            </Popup>
+          )}
+        </>
       );
     },
   },
