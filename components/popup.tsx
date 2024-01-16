@@ -12,7 +12,7 @@ export const Popup: React.FC<PopupProps> = ({ children, setPopupVisible }) => {
       <div className="absolute w-full h-full flex items-center justify-center">
         <div className="border rounded-lg bg-white p-10">
           <div className="flex justify-between">
-            <h1>{`Edit`}</h1>
+            <h1>{`Edit record`}</h1>
             <Button
               onClick={() => {
                 setPopupVisible(false);

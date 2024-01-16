@@ -60,6 +60,38 @@ export async function POST(
   }
 }
 
+export async function PUT(
+  request: Request,
+  { params }: { params: { productId: string } }
+) {
+  const { productId } = params;
+  const { values } = await request.json();
+
+  const { userId } = auth();
+  if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+
+  try {
+    const updatedProduct2Substance = await db.product2Substance.updateMany({
+      where: {
+        productId: productId,
+        substanceId: values.substanceId,
+      },
+      data: {
+        quantity: values.quantity,
+        unit: values.unit,
+      },
+    });
+
+    console.log(updatedProduct2Substance);
+    return new NextResponse(JSON.stringify(updatedProduct2Substance), {
+      status: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    return new NextResponse("[PUT APPLICATION]", { status: 400 });
+  }
+}
+
 export async function DELETE(
   request: Request,
   { params }: { params: { productId: string } }

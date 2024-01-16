@@ -81,7 +81,7 @@ export function DataTable<TData, TValue>({
     },
     onSuccess: () => {
       toast.success("Records added");
-      setPopVisible(false);
+      setPopVisible("");
       queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
     onError: () => {

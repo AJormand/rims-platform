@@ -116,8 +116,7 @@ export const activeSubstanceColumns: ColumnDef<ActiveSubstance>[] = [
           {/* EDIT RECORD POPUP */}
           {editRecord && (
             <Popup setPopupVisible={setEditRecord}>
-              <h1>Edit Record</h1>
-              <ActiveSubstanceEditForm data={substance} type="edit" />
+              <ActiveSubstanceEditForm data={substance} />
             </Popup>
           )}
         </>

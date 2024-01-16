@@ -3,13 +3,15 @@
 import { useState, useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-import { Product } from "@prisma/client";
+import { Product, Product2Substance } from "@prisma/client";
+
+import { useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,27 +26,27 @@ import {
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }).max(250),
-  category: z.string(),
-  origin: z.string(),
-  status: z.string(),
+  productId: z.string(),
+  substanceId: z.string(),
+  quantity: z.string(),
+  unit: z.string(),
 });
 
 export const ActiveSubstanceEditForm: React.FC<{
-  data: Product | null;
-  type: "new" | "edit";
-}> = ({ data, type }) => {
+  data: Product2Substance | null;
+}> = ({ data }) => {
   const router = useRouter();
-  const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
+  const queryClient = useQueryClient();
+  const [isFetching, setIsFetching] = useState(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: data?.name || "",
-      category: data?.category || "",
-      origin: data?.origin || "",
-      status: data?.status || "draft",
+      productId: data?.productId || "",
+      substanceId: data?.substanceId || "",
+      quantity: data?.quantity || "",
+      unit: data?.unit || "",
     },
   });
 
@@ -54,82 +56,47 @@ export const ActiveSubstanceEditForm: React.FC<{
   }, []);
 
   // Define a submit handler.
-  const onSubmitNew = async (values: z.infer<typeof formSchema>) => {
-    try {
-      const response = await axios.post(`/api/products`, values);
-      router.push(`/products/${response.data.id}`);
-      toast.success("Product created successfully");
-    } catch (error) {
-      toast.error("Something went wrong");
-    }
-  };
-
   const onSubmitEdit = async (values: z.infer<typeof formSchema>) => {
-    const productId = data?.id;
+    const productId = data?.productId;
     if (!productId) return;
 
     try {
+      setIsFetching(true);
       console.log(data);
-      const response = await axios.put(`/api/products/${productId}`, {
-        values,
-      });
-      toast.success("Product created successfully");
-      setIsEditing(false);
+      const response = await axios.put(
+        `/api/products/${productId}/substances`,
+        {
+          values,
+        }
+      );
+      toast.success("Substance updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["product"] });
     } catch (error) {
       toast.error("Something went wrong");
     }
+    setIsFetching(false);
   };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={
-          type === "new"
-            ? form.handleSubmit(onSubmitNew)
-            : form.handleSubmit(onSubmitEdit)
-        }
+        onSubmit={form.handleSubmit(onSubmitEdit)}
         className="space-y-8 p-4"
       >
         <div className="flex flex-row-reverse gap-1">
-          <Button size="sm" type="submit" disabled={!isEditing}>
+          <Button size="sm" type="submit" disabled={isFetching}>
             Save
-          </Button>
-          <Button
-            size="sm"
-            type="button"
-            variant="ghost"
-            onClick={() => setIsEditing((prev) => !prev)}
-          >
-            {!isEditing ? "Edit" : "Cancel"}
           </Button>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="name"
-            disabled={!isEditing}
+            name="quantity"
+            disabled={isFetching}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Active Substance_Dose form_Strength"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="category"
-            disabled={!isEditing}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
+                <FormLabel>Quantity</FormLabel>
                 <FormControl>
                   <Input placeholder="" {...field} />
                 </FormControl>
@@ -140,11 +107,11 @@ export const ActiveSubstanceEditForm: React.FC<{
 
           <FormField
             control={form.control}
-            name="origin"
-            disabled={!isEditing}
+            name="unit"
+            disabled={isFetching}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Origin</FormLabel>
+                <FormLabel>Unit</FormLabel>
                 <FormControl>
                   <Input placeholder="" {...field} />
                 </FormControl>
