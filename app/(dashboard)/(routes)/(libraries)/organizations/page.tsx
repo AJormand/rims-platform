@@ -2,14 +2,14 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 
-import { columns } from "./_components/columns";
 import { DataTable } from "@/components/ui/data-table";
+import { columns } from "./_components/columns";
 
-export default async function Substances() {
+export default async function Organizations() {
   const { userId } = auth();
   if (!userId) return redirect("/");
 
-  const data = await db.substance.findMany({
+  const data = await db.organization.findMany({
     take: 10,
   });
 
@@ -18,7 +18,7 @@ export default async function Substances() {
       <DataTable
         columns={columns}
         data={data}
-        createRoute="/substances/create"
+        createRoute="/organizations/create"
       />
     </div>
   );

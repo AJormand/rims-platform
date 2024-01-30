@@ -17,16 +17,9 @@ import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-import { Substance } from "@prisma/client";
-// export type Substance = {
-//   id: string;
-//   name: string;
-//   type: string;
-//   EVcode: string;
-//   status: string;
-// };
+import { Organization } from "@prisma/client";
 
-export const columns: ColumnDef<Substance>[] = [
+export const columns: ColumnDef<Organization>[] = [
   // {
   //   accessorKey: "id",
   //   header: "id",
@@ -36,28 +29,24 @@ export const columns: ColumnDef<Substance>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => {
-      const substance = row.original;
+      const organization = row.original;
       return (
         <Link
-          href={`/substances/${substance.id}`}
+          href={`/organizations/${organization.id}`}
           className="underline text-sky-700"
         >
-          {substance.name}
+          {organization.name}
         </Link>
       );
     },
   },
-  // {
-  //   accessorKey: "type",
-  //   header: "Type",
-  // },
   {
-    accessorKey: "type",
-    header: "Type",
+    accessorKey: "country",
+    header: "Country",
   },
   {
-    accessorKey: "EVcode",
-    header: "EVcode",
+    accessorKey: "address",
+    header: "Address",
   },
   {
     accessorKey: "status",
@@ -66,13 +55,13 @@ export const columns: ColumnDef<Substance>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const substance = row.original;
+      const organization = row.original;
       const router = useRouter();
 
-      const handleEdit = (substanceId: string) => {
+      const handleEdit = (organizationId: string) => {
         console.log("click");
-        console.log(substanceId);
-        router.push(`/substances/${substanceId}`);
+        console.log(organizationId);
+        router.push(`/organizations/${organizationId}`);
       };
 
       return (
@@ -85,7 +74,7 @@ export const columns: ColumnDef<Substance>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => handleEdit(substance.id)}>
+            <DropdownMenuItem onClick={() => handleEdit(organization.id)}>
               Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />

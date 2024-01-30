@@ -31,6 +31,7 @@ model Product {
 
   productApplications Product2Application[] // Establish a relation with the junction model
   productSubstances Product2Substance[] // Establish a relation with the junction model
+  productOrganizations Product2Organization[] // Establish a relation with the junction model
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -56,6 +57,18 @@ model Product2Substance{
 
   quantity     String?
   unit         String?
+
+  createdAt    DateTime @default(now())
+}
+
+model Product2Organization{
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  product      Product @relation(fields: [productId], references: [id])
+  productId    String @db.ObjectId
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String @db.ObjectId
+
+  partnershipType     String?
 
   createdAt    DateTime @default(now())
 }
@@ -118,6 +131,8 @@ model Organization {
   name        String   @unique
   country     String
   address     String
+
+  product2Organization Product2Organization[] // Establish a relation with the junction model
 
   status      String
   createdAt   DateTime @default(now())
