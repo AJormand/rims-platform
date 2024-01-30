@@ -59,8 +59,6 @@ export const columns: ColumnDef<Organization>[] = [
       const router = useRouter();
 
       const handleEdit = (organizationId: string) => {
-        console.log("click");
-        console.log(organizationId);
         router.push(`/organizations/${organizationId}`);
       };
 
