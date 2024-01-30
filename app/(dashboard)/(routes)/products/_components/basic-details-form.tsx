@@ -22,6 +22,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }).max(250),
@@ -131,7 +138,21 @@ export const BasicDetailsForm: React.FC<{
               <FormItem>
                 <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={!isEditing}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Small molecules">
+                        Small molecules
+                      </SelectItem>
+                      <SelectItem value="Biosimilars">Biosimilars</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -146,7 +167,19 @@ export const BasicDetailsForm: React.FC<{
               <FormItem>
                 <FormLabel>Origin</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={!isEditing}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="In-house">In-house</SelectItem>
+                      <SelectItem value="In-license">In-license</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

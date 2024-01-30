@@ -36,11 +36,9 @@ export default function Substance({
       <SideNav sections={sideNavSections} />
       <div className="w-full px-6">
         {substanceData && (
-          <Section
-            name="Basic Details"
-            component={<BasicDetailsForm data={substanceData} type="edit" />}
-            expanded={true}
-          />
+          <Section name="Basic Details" expanded={true}>
+            <BasicDetailsForm data={substanceData} type="edit" />
+          </Section>
         )}
       </div>
     </div>
