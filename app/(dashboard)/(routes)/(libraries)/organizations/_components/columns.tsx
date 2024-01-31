@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -65,7 +66,7 @@ export const columns: ColumnDef<Organization>[] = [
 
       const handleDelete = (organizationId: string) => {
         axios.delete(`/api/organizations/`, { data: { organizationId } });
-        router.push(`/organizations`);
+        toast.success("Organization deleted");
       };
 
       return (

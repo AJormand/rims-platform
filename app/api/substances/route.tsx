@@ -39,3 +39,23 @@ export async function GET() {
     return new NextResponse("[GET SUBSTANCE]", { status: 400 });
   }
 }
+
+export async function DELETE(request: Request) {
+  const { substanceId } = await request.json();
+
+  const { userId } = auth();
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  try {
+    await db.substance.delete({
+      where: {
+        id: substanceId,
+      },
+    });
+    return NextResponse.json("Substance deleted");
+  } catch (error) {
+    return new NextResponse("[DELETE SUBSTANCE]", { status: 400 });
+  }
+}

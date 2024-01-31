@@ -1,5 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -75,6 +77,11 @@ export const columns: ColumnDef<Substance>[] = [
         router.push(`/substances/${substanceId}`);
       };
 
+      const handleDelete = (substanceId: string) => {
+        axios.delete("/api/substances", { data: { substanceId } });
+        toast.success("Product deleted");
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -90,7 +97,9 @@ export const columns: ColumnDef<Substance>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Copy</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDelete(substance.id)}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

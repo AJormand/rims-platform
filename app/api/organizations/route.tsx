@@ -41,9 +41,7 @@ export async function GET() {
 }
 
 export async function DELETE(request: Request) {
-  console.log("-------------------delete");
   const { organizationId } = await request.json();
-  console.log("request:", organizationId);
 
   const { userId } = auth();
   if (!userId) {
