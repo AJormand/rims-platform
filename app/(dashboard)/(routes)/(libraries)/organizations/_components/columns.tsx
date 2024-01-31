@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -62,6 +63,11 @@ export const columns: ColumnDef<Organization>[] = [
         router.push(`/organizations/${organizationId}`);
       };
 
+      const handleDelete = (organizationId: string) => {
+        axios.delete(`/api/organizations/`, { data: { organizationId } });
+        router.push(`/organizations`);
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -77,7 +83,9 @@ export const columns: ColumnDef<Organization>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Copy</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDelete(organization.id)}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

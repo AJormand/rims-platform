@@ -39,3 +39,25 @@ export async function GET() {
     return new NextResponse("[GET ORGANIZATION]", { status: 400 });
   }
 }
+
+export async function DELETE(request: Request) {
+  console.log("-------------------delete");
+  const { organizationId } = await request.json();
+  console.log("request:", organizationId);
+
+  const { userId } = auth();
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  try {
+    await db.organization.delete({
+      where: {
+        id: organizationId,
+      },
+    });
+    return NextResponse.json("Organization deleted");
+  } catch (error) {
+    return new NextResponse("[DELETE ORGANIZATION]", { status: 400 });
+  }
+}
