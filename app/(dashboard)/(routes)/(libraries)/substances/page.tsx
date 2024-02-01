@@ -1,25 +1,36 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
+"use client";
 
 import { columns } from "./_components/columns";
 import { DataTable } from "@/components/ui/data-table";
 
-export default async function Substances() {
-  const { userId } = auth();
-  if (!userId) return redirect("/");
+import { useFetchSubstances } from "@/app/(dashboard)/(routes)/(libraries)/substances/hooks/useFetchSubstances";
 
-  const data = await db.substance.findMany({
-    take: 10,
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+export default function Substances() {
+  const fetchSubstances = async () => {
+    const { data } = await axios.get("/api/substances");
+    console.log(data);
+    return data;
+  };
+
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ["substances"],
+    queryFn: fetchSubstances,
   });
+
+  console.log(data);
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable
-        columns={columns}
-        data={data}
-        createRoute="/substances/create"
-      />
+      {!isLoading && (
+        <DataTable
+          columns={columns}
+          data={data}
+          createRoute="/substances/create"
+        />
+      )}
     </div>
   );
 }

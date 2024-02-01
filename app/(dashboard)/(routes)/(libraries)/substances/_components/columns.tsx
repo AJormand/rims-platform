@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+import { useMutation, QueryClient } from "@tanstack/react-query";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
@@ -17,23 +19,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 import { Substance } from "@prisma/client";
-// export type Substance = {
-//   id: string;
-//   name: string;
-//   type: string;
-//   EVcode: string;
-//   status: string;
-// };
 
 export const columns: ColumnDef<Substance>[] = [
-  // {
-  //   accessorKey: "id",
-  //   header: "id",
-  // },
-
   {
     accessorKey: "name",
     header: "Name",
@@ -49,10 +37,6 @@ export const columns: ColumnDef<Substance>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "type",
-  //   header: "Type",
-  // },
   {
     accessorKey: "type",
     header: "Type",
@@ -70,6 +54,7 @@ export const columns: ColumnDef<Substance>[] = [
     cell: ({ row }) => {
       const substance = row.original;
       const router = useRouter();
+      const queryClient = new QueryClient();
 
       const handleEdit = (substanceId: string) => {
         console.log("click");
@@ -77,10 +62,18 @@ export const columns: ColumnDef<Substance>[] = [
         router.push(`/substances/${substanceId}`);
       };
 
-      const handleDelete = (substanceId: string) => {
-        axios.delete("/api/substances", { data: { substanceId } });
-        toast.success("Product deleted");
-      };
+      const { mutate: handleDeleteMutation } = useMutation({
+        mutationFn: async (substanceId: string) => {
+          await axios.delete("/api/substances", { data: { substanceId } });
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["substances"] });
+          toast.success("Substance deleted");
+        },
+        onError: (err: any) => {
+          toast.error("Substance not deleted");
+        },
+      });
 
       return (
         <DropdownMenu>
@@ -97,7 +90,9 @@ export const columns: ColumnDef<Substance>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Copy</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(substance.id)}>
+            <DropdownMenuItem
+              onClick={() => handleDeleteMutation(substance.id)}
+            >
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
