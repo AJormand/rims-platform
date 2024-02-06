@@ -64,7 +64,12 @@ export const columns: ColumnDef<Substance>[] = [
 
       const { mutate: handleDeleteMutation } = useMutation({
         mutationFn: async (substanceId: string) => {
-          await axios.delete("/api/substances", { data: { substanceId } });
+          try {
+            await axios.delete("/api/substances", { data: { substanceId } });
+          } catch (error) {
+            console.log(error)
+            toast.error("Something went wrong");
+          }
         },
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["substances"] });
