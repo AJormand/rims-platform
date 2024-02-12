@@ -5,7 +5,7 @@ import { DataTable } from "@/components/ui/data-table";
 
 import { useFetchSubstances } from "@/app/(dashboard)/(routes)/(libraries)/substances/hooks/useFetchSubstances";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, QueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 export default function Substances() {
@@ -25,6 +25,8 @@ export default function Substances() {
 
 
   console.log(data);
+  const queryClient = new QueryClient();
+  
 
   return (
     <div className="container mx-auto py-10">
@@ -36,10 +38,6 @@ export default function Substances() {
           data={data}
           createRoute="/substances/create"
         />
-      )}
-      {data && data.map((substance:any) => {
-        return <div key={substance.id}>{substance.name}</div>;
-      }
       )}
     </div>
   );
