@@ -54,7 +54,7 @@ export async function DELETE(request: Request) {
         id: substanceId,
       },
     });
-    return NextResponse.json("Substance deleted");
+    return NextResponse.json("Substance deleted", { status: 200 });
   } catch (error) {
     return new NextResponse("[DELETE SUBSTANCE]", { status: 400 });
   }

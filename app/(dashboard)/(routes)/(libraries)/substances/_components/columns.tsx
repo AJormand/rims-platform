@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-import { useMutation, QueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -54,7 +54,7 @@ export const columns: ColumnDef<Substance>[] = [
     cell: ({ row }) => {
       const substance = row.original;
       const router = useRouter();
-      const queryClient = new QueryClient();
+      const queryClient = useQueryClient();
 
       const handleEdit = (substanceId: string) => {
         console.log("click");
@@ -64,7 +64,12 @@ export const columns: ColumnDef<Substance>[] = [
 
       const { mutate: handleDeleteMutation } = useMutation({
         mutationFn: async (substanceId: string) => {
-          await axios.delete("/api/substances", { data: { substanceId } });
+          try {
+            await axios.delete("/api/substances", { data: { substanceId } });
+          } catch (error) {
+            console.log(error)
+            toast.error("Something went wrong");
+          }
         },
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["substances"] });
