@@ -80,6 +80,7 @@ export const activeSubstanceColumns: ColumnDef<ActiveSubstance>[] = [
             toast.error("Something went wrong");
           }
         },
+        //---> this works but reloads whole screen immediately... try deleting an item on screen and refetch in the background
         onSuccess: () => {
           console.log("record deleted");
           queryClient.resetQueries({ queryKey: ["product"] });
