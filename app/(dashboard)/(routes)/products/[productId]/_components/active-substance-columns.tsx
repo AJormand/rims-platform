@@ -82,7 +82,9 @@ export const activeSubstanceColumns: ColumnDef<ActiveSubstance>[] = [
         },
         onSuccess: () => {
           console.log("record deleted");
-          queryClient.invalidateQueries({ queryKey: ["product"] });
+          queryClient.resetQueries({ queryKey: ["product"] });
+          //queryClient.removeQueries({ queryKey: ["product"] });
+          //queryClient.invalidateQueries({ queryKey: ["product"] });
           toast.success("Substance removed from Product");
         },
         onError: (err: any) => {

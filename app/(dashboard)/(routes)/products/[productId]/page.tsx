@@ -23,6 +23,8 @@ import {
   Product2Substance,
 } from "@prisma/client";
 
+import { usefetchProduct } from "@/app/hooks/hooks";
+
 type ProductData = Product & {
   include: { application: true; substance: true };
   productSubstances: Substance[];
@@ -81,6 +83,12 @@ export default function Product({ params }: { params: { productId: string } }) {
     queryFn: fetchProduct,
   });
 
+  // const {
+  //   data: productData,
+  //   isError,
+  //   isLoading,
+  // } = usefetchProduct(params.productId);
+
   const fetchPopUpData = async (url: string, linkedRecords: ObjectWithId[]) => {
     try {
       const { data } = await axios.get(url);
@@ -121,6 +129,7 @@ export default function Product({ params }: { params: { productId: string } }) {
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />
+      {isLoading && <div>Loading...</div>}
       {!isLoading && (
         <div className="w-full px-6">
           {/* BASIC DETAILS */}
