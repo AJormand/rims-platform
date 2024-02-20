@@ -1,12 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Product2Substance, Substance, Application } from "@prisma/client";
+import toast from "react-hot-toast";
+
+// PRODUCT
 
 interface ProductSubstance extends Product2Substance {
   substance: Substance;
 }
 
-const fetchProduct = async (productId: string) => {
+export const fetchProduct = async (productId: string) => {
   try {
     const { data } = await axios.get(`/api/products/${productId}`);
 
@@ -36,9 +38,28 @@ const fetchProduct = async (productId: string) => {
   }
 };
 
-export const usefetchProduct = (productId: string) => {
-  return useQuery({
-    queryKey: ["product"],
-    queryFn: () => fetchProduct(productId),
-  });
+// POPUP
+
+type ObjectWithId = {
+  id: string;
+};
+
+export const fetchPopUpData = async (
+  url: string,
+  linkedRecords: ObjectWithId[]
+) => {
+  try {
+    const { data } = await axios.get(url);
+    console.log(data);
+    console.log(linkedRecords);
+    const filteredData = data.filter(
+      (itemAll: ObjectWithId) =>
+        !linkedRecords.some(
+          (itemLinked: ObjectWithId) => itemLinked.id === itemAll.id
+        )
+    );
+    return filteredData;
+  } catch (error) {
+    toast.error(`"${error}`);
+  }
 };

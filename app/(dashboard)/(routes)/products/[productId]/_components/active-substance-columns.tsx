@@ -80,12 +80,15 @@ export const activeSubstanceColumns: ColumnDef<ActiveSubstance>[] = [
             toast.error("Something went wrong");
           }
         },
-        //---> this works but reloads whole screen immediately... try deleting an item on screen and refetch in the background
-        onSuccess: () => {
+        onSuccess: async () => {
           console.log("record deleted");
-          queryClient.resetQueries({ queryKey: ["product"] });
-          //queryClient.removeQueries({ queryKey: ["product"] });
-          //queryClient.invalidateQueries({ queryKey: ["product"] });
+          // queryClient.resetQueries({ queryKey: ["product"] });
+          // queryClient.removeQueries({ queryKey: ["product"] });
+          // queryClient.invalidateQueries({ queryKey: ["product"] });
+          await queryClient.invalidateQueries({
+            queryKey: ["product"],
+            refetchType: "active",
+          });
           toast.success("Substance removed from Product");
         },
         onError: (err: any) => {

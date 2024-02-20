@@ -1,9 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 import { applicationColumns } from "./_components/application-columns";
 import { activeSubstanceColumns } from "./_components/active-substance-columns";
@@ -23,7 +20,8 @@ import {
   Product2Substance,
 } from "@prisma/client";
 
-import { usefetchProduct } from "@/app/hooks/hooks";
+import { usefetchProduct } from "@/app/services/hooks/hooks";
+import { fetchPopUpData } from "@/app/services/api-client/api-client";
 
 type ProductData = Product & {
   include: { application: true; substance: true };
@@ -44,69 +42,13 @@ export default function Product({ params }: { params: { productId: string } }) {
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
 
-  const fetchProduct = async () => {
-    try {
-      const { data } = await axios.get(`/api/products/${params.productId}`);
-
-      const activeSubstances = data.productSubstances.filter(
-        (productSubstance: ProductSubstance) =>
-          productSubstance.substance.type === "Active Substance"
-      );
-
-      const inactiveSubstances = data.productSubstances.filter(
-        (productSubstance: ProductSubstance) =>
-          productSubstance.substance.type !== "Active Substance"
-      );
-
-      const applications = data.productApplications.map(
-        (item: any) => item.application
-      );
-
-      return {
-        data,
-        activeSubstances,
-        inactiveSubstances,
-        applications,
-      };
-    } catch (error) {
-      console.log(error);
-      return {};
-    }
-  };
-
   const {
     data: productData,
     isError,
     isLoading,
-  } = useQuery({
-    queryKey: ["product"],
-    queryFn: fetchProduct,
-  });
+  } = usefetchProduct(params.productId);
 
-  // const {
-  //   data: productData,
-  //   isError,
-  //   isLoading,
-  // } = usefetchProduct(params.productId);
-
-  const fetchPopUpData = async (url: string, linkedRecords: ObjectWithId[]) => {
-    try {
-      const { data } = await axios.get(url);
-      console.log(data);
-      console.log(linkedRecords);
-      const filteredData = data.filter(
-        (itemAll: ObjectWithId) =>
-          !linkedRecords.some(
-            (itemLinked: ObjectWithId) => itemLinked.id === itemAll.id
-          )
-      );
-      return filteredData;
-    } catch (error) {
-      toast.error(`"${error}`);
-    }
-  };
-
-  const onAddClick = async (
+  const addRecordPopup = async (
     popupName: string,
     fetchRoute: string,
     linkedRecords: ObjectWithId[]
@@ -130,7 +72,8 @@ export default function Product({ params }: { params: { productId: string } }) {
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />
       {isLoading && <div>Loading...</div>}
-      {!isLoading && (
+      {isError && <div>Error</div>}
+      {productData && (
         <div className="w-full px-6">
           {/* BASIC DETAILS */}
           <Section name="Basic Details" expanded={true}>
@@ -143,7 +86,7 @@ export default function Product({ params }: { params: { productId: string } }) {
               size={"sm"}
               variant={"outline"}
               onClick={() => {
-                onAddClick(
+                addRecordPopup(
                   "activeSubstance",
                   "/api/substances",
                   productData?.activeSubstances.map(
@@ -179,7 +122,7 @@ export default function Product({ params }: { params: { productId: string } }) {
               size={"sm"}
               variant={"outline"}
               onClick={() => {
-                onAddClick(
+                addRecordPopup(
                   "inactiveSubstance",
                   "/api/substances",
                   productData?.inactiveSubstances.map(
