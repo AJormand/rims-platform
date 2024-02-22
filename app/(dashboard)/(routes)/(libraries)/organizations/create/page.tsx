@@ -1,5 +1,4 @@
 import { BasicDetailsForm } from "../_components/basic-details-form";
-
 import { Section } from "@/components/section";
 
 export default function CreateSubstance() {

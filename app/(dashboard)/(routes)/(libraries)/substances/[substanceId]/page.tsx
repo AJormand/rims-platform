@@ -8,6 +8,7 @@ import { SideNav } from "@/components/side-nav";
 import { Section } from "@/components/section";
 import { BasicDetailsForm } from "../_components/basic-details-form";
 import { DataTable } from "@/components/ui/data-table";
+import { fetchSubstance } from "@/app/services/api-client/api-client";
 
 export default function Substance({
   params,
@@ -17,17 +18,16 @@ export default function Substance({
   const [substanceData, setSubstanceData] = useState(null);
 
   useEffect(() => {
-    fetchSubstance();
+    const fetchData = async () => {
+    const data = await fetchSubstance(params.substanceId);
+    setSubstanceData(data)
+    console.log(data)
+    }
+    fetchData();
   }, []);
 
-  const fetchSubstance = async () => {
-    try {
-      const response = await axios.get(`/api/substances/${params.substanceId}`);
-      setSubstanceData(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //substance edit not working
+
 
   const sideNavSections = ["Basic Details"];
 
