@@ -38,6 +38,16 @@ export const fetchProduct = async (productId: string) => {
   }
 };
 
+// SUBSTANCE
+export const deleteSubstance = async (substanceId: string) => {
+  try {
+    await axios.delete("/api/substances", { data: { substanceId } });
+  } catch (error) {
+    console.log(error)
+    toast.error("Something went wrong");
+  }
+}
+
 // POPUP
 
 type ObjectWithId = {

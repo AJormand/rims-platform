@@ -1,9 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import toast from "react-hot-toast";
-
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -20,6 +16,8 @@ import {
 import Link from "next/link";
 
 import { Substance } from "@prisma/client";
+
+import { useSubstanceDeleteMutation } from "@/app/services/hooks/hooks";
 
 export const columns: ColumnDef<Substance>[] = [
   {
@@ -54,31 +52,11 @@ export const columns: ColumnDef<Substance>[] = [
     cell: ({ row }) => {
       const substance = row.original;
       const router = useRouter();
-      const queryClient = useQueryClient();
+      const { mutate: handleDeleteMutation } = useSubstanceDeleteMutation(substance.id)
 
       const handleEdit = (substanceId: string) => {
-        console.log("click");
-        console.log(substanceId);
         router.push(`/substances/${substanceId}`);
       };
-
-      const { mutate: handleDeleteMutation } = useMutation({
-        mutationFn: async (substanceId: string) => {
-          try {
-            await axios.delete("/api/substances", { data: { substanceId } });
-          } catch (error) {
-            console.log(error)
-            toast.error("Something went wrong");
-          }
-        },
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["substances"] });
-          toast.success("Substance deleted");
-        },
-        onError: (err: any) => {
-          toast.error("Substance not deleted");
-        },
-      });
 
       return (
         <DropdownMenu>
@@ -96,7 +74,7 @@ export const columns: ColumnDef<Substance>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem>Copy</DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => handleDeleteMutation(substance.id)}
+              onClick={() => handleDeleteMutation()}
             >
               Delete
             </DropdownMenuItem>
