@@ -26,8 +26,6 @@ export default function Substance({
     fetchData();
   }, []);
 
-  //substance edit not working
-
 
   const sideNavSections = ["Basic Details"];
 

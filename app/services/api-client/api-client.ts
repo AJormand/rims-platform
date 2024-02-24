@@ -39,12 +39,24 @@ export const fetchProduct = async (productId: string) => {
 };
 
 // SUBSTANCE
+export const fetchSubstances = async () => {
+  try {
+    const { data } = await axios.get("/api/substances");
+    return data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+
+};
+
 export const fetchSubstance = async (substanceId:string) => {
   try {
     const {data} = await axios.get(`/api/substances/${substanceId}`);
     return data
   } catch (error) {
     console.log(error);
+    toast.error("Something went wrong");
   }
 };
 

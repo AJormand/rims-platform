@@ -66,7 +66,7 @@ export const BasicDetailsForm: React.FC<{
   const onSubmitNew = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post(`/api/substances`, values);
-      router.push(`/substances/${response.data.id}`);
+      router.push(`/substances`);
       toast.success("Substance created successfully");
     } catch (error) {
       toast.error("Something went wrong");

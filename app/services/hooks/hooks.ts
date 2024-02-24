@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchProduct, deleteSubstance } from "@/app/services/api-client/api-client";
+import { fetchProduct, fetchSubstances, deleteSubstance } from "@/app/services/api-client/api-client";
 import toast from "react-hot-toast";
 
 //PRODUCT
@@ -12,6 +12,13 @@ export const usefetchProduct = (productId: string) => {
 
 
 //SUBSTANCE
+export const useFetchSubstances = () => {
+  return useQuery({
+    queryKey: ["substances"],
+    queryFn: () => fetchSubstances(),
+  });
+}
+
 export const useSubstanceDeleteMutation = (substanceId: string) => {
   const queryClient = useQueryClient();
 
@@ -26,3 +33,5 @@ export const useSubstanceDeleteMutation = (substanceId: string) => {
     },
   });
 }
+
+//trying to implement loader when deleting substances
