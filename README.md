@@ -1,3 +1,13 @@
+## PLAN
+
+- Edit Organization --> add api route to edit org
+
+## TODO
+
+- Loading spinner after deletion of Substances and ORganizations
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Packages used

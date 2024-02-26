@@ -81,7 +81,8 @@ export const fetchOrganizations = async () => {
 
 export const fetchOrganization = async (organizationId: string) => {
   try {
-    await axios.get(`/api/organizations/${organizationId}`);
+    const { data } = await axios.get(`/api/organizations/${organizationId}`);
+    return data;
   } catch (error) {
     console.log(error);
     toast.error("Something went wrong");
