@@ -6,7 +6,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { useFetchSubstances } from "@/app/services/hooks/hooks";
 
 export default function Substances() {
-  const {data, isError, isLoading} = useFetchSubstances();
+  const { data, isError, isLoading } = useFetchSubstances();
 
   return (
     <div className="container mx-auto py-10">

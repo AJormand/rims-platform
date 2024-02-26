@@ -1,11 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import toast from "react-hot-toast";
+
+import { useDeleteOrganization } from "@/app/services/hooks/hooks";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -17,16 +16,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 import { Organization } from "@prisma/client";
 
 export const columns: ColumnDef<Organization>[] = [
-  // {
-  //   accessorKey: "id",
-  //   header: "id",
-  // },
-
   {
     accessorKey: "name",
     header: "Name",
@@ -64,10 +56,7 @@ export const columns: ColumnDef<Organization>[] = [
         router.push(`/organizations/${organizationId}`);
       };
 
-      const handleDelete = (organizationId: string) => {
-        axios.delete(`/api/organizations/`, { data: { organizationId } });
-        toast.success("Organization deleted");
-      };
+      const { mutate: handleDelete } = useDeleteOrganization(organization.id);
 
       return (
         <DropdownMenu>
@@ -84,7 +73,7 @@ export const columns: ColumnDef<Organization>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Copy</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(organization.id)}>
+            <DropdownMenuItem onClick={() => handleDelete()}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -15,17 +15,16 @@ export default function Substance({
 }: {
   params: { substanceId: string };
 }) {
-  const [substanceData, setSubstanceData] = useState(null);
+  const [substanceData, setSubstanceData] = useState();
+
+  const fetchData = async () => {
+    const data = await fetchSubstance(params.substanceId);
+    setSubstanceData(data);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-    const data = await fetchSubstance(params.substanceId);
-    setSubstanceData(data)
-    console.log(data)
-    }
     fetchData();
   }, []);
-
 
   const sideNavSections = ["Basic Details"];
 

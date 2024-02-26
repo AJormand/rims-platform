@@ -47,13 +47,12 @@ export const fetchSubstances = async () => {
     console.log(error);
     toast.error("Something went wrong");
   }
-
 };
 
-export const fetchSubstance = async (substanceId:string) => {
+export const fetchSubstance = async (substanceId: string) => {
   try {
-    const {data} = await axios.get(`/api/substances/${substanceId}`);
-    return data
+    const { data } = await axios.get(`/api/substances/${substanceId}`);
+    return data;
   } catch (error) {
     console.log(error);
     toast.error("Something went wrong");
@@ -64,12 +63,22 @@ export const deleteSubstance = async (substanceId: string) => {
   try {
     await axios.delete("/api/substances", { data: { substanceId } });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     toast.error("Something went wrong");
   }
-}
+};
 
 // ORGANIZATION
+export const fetchOrganizations = async () => {
+  try {
+    const { data } = await axios.get("/api/organizations");
+    return data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
 export const fetchOrganization = async (organizationId: string) => {
   try {
     await axios.get(`/api/organizations/${organizationId}`);
@@ -77,7 +86,16 @@ export const fetchOrganization = async (organizationId: string) => {
     console.log(error);
     toast.error("Something went wrong");
   }
-}
+};
+
+export const deleteOrganization = async (organizationId: string) => {
+  try {
+    await axios.delete("/api/organizations", { data: { organizationId } });
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
 
 // POPUP
 

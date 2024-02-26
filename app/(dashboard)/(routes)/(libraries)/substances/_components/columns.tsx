@@ -17,7 +17,7 @@ import Link from "next/link";
 
 import { Substance } from "@prisma/client";
 
-import { useSubstanceDeleteMutation } from "@/app/services/hooks/hooks";
+import { useDeleteSubstance } from "@/app/services/hooks/hooks";
 
 export const columns: ColumnDef<Substance>[] = [
   {
@@ -52,11 +52,12 @@ export const columns: ColumnDef<Substance>[] = [
     cell: ({ row }) => {
       const substance = row.original;
       const router = useRouter();
-      const { mutate: handleDeleteMutation } = useSubstanceDeleteMutation(substance.id)
 
       const handleEdit = (substanceId: string) => {
         router.push(`/substances/${substanceId}`);
       };
+
+      const { mutate: handleDelete } = useDeleteSubstance(substance.id);
 
       return (
         <DropdownMenu>
@@ -73,9 +74,7 @@ export const columns: ColumnDef<Substance>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Copy</DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => handleDeleteMutation()}
-            >
+            <DropdownMenuItem onClick={() => handleDelete()}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
