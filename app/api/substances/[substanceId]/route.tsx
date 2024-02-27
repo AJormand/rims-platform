@@ -29,7 +29,7 @@ export const PUT = async (
   const { values } = await request.json();
 
   try {
-    const updatedSubstance = await db.substance.update({
+    await db.substance.update({
       where: {
         id: substanceId,
       },
@@ -37,8 +37,7 @@ export const PUT = async (
         ...values,
       },
     });
-    console.log("updatedSubstance:", updatedSubstance);
-    return NextResponse.json(updatedSubstance);
+    return new NextResponse("Substance updated successfully", { status: 200 });
   } catch (error) {
     console.log(error);
     return new NextResponse("[UPDATE SUBSTANCE]", { status: 400 });

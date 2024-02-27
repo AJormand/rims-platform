@@ -1,8 +1,8 @@
 ## PLAN
 
-- Edit Organization --> add api route to edit org
+- Done - Edit Organization --> add api route to edit org
 
-## TODO
+## BACKLOG
 
 - Loading spinner after deletion of Substances and ORganizations
 

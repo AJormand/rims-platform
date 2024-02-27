@@ -65,7 +65,7 @@ export const BasicDetailsForm: React.FC<{
   // 2. Define a submit handler.
   const onSubmitNew = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post(`/api/substances`, values);
+      await axios.post(`/api/substances`, values);
       router.push(`/substances`);
       toast.success("Substance created successfully");
     } catch (error) {
@@ -78,12 +78,11 @@ export const BasicDetailsForm: React.FC<{
     if (!substanceId) return;
 
     try {
-      const response = await axios.put(`/api/substances/${substanceId}`, {
+      await axios.put(`/api/substancesss/${substanceId}`, {
         values,
       });
-      // router.refresh();
+      router.push(`/substances`);
       toast.success("Substance updated successfully");
-      setIsEditing(false);
     } catch (error) {
       toast.error("Something went wrong");
     }
