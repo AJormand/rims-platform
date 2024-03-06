@@ -101,7 +101,7 @@ export const deleteOrganization = async (organizationId: string) => {
 // COUNTRY
 export const fetchCountries = async () => {
   try {
-    const { data } = await axios.get("/api/country");
+    const { data } = await axios.get("/api/countries");
     return data;
   } catch (error) {
     console.log(error);
@@ -111,7 +111,7 @@ export const fetchCountries = async () => {
 
 export const fetchCountry = async (countryId: string) => {
   try {
-    const { data } = await axios.get(`/api/country/${countryId}`);
+    const { data } = await axios.get(`/api/countries/${countryId}`);
     return data;
   } catch (error) {
     console.log(error);

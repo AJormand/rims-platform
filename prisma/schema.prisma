@@ -90,6 +90,7 @@ model Application {
 }
 
 
+
 model Registration {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String   @unique
@@ -146,6 +147,6 @@ model Country {
   code        String   @unique
   region      String
 
-  application   Application      @relation(fields: [applicationId], references: [id])
-  applicationId String    @db.ObjectId
+  application   Application?      @relation(fields: [applicationId], references: [id])
+  applicationId String?    @db.ObjectId
 }

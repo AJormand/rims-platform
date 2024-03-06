@@ -48,8 +48,8 @@ export const columns: ColumnDef<Country>[] = [
       const country = row.original;
       const router = useRouter();
 
-      const handleEdit = (organizationId: string) => {
-        router.push(`/countries/${organizationId}`);
+      const handleEdit = (countryId: string) => {
+        router.push(`/countries/${countryId}`);
       };
 
       const { mutate: handleDelete } = useDeleteCountry(country.id);

@@ -1,8 +1,8 @@
 ## PLAN
 
 - Done - Edit Organization --> add api route to edit org
-- Add Country Library
-- Add Country routes
+- Done Country Library
+- Done Country routes
 - Add Country section to Applications
 
 ## BACKLOG
