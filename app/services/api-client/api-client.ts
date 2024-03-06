@@ -98,6 +98,36 @@ export const deleteOrganization = async (organizationId: string) => {
   }
 };
 
+// COUNTRY
+export const fetchCountries = async () => {
+  try {
+    const { data } = await axios.get("/api/country");
+    return data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
+export const fetchCountry = async (countryId: string) => {
+  try {
+    const { data } = await axios.get(`/api/country/${countryId}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
+export const deleteCountry = async (countryId: string) => {
+  try {
+    await axios.delete("/api/countries", { data: { countryId } });
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
 // POPUP
 
 type ObjectWithId = {

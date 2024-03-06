@@ -3,8 +3,10 @@ import {
   fetchProduct,
   fetchSubstances,
   deleteSubstance,
-  deleteOrganization,
   fetchOrganizations,
+  deleteOrganization,
+  fetchCountries,
+  deleteCountry
 } from "@/app/services/api-client/api-client";
 import toast from "react-hot-toast";
 
@@ -60,6 +62,29 @@ export const useDeleteOrganization = (organizationId: string) => {
     },
     onError: (err: any) => {
       toast.error("Organization not deleted");
+    },
+  });
+};
+
+//COUNTRY
+export const useFetchCountries = () => {
+  return useQuery({
+    queryKey: ["countries"],
+    queryFn: () => fetchCountries(),
+  });
+};
+
+export const useDeleteCountry = (countryId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => deleteCountry(countryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["countries"] });
+      toast.success("Country deleted");
+    },
+    onError: (err: any) => {
+      toast.error("Country not deleted");
     },
   });
 };

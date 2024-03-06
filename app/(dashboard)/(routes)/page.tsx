@@ -59,6 +59,12 @@ export default function Home() {
       href: "/organizations",
       icon: <Building2 size={50} className="text-sky-700" />,
     },
+    {
+      name: "Country",
+      description: "Country Library",
+      href: "/countries",
+      icon: <Building2 size={50} className="text-sky-700" />,
+    },
   ];
 
   return (

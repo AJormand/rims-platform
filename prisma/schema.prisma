@@ -83,6 +83,7 @@ model Application {
   products2Application Product2Application[] // Establish a relation with the junction model
   registrations Registration[] // Establish a relation with the junction model
   submissions Submission[] // Establish a relation with the junction model
+  countries Country[] // Establish a relation with Country model
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -139,3 +140,12 @@ model Organization {
   updatedAt   DateTime @updatedAt
 }
 
+model Country {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  code        String   @unique
+  region      String
+
+  application   Application      @relation(fields: [applicationId], references: [id])
+  applicationId String    @db.ObjectId
+}
