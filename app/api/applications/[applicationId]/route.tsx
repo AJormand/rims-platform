@@ -24,6 +24,7 @@ export async function GET(
             product: true,
           },
         },
+        countries: true,
       },
     });
 

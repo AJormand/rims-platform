@@ -4,7 +4,12 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-import { Application, Product, Product2Application } from "@prisma/client";
+import {
+  Application,
+  Country,
+  Product,
+  Product2Application,
+} from "@prisma/client";
 import { SideNav } from "@/components/side-nav";
 import { BasicDetailsForm } from "../_components/basic-details-form";
 
@@ -13,21 +18,48 @@ import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { AddRecordPopup } from "@/components/add-record-popup/add-record-popup";
 import { DataTable } from "@/components/ui/data-table";
+
 import { productAddRecordPopupColumns } from "./_components/product-add-record-popup-columns";
 import { applicationProductColumns } from "./_components/application-product-columns";
+import { applicationCountryColumns } from "./_components/application-country-columns";
+
+interface ExtendedApplication extends Application {
+  countries: Country[];
+  products2Application: Product2Application[];
+  products: Product[];
+}
 
 export default function Application({
   params,
 }: {
   params: { applicationId: string };
 }) {
-  const [application, setApplication] = useState<Application>();
+  const [application, setApplication] = useState<
+    ExtendedApplication | undefined
+  >();
   const [linkedProducts, setLinkedProducts] = useState<Product[]>([]);
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
   const [popUpData, setPopUpData] = useState([]);
 
   const sideNavSections = ["Basic Details", "Products"];
+
+  const fetchApplication = async () => {
+    try {
+      const { data } = await axios.get(
+        `/api/applications/${params.applicationId}`
+      );
+      console.log("usequery", data);
+      const productsArr = data?.products2Application?.map(
+        (item: any) => item.product
+      );
+      setApplication(data);
+      setLinkedProducts(productsArr);
+      return data;
+    } catch (error) {
+      toast.error(`"${error}`);
+    }
+  };
 
   const {
     data: applicationData,
@@ -36,22 +68,7 @@ export default function Application({
     refetch,
   } = useQuery({
     queryKey: ["application"],
-    queryFn: async () => {
-      try {
-        const { data } = await axios.get(
-          `/api/applications/${params.applicationId}`
-        );
-        console.log("usequery", data);
-        const productsArr = data?.products2Application?.map(
-          (item: any) => item.product
-        );
-        setApplication(data);
-        setLinkedProducts(productsArr);
-        return data;
-      } catch (error) {
-        toast.error(`"${error}`);
-      }
-    },
+    queryFn: fetchApplication,
   });
 
   type ObjectWithId = {
@@ -85,9 +102,38 @@ export default function Application({
       <div className="w-full px-6">
         {application && (
           <>
+            {/* BASIC */}
             <Section name="Basic Details" expanded={true}>
               <BasicDetailsForm data={applicationData} type="edit" />
             </Section>
+
+            {/* COUNTRIES */}
+            <Section name="Countries" expanded={true}>
+              <Button
+                size={"sm"}
+                variant={"outline"}
+                onClick={() => addProduct()}
+              >
+                Add Country
+              </Button>
+              <DataTable
+                columns={applicationCountryColumns}
+                data={application.countries}
+              />
+              {addRecordPopupVisible === "product" && (
+                <AddRecordPopup
+                  name="Products"
+                  setPopVisible={setAddRecordPopupVisible}
+                  data={popUpData}
+                  //fetchDataRoute={`/api/products`}
+                  storeDataRoute={`/api/applications/${params.applicationId}/products`}
+                  columns={productAddRecordPopupColumns}
+                  queryKey="application"
+                />
+              )}
+            </Section>
+
+            {/* PRODUCTS */}
             <Section name="Products" expanded={true}>
               <Button
                 size={"sm"}
@@ -98,7 +144,7 @@ export default function Application({
               </Button>
               <DataTable
                 columns={applicationProductColumns}
-                data={linkedProducts}
+                data={application.products2Application}
               />
               {addRecordPopupVisible === "product" && (
                 <AddRecordPopup
