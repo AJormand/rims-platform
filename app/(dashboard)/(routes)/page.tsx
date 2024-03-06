@@ -15,6 +15,7 @@ import {
   SendToBack,
   TestTube2,
   Building2,
+  Globe,
 } from "lucide-react";
 
 export default function Home() {
@@ -51,13 +52,19 @@ export default function Home() {
       name: "Substance",
       description: "Substance Library",
       href: "/substances",
-      icon: <TestTube2 size={50} className="text-sky-700" />,
+      icon: <TestTube2 size={40} className="text-sky-700" />,
     },
     {
       name: "Organization",
       description: "Organization Library",
       href: "/organizations",
-      icon: <Building2 size={50} className="text-sky-700" />,
+      icon: <Building2 size={40} className="text-sky-700" />,
+    },
+    {
+      name: "Country",
+      description: "Country Library",
+      href: "/countries",
+      icon: <Globe size={40} className="text-sky-700" />,
     },
     {
       name: "Country",
@@ -68,11 +75,13 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col justify-center items-center mt-20">
+    <div className="flex flex-col justify-center items-center mt-10">
       <div className="flex gap-28">
         <div>
-          <h1 className="text-center text-xl">Quick Navigation</h1>
-          <div className="gap-5 grid grid-cols-2 justify-center items-center m-10">
+          <h1 className="text-center text-sm text-gray-400">
+            Quick Navigation
+          </h1>
+          <div className="gap-5 grid grid-cols-2 justify-center items-center mt-5">
             {quickNavigations.map((item) => (
               <Link
                 href={item.href}
@@ -82,9 +91,10 @@ export default function Home() {
                 <Card>
                   <CardHeader>
                     <CardTitle>{item.name}</CardTitle>
-                    <CardDescription>{item.description}</CardDescription>
                   </CardHeader>
-                  <CardContent>{item.icon}</CardContent>
+                  <CardContent className="flex justify-center">
+                    {item.icon}
+                  </CardContent>
                 </Card>
               </Link>
             ))}
@@ -92,20 +102,21 @@ export default function Home() {
         </div>
 
         <div>
-          <h1 className="text-center text-xl">Libraries</h1>
-          <div className="gap-5 grid grid-cols-1 justify-center items-center mt-10">
+          <h1 className="text-center text-sm text-gray-400">Libraries</h1>
+          <div className="gap-5 grid grid-cols-1 justify-center items-center mt-5">
             {libraries.map((item) => (
               <Link
                 href={item.href}
                 key={item.name}
                 className="hover:shadow-lg"
               >
-                <Card>
+                <Card className="flex items-center">
                   <CardHeader>
                     <CardTitle>{item.name}</CardTitle>
-                    <CardDescription>{item.description}</CardDescription>
                   </CardHeader>
-                  <CardContent>{item.icon}</CardContent>
+                  <CardContent className="flex justify-center items-center py-0 px-4">
+                    {item.icon}
+                  </CardContent>
                 </Card>
               </Link>
             ))}
