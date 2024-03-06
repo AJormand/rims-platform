@@ -23,11 +23,13 @@ export const NavbarRoutes = () => {
           href={"/"}
           className="mr-[100px] text-sky-700 font-bold flex flex-col"
         >
-          <Image src="/RIMSnobg.png" alt="logo" width={70} height={80} />
+          RIMS
         </Link>
 
         <Link href={"/"} className="text-sm font-bold mr-2 text-sky-700">
-          [DASHBOARD]
+          <button className="text-white bg-sky-700 px-2 py-1 rounded-sm">
+            DASHBOARD
+          </button>
         </Link>
 
         <NavigationMenu>
