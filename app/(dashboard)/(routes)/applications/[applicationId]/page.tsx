@@ -23,10 +23,13 @@ import { productAddRecordPopupColumns } from "./_components/product-add-record-p
 import { applicationProductColumns } from "./_components/application-product-columns";
 import { applicationCountryColumns } from "./_components/application-country-columns";
 
+interface ExtendedProduct2Application extends Product2Application {
+  product: Product;
+}
+
 interface ExtendedApplication extends Application {
+  products2Application: ExtendedProduct2Application[];
   countries: Country[];
-  products2Application: Product2Application[];
-  products: Product[];
 }
 
 export default function Application({
@@ -55,6 +58,7 @@ export default function Application({
       );
       setApplication(data);
       setLinkedProducts(productsArr);
+
       return data;
     } catch (error) {
       toast.error(`"${error}`);

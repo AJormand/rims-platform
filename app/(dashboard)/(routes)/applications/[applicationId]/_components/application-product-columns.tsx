@@ -21,9 +21,9 @@ import axios from "axios";
 
 import { Product2Application, Product } from "@prisma/client";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-// interface Product {
+// data is passed in this columns in the following format:
+// product2Application:
+// {
 //   id: string;
 //   productId: string;
 //   applicationId: string;
@@ -31,24 +31,30 @@ import { Product2Application, Product } from "@prisma/client";
 //   product: {
 //     id: string;
 //     name: string;
+//     .....
 //   };
+//   .....
 // }
 
-interface ApplicationProductColumnsProps {
-  product2Application: Product2Application;
+interface ExtendedProduct2Application extends Product2Application {
   product: Product;
 }
 
-export const applicationProductColumns: ColumnDef<ApplicationProductColumnsProps>[] =
+export const applicationProductColumns: ColumnDef<ExtendedProduct2Application>[] =
   [
-    // {
-    //   accessorKey: "id",
-    //   header: "id",
-    // },
+    {
+      accessorKey: "product.name",
+      header: "Name",
+    },
 
     {
-      accessorKey: "name",
-      header: "Name",
+      accessorKey: "product.category",
+      header: "Category",
+    },
+
+    {
+      accessorKey: "product.origin",
+      header: "Origin",
     },
 
     {
