@@ -22,6 +22,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { productAddRecordPopupColumns } from "./_components/product-add-record-popup-columns";
 import { applicationProductColumns } from "./_components/application-product-columns";
 import { applicationCountryColumns } from "./_components/application-country-columns";
+import { countryAddRecordPopupColumns } from "./_components/country-add-record-popup-columns";
 
 interface ExtendedProduct2Application extends Product2Application {
   product: Product;
@@ -100,6 +101,15 @@ export default function Application({
     setPopUpData(data);
   };
 
+  const addCountry = async () => {
+    setAddRecordPopupVisible("country");
+    const data = await fetchPopUpData(
+      `/api/countries`,
+      application?.countries || []
+    );
+    setPopUpData(data);
+  };
+
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />
@@ -116,7 +126,7 @@ export default function Application({
               <Button
                 size={"sm"}
                 variant={"outline"}
-                onClick={() => addProduct()}
+                onClick={() => addCountry()}
               >
                 Add Country
               </Button>
@@ -124,14 +134,14 @@ export default function Application({
                 columns={applicationCountryColumns}
                 data={application.countries}
               />
-              {addRecordPopupVisible === "product" && (
+              {addRecordPopupVisible === "country" && (
                 <AddRecordPopup
-                  name="Products"
+                  name="Countries"
                   setPopVisible={setAddRecordPopupVisible}
                   data={popUpData}
                   //fetchDataRoute={`/api/products`}
-                  storeDataRoute={`/api/applications/${params.applicationId}/products`}
-                  columns={productAddRecordPopupColumns}
+                  storeDataRoute={`/api/applications/${params.applicationId}/countries`}
+                  columns={countryAddRecordPopupColumns}
                   queryKey="application"
                 />
               )}

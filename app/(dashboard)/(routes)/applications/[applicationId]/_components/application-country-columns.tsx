@@ -36,24 +36,24 @@ export const applicationCountryColumns: ColumnDef<Country>[] = [
       const pathname = usePathname();
       const applicationId = pathname.split("/")[2];
 
-      const handleEdit = (productId: string) => {
+      const handleEdit = (countryId: string) => {
         console.log("click");
-        console.log(productId);
-        router.push(`/products/${productId}`);
+        console.log(countryId);
+        router.push(`/countries/${countryId}`);
       };
 
       const { mutate: handleDeleteMutation } = useMutation({
-        mutationFn: async (productId: string) =>
-          await axios.delete(`/api/applications/${applicationId}/products`, {
-            data: { productId },
+        mutationFn: async (countryId: string) =>
+          await axios.delete(`/api/applications/${applicationId}/countries`, {
+            data: { countryId },
           }),
         onSuccess: () => {
           console.log("record deleted");
           queryClient.invalidateQueries({ queryKey: ["application"] });
-          toast.success("Product deleted");
+          toast.success("Country deleted");
         },
         onError: (err: any) => {
-          toast.error("Product not deleted");
+          toast.error("Country not deleted");
         },
       });
 

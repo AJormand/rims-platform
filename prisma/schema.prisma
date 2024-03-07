@@ -23,130 +23,128 @@ generator client {
 }
 
 model Product {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  name         String @unique
-  status       String
-  category     String
-  origin       String
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String @unique
+  status   String
+  category String
+  origin   String
 
-  productApplications Product2Application[] // Establish a relation with the junction model
-  productSubstances Product2Substance[] // Establish a relation with the junction model
+  productApplications  Product2Application[] // Establish a relation with the junction model
+  productSubstances    Product2Substance[] // Establish a relation with the junction model
   productOrganizations Product2Organization[] // Establish a relation with the junction model
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // This is the join table that connects the many-to-many relationship between Products and Applications
 model Product2Application {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  product      Product @relation(fields: [productId], references: [id])
-  productId    String @db.ObjectId
-  application  Application @relation(fields: [applicationId], references: [id])
-  applicationId String @db.ObjectId
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     String      @db.ObjectId
+  application   Application @relation(fields: [applicationId], references: [id])
+  applicationId String      @db.ObjectId
 
-  createdAt    DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
-model Product2Substance{
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  product      Product @relation(fields: [productId], references: [id])
-  productId    String @db.ObjectId
-  substance    Substance @relation(fields: [substanceId], references: [id])
-  substanceId  String @db.ObjectId
+model Product2Substance {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  product     Product   @relation(fields: [productId], references: [id])
+  productId   String    @db.ObjectId
+  substance   Substance @relation(fields: [substanceId], references: [id])
+  substanceId String    @db.ObjectId
 
-  quantity     String?
-  unit         String?
+  quantity String?
+  unit     String?
 
-  createdAt    DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
-model Product2Organization{
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  product      Product @relation(fields: [productId], references: [id])
-  productId    String @db.ObjectId
-  organization    Organization @relation(fields: [organizationId], references: [id])
-  organizationId  String @db.ObjectId
+model Product2Organization {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  product        Product      @relation(fields: [productId], references: [id])
+  productId      String       @db.ObjectId
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String       @db.ObjectId
 
-  partnershipType     String?
+  partnershipType String?
 
-  createdAt    DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 model Application {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  name         String @unique
-  country      String
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String @unique
+  country       String
   procedureType String
-  status       String
+  status        String
 
   products2Application Product2Application[] // Establish a relation with the junction model
-  registrations Registration[] // Establish a relation with the junction model
-  submissions Submission[] // Establish a relation with the junction model
-  countries Country[] // Establish a relation with Country model
+  registrations        Registration[] // Establish a relation with the junction model
+  submissions          Submission[] // Establish a relation with the junction model
+  countries            Country[] // Establish a relation with Country model
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-
-
 model Registration {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
-  status      String
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String @unique
+  status String
 
-  application   Application      @relation(fields: [applicationId], references: [id])
-  applicationId String    @db.ObjectId
+  application   Application @relation(fields: [applicationId], references: [id])
+  applicationId String      @db.ObjectId
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Submission {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
-  status      String
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String @unique
+  status String
 
-  application   Application      @relation(fields: [applicationId], references: [id])
-  applicationId String    @db.ObjectId
+  application   Application @relation(fields: [applicationId], references: [id])
+  applicationId String      @db.ObjectId
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Substance {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
-  type        String
-  EVcode      String
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String @unique
+  type   String
+  EVcode String
 
   product2Substance Product2Substance[] // Establish a relation with the junction model
 
-  status      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Organization {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
-  country     String
-  address     String
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String @unique
+  country String
+  address String
 
   product2Organization Product2Organization[] // Establish a relation with the junction model
 
-  status      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Country {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
-  code        String   @unique
-  region      String
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String @unique
+  code   String @unique
+  region String
 
-  application   Application?      @relation(fields: [applicationId], references: [id])
-  applicationId String?    @db.ObjectId
+  application   Application? @relation(fields: [applicationId], references: [id])
+  applicationId String?      @db.ObjectId
 }

@@ -3,8 +3,8 @@
 - Done - Edit Organization --> add api route to edit org
 - Done Country Library
 - Done Country routes
-- application product columns Typescript error
-- Add Country section to Applications
+- Done application product columns Typescript error
+- Done Country section to Applications
 
 ## BACKLOG
 
