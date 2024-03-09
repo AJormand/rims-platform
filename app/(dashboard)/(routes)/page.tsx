@@ -66,6 +66,12 @@ export default function Home() {
       href: "/countries",
       icon: <Globe size={40} className="text-sky-700" />,
     },
+    {
+      name: "Controlled Vocabulary",
+      description: "Controlled Vocabulary Library",
+      href: "/controlled-vocabularies",
+      icon: <Globe size={40} className="text-sky-700" />,
+    },
   ];
 
   return (

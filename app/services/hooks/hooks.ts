@@ -6,7 +6,9 @@ import {
   fetchOrganizations,
   deleteOrganization,
   fetchCountries,
-  deleteCountry
+  deleteCountry,
+  fetchControlledVocabularies,
+  deleteControlledVocabulary
 } from "@/app/services/api-client/api-client";
 import toast from "react-hot-toast";
 
@@ -88,3 +90,28 @@ export const useDeleteCountry = (countryId: string) => {
     },
   });
 };
+
+// CONTROLLED VOCABULARY
+export const useFetchControlledVocabularies = () => {
+  return useQuery({
+    queryKey: ["controlledVocabularies"],
+    queryFn: () => fetchControlledVocabularies(),
+  });
+}
+
+export const useDeleteControlledVocabulary = (controlledVocabularyId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => deleteControlledVocabulary(controlledVocabularyId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["controlledVocabularies"] });
+      toast.success("Controlled Vocabulary deleted");
+    },
+    onError: (err: any) => {
+      toast.error("Controlled Vocabulary not deleted");
+    },
+  });
+}
+
+

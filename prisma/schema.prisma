@@ -149,7 +149,7 @@ model Country {
   applicationId String?      @db.ObjectId
 }
 
-model CVLibrary {
+model ControlledVocabulary {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   value       String
