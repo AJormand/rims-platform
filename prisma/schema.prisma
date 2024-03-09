@@ -148,3 +148,14 @@ model Country {
   application   Application? @relation(fields: [applicationId], references: [id])
   applicationId String?      @db.ObjectId
 }
+
+model CVLibrary {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  value       String
+  description String?
+
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
