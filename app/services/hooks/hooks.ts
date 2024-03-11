@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  fetchProducts,
   fetchProduct,
   fetchSubstances,
   deleteSubstance,
@@ -8,11 +9,18 @@ import {
   fetchCountries,
   deleteCountry,
   fetchControlledVocabularies,
-  deleteControlledVocabulary
+  deleteControlledVocabulary,
 } from "@/app/services/api-client/api-client";
 import toast from "react-hot-toast";
 
 //PRODUCT
+export const useFetchProducts = () => {
+  return useQuery({
+    queryKey: ["products"],
+    queryFn: () => fetchProducts(),
+  });
+};
+
 export const usefetchProduct = (productId: string) => {
   return useQuery({
     queryKey: ["product"],
@@ -97,9 +105,11 @@ export const useFetchControlledVocabularies = () => {
     queryKey: ["controlledVocabularies"],
     queryFn: () => fetchControlledVocabularies(),
   });
-}
+};
 
-export const useDeleteControlledVocabulary = (controlledVocabularyId: string) => {
+export const useDeleteControlledVocabulary = (
+  controlledVocabularyId: string
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -112,6 +122,4 @@ export const useDeleteControlledVocabulary = (controlledVocabularyId: string) =>
       toast.error("Controlled Vocabulary not deleted");
     },
   });
-}
-
-
+};

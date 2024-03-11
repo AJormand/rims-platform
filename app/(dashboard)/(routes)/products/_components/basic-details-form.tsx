@@ -9,6 +9,8 @@ import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
+
 import { Product } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
@@ -43,6 +45,7 @@ export const BasicDetailsForm: React.FC<{
 }> = ({ data, type }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
+  const { data: controlledVocabularies } = useFetchControlledVocabularies();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -80,6 +83,7 @@ export const BasicDetailsForm: React.FC<{
       const response = await axios.put(`/api/products/${productId}`, {
         values,
       });
+      router.push(`/products/`);
       toast.success("Product created successfully");
       setIsEditing(false);
     } catch (error) {
@@ -147,10 +151,12 @@ export const BasicDetailsForm: React.FC<{
                       <SelectValue placeholder="" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Small molecules">
-                        Small molecules
-                      </SelectItem>
-                      <SelectItem value="Biosimilars">Biosimilars</SelectItem>
+                      {controlledVocabularies?.map(
+                        (cv: any) =>
+                          cv.name == "product-category" && (
+                            <SelectItem value={cv.value}>{cv.value}</SelectItem>
+                          )
+                      )}
                     </SelectContent>
                   </Select>
                 </FormControl>

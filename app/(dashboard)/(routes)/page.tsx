@@ -16,6 +16,7 @@ import {
   TestTube2,
   Building2,
   Globe,
+  CaseUpper,
 } from "lucide-react";
 
 export default function Home() {
@@ -24,26 +25,26 @@ export default function Home() {
       name: "Products",
       description: "Manage your products",
       href: "/products",
-      icon: <Pill size={50} className="text-sky-700" />,
+      icon: <Pill size={40} className="text-sky-700" />,
     },
     {
       name: "Applications",
       description: "Manage your applications",
       href: "/applications",
-      icon: <FileStack size={50} className="text-sky-700" />,
+      icon: <FileStack size={40} className="text-sky-700" />,
     },
     {
       name: "Registrations",
       description: "Manage your registrations",
       href: "/registrations",
-      icon: <AppWindow size={50} className="text-sky-700" />,
+      icon: <AppWindow size={40} className="text-sky-700" />,
     },
 
     {
       name: "Submissions",
       description: "Manage your submissions",
       href: "/submissions",
-      icon: <SendToBack size={50} className="text-sky-700" />,
+      icon: <SendToBack size={40} className="text-sky-700" />,
     },
   ];
 
@@ -52,25 +53,25 @@ export default function Home() {
       name: "Substance",
       description: "Substance Library",
       href: "/substances",
-      icon: <TestTube2 size={40} className="text-sky-700" />,
+      icon: <TestTube2 size={25} className="text-sky-700" />,
     },
     {
       name: "Organization",
       description: "Organization Library",
       href: "/organizations",
-      icon: <Building2 size={40} className="text-sky-700" />,
+      icon: <Building2 size={25} className="text-sky-700" />,
     },
     {
       name: "Country",
       description: "Country Library",
       href: "/countries",
-      icon: <Globe size={40} className="text-sky-700" />,
+      icon: <Globe size={25} className="text-sky-700" />,
     },
     {
       name: "Controlled Vocabulary",
       description: "Controlled Vocabulary Library",
       href: "/controlled-vocabularies",
-      icon: <Globe size={40} className="text-sky-700" />,
+      icon: <CaseUpper size={25} className="text-sky-700" />,
     },
   ];
 

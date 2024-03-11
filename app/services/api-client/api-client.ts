@@ -4,6 +4,16 @@ import toast from "react-hot-toast";
 
 // PRODUCT
 
+export const fetchProducts = async () => {
+  try {
+    const { data } = await axios.get("/api/products");
+    return data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
 interface ProductSubstance extends Product2Substance {
   substance: Substance;
 }
@@ -130,34 +140,42 @@ export const deleteCountry = async (countryId: string) => {
 
 // CONTROLLED VOCABULARY
 
-export const fetchControlledVocabularies = async () =>{
+export const fetchControlledVocabularies = async () => {
   try {
-    const {data} = await axios.get("/api/controlled-vocabularies");
-    return data
+    const { data } = await axios.get("/api/controlled-vocabularies");
+    return data;
   } catch (error) {
     console.log(error);
     toast.error("Something went wrong");
   }
-}
+};
 
-export const fetchControlledVocabulary = async (controlledVocabularyId: string) => {
+export const fetchControlledVocabulary = async (
+  controlledVocabularyId: string
+) => {
   try {
-    const { data } = await axios.get(`/api/controlled-vocabularies/${controlledVocabularyId}`);
-    return data
+    const { data } = await axios.get(
+      `/api/controlled-vocabularies/${controlledVocabularyId}`
+    );
+    return data;
   } catch (error) {
     console.log(error);
     toast.error("Something went wrong");
   }
-}
+};
 
-  export const deleteControlledVocabulary = async (controlledVocabularyId: string) => {
-    try {
-      await axios.delete("/api/controlled-vocabularies", { data: { controlledVocabularyId } }); 
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-    }
+export const deleteControlledVocabulary = async (
+  controlledVocabularyId: string
+) => {
+  try {
+    await axios.delete("/api/controlled-vocabularies", {
+      data: { controlledVocabularyId },
+    });
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
   }
+};
 // POPUP
 
 type ObjectWithId = {
