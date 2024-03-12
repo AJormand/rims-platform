@@ -12,6 +12,10 @@ import { DataTable } from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/section";
 import { SideNav } from "@/components/side-nav";
+import { StatusBar } from "./_components/status-bar";
+
+import { usefetchProduct } from "@/app/services/hooks/hooks";
+import { fetchPopUpData } from "@/app/services/api-client/api-client";
 
 import {
   Product,
@@ -19,9 +23,6 @@ import {
   Application,
   Product2Substance,
 } from "@prisma/client";
-
-import { usefetchProduct } from "@/app/services/hooks/hooks";
-import { fetchPopUpData } from "@/app/services/api-client/api-client";
 
 type ProductData = Product & {
   include: { application: true; substance: true };
@@ -75,6 +76,7 @@ export default function Product({ params }: { params: { productId: string } }) {
       {isError && <div>Error</div>}
       {productData && (
         <div className="w-full px-6">
+          <StatusBar data={productData.data} cv={"product-status"} />
           {/* BASIC DETAILS */}
           <Section name="Basic Details" expanded={true}>
             <BasicDetailsForm data={productData?.data} type="edit" />

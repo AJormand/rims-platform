@@ -5,14 +5,17 @@
 - Done Country routes
 - Done application product columns Typescript error
 - Done Country section to Applications
-- Controlled vocabulary
+- Done Controlled vocabulary fetching from backend
+- Done Used controlled vocabulary in Product
+- Creating Registrations
 
 ## Challenges
 
 - CV implementation -> have 1 library for all CVs
-- shall I fetch all CVs or only the ones needed?
-- when to fetch CVs? at start or on edit of some record
-- in multipe section components if I fetch with useQuery on section open I would actually fetch it many times....
+  - shall I fetch all CVs or only the ones needed?
+  - when to fetch CVs? at start or on edit of some record
+  - in multipe section components if I fetch with useQuery on section open I would actually fetch it many times....
+  - --> implemented by adding staleTime: Infinity, to useQuery which ensures the CV data is fetched only 1x
 
 ## BACKLOG
 
