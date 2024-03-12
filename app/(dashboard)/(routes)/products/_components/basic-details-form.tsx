@@ -32,6 +32,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { ControlledVocabulary } from "@prisma/client";
+
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }).max(250),
   category: z.string(),
@@ -44,8 +46,8 @@ export const BasicDetailsForm: React.FC<{
   type: "new" | "edit";
 }> = ({ data, type }) => {
   const router = useRouter();
-  const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
+  const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -152,9 +154,11 @@ export const BasicDetailsForm: React.FC<{
                     </SelectTrigger>
                     <SelectContent>
                       {controlledVocabularies?.map(
-                        (cv: any) =>
+                        (cv: ControlledVocabulary) =>
                           cv.name == "product-category" && (
-                            <SelectItem value={cv.value}>{cv.value}</SelectItem>
+                            <SelectItem value={cv.value} key={cv.value}>
+                              {cv.value}
+                            </SelectItem>
                           )
                       )}
                     </SelectContent>
@@ -182,8 +186,14 @@ export const BasicDetailsForm: React.FC<{
                       <SelectValue placeholder="" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="In-house">In-house</SelectItem>
-                      <SelectItem value="In-license">In-license</SelectItem>
+                      {controlledVocabularies?.map(
+                        (cv: ControlledVocabulary) =>
+                          cv.name == "product-origin" && (
+                            <SelectItem value={cv.value} key={cv.value}>
+                              {cv.value}
+                            </SelectItem>
+                          )
+                      )}
                     </SelectContent>
                   </Select>
                 </FormControl>

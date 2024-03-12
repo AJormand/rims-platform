@@ -7,6 +7,13 @@
 - Done Country section to Applications
 - Controlled vocabulary
 
+## Challenges
+
+- CV implementation -> have 1 library for all CVs
+- shall I fetch all CVs or only the ones needed?
+- when to fetch CVs? at start or on edit of some record
+- in multipe section components if I fetch with useQuery on section open I would actually fetch it many times....
+
 ## BACKLOG
 
 - Loading spinner after deletion of Substances and ORganizations

@@ -9,7 +9,9 @@ import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-import { Product, Product2Substance } from "@prisma/client";
+import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
+
+import { ControlledVocabulary, Product2Substance } from "@prisma/client";
 
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -23,6 +25,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
@@ -36,6 +46,7 @@ export const ActiveSubstanceEditForm: React.FC<{
   data: Product2Substance | null;
 }> = ({ data }) => {
   const router = useRouter();
+  const { data: controlledVocabularies } = useFetchControlledVocabularies();
   const queryClient = useQueryClient();
   const [isFetching, setIsFetching] = useState(false);
 
@@ -113,7 +124,25 @@ export const ActiveSubstanceEditForm: React.FC<{
               <FormItem>
                 <FormLabel>Unit</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  {/* <Input placeholder="" {...field} /> */}
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {controlledVocabularies?.map(
+                        (cv: ControlledVocabulary) =>
+                          cv.name == "units" && (
+                            <SelectItem value={cv.value} key={cv.value}>
+                              {cv.value}
+                            </SelectItem>
+                          )
+                      )}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -104,6 +104,7 @@ export const useFetchControlledVocabularies = () => {
   return useQuery({
     queryKey: ["controlledVocabularies"],
     queryFn: () => fetchControlledVocabularies(),
+    staleTime: Infinity, // Set to Infinity to fetch data only once and call it from cache in other calls
   });
 };
 
