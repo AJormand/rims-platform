@@ -7,6 +7,8 @@
 - Done Country section to Applications
 - Done Controlled vocabulary fetching from backend
 - Done Used controlled vocabulary in Product
+- Done Add Status bar for PRD
+- implement change status
 - Creating Registrations
 
 ## Challenges
