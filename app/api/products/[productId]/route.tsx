@@ -56,7 +56,7 @@ export async function PUT(
       },
     });
 
-    return NextResponse.json(updatedProduct);
+    return NextResponse.json(updatedProduct, { status: 200 });
   } catch (error) {
     return new NextResponse("[UPDATE PRODUCT]", { status: 400 });
   }

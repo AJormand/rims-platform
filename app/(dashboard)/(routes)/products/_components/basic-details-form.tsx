@@ -8,8 +8,10 @@ import { useRouter } from "next/navigation";
 import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
+import { editProduct } from "@/app/services/api-client/api-client";
 
 import { Product } from "@prisma/client";
 
@@ -46,6 +48,7 @@ export const BasicDetailsForm: React.FC<{
   type: "new" | "edit";
 }> = ({ data, type }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
   const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
 
@@ -79,19 +82,16 @@ export const BasicDetailsForm: React.FC<{
   const onSubmitEdit = async (values: z.infer<typeof formSchema>) => {
     const productId = data?.id;
     if (!productId) return;
+      const response = await editProduct(productId, values);
+      if (response?.status === 200) {
+        router.push(`/products/`);
+        await queryClient.invalidateQueries({
+          queryKey: ["product"],
+          refetchType: "active",
+        });
+      }
+  }
 
-    try {
-      console.log(data);
-      const response = await axios.put(`/api/products/${productId}`, {
-        values,
-      });
-      router.push(`/products/`);
-      toast.success("Product created successfully");
-      setIsEditing(false);
-    } catch (error) {
-      toast.error("Something went wrong");
-    }
-  };
 
   return (
     <Form {...form}>

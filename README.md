@@ -8,6 +8,8 @@
 - Done Controlled vocabulary fetching from backend
 - Done Used controlled vocabulary in Product
 - Done Add Status bar for PRD
+- done implemented editProduct api function
+- done need to fix issue where product doesnt refresh on edit
 - implement change status
 - Creating Registrations
 

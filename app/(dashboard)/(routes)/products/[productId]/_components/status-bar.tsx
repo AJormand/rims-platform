@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
 import { string } from "zod";
+import { set } from "react-hook-form";
 
 export const StatusBar = ({ data, cv }: { data: any; cv: string }) => {
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
@@ -12,8 +13,13 @@ export const StatusBar = ({ data, cv }: { data: any; cv: string }) => {
     (element: any) => element.name === cv
   );
 
+  const handleStatusChange = (status: string) => {
+    console.log(status);
+    setIsOpen(false);
+  }
+
   return (
-    <div className="flex items-center gap-4 my-2">
+    <div className="flex items-center gap-4 my-2 pb-2 border-b-2">
       <h1 className="font-bold text-sky-600 text">{data.name}</h1>
 
       <div className="relative">
@@ -29,7 +35,8 @@ export const StatusBar = ({ data, cv }: { data: any; cv: string }) => {
               {statusValues?.map((element: any) => (
                 <li
                   key={element.id}
-                  className="hover:bg-slate-200 cursor-pointer px-2 py-1 rounded-sm"
+                  className="hover:bg-slate-200 cursor-pointer px-2 py-1 rounded-sm text-sm"
+                  onClick={() => handleStatusChange(element.value)}
                 >
                   {element.value}
                 </li>

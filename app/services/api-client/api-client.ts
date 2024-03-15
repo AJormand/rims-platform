@@ -48,6 +48,21 @@ export const fetchProduct = async (productId: string) => {
   }
 };
 
+export const editProduct = async (productId: string, values: any) => {
+  try {
+    console.log(values);
+    const response = await axios.put(`/api/products/${productId}`, {
+      values,
+    });
+    console.log(response);
+    //router.push(`/products/`);
+    toast.success("Product created successfully");
+    return response
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+}
+
 // SUBSTANCE
 export const fetchSubstances = async () => {
   try {
