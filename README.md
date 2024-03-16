@@ -9,8 +9,9 @@
 - Done Used controlled vocabulary in Product
 - Done Add Status bar for PRD
 - Done implemented editProduct api function
-- done need to fix issue where product doesnt refresh on edit
-- implement change status
+- Done need to fix issue where product doesnt refresh on edit
+- Done implement change status
+- fix status bar rerender issue
 - Creating Registrations
 
 ## Challenges

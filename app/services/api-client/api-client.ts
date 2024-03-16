@@ -56,7 +56,7 @@ export const editProduct = async (productId: string, values: any) => {
     });
     console.log(response);
     //router.push(`/products/`);
-    toast.success("Product created successfully");
+    toast.success("Product updated successfully");
     return response
   } catch (error) {
     toast.error("Something went wrong");
