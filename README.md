@@ -11,7 +11,7 @@
 - Done implemented editProduct api function
 - Done need to fix issue where product doesnt refresh on edit
 - Done implement change status
-- fix status bar rerender issue
+- Done fix status bar rerender issue
 - Creating Registrations
 
 ## Challenges
