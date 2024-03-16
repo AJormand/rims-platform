@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
 import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
-import { string } from "zod";
-import { set } from "react-hook-form";
 
-export const StatusBar = ({ data, cv }: { data: any; cv: string }) => {
+import { editProduct } from "@/app/services/api-client/api-client";
+
+export const StatusBar = ({ data, cv}: { data: any; cv: string}) => {
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
+  const [status, setStatus] = useState(data.status);
   const [isOpen, setIsOpen] = useState(false);
   console.log(data);
 
@@ -13,9 +14,14 @@ export const StatusBar = ({ data, cv }: { data: any; cv: string }) => {
     (element: any) => element.name === cv
   );
 
-  const handleStatusChange = (status: string) => {
+  const handleStatusChange = async (status: string) => {
     console.log(status);
-    setIsOpen(false);
+    const response = await editProduct(data.id, { status });
+    if(response?.status === 200) {
+      setStatus(status);
+      setIsOpen(false);
+      //invalidate product query
+    }
   }
 
   return (
@@ -27,7 +33,7 @@ export const StatusBar = ({ data, cv }: { data: any; cv: string }) => {
           className="px-4 py-1 rounded-full bg-sky-600 text-white text-sm font-semibold"
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          {data.status}
+          {status}
         </button>
         {isOpen && (
           <>

@@ -76,7 +76,7 @@ export default function Product({ params }: { params: { productId: string } }) {
       {isError && <div>Error</div>}
       {productData && (
         <div className="w-full px-6">
-          <StatusBar data={productData.data} cv={"product-status"} />
+          <StatusBar data={productData.data} cv={"product-status"}/>
           {/* BASIC DETAILS */}
           <Section name="Basic Details" expanded={true}>
             <BasicDetailsForm data={productData?.data} type="edit" />
