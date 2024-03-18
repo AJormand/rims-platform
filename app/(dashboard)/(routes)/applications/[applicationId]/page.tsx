@@ -23,6 +23,7 @@ import { productAddRecordPopupColumns } from "./_components/product-add-record-p
 import { applicationProductColumns } from "./_components/application-product-columns";
 import { applicationCountryColumns } from "./_components/application-country-columns";
 import { countryAddRecordPopupColumns } from "./_components/country-add-record-popup-columns";
+import { RecordActions } from "./_components/record-actions";
 
 interface ExtendedProduct2Application extends Product2Application {
   product: Product;
@@ -116,6 +117,7 @@ export default function Application({
       <div className="w-full px-6">
         {application && (
           <>
+            <RecordActions data={applicationData} />
             {/* BASIC */}
             <Section name="Basic Details" expanded={true}>
               <BasicDetailsForm data={applicationData} type="edit" />
