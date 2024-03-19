@@ -25,6 +25,7 @@ export async function GET(
           },
         },
         countries: true,
+        registrations: true,
       },
     });
 
