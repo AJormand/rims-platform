@@ -93,9 +93,11 @@ model Registration {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   name   String @unique
   status String
+  product String
+  country String
 
-  application   Application @relation(fields: [applicationId], references: [id])
-  applicationId String      @db.ObjectId
+  application   Application? @relation(fields: [applicationId], references: [id])
+  applicationId String?      @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

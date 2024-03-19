@@ -57,11 +57,30 @@ export const editProduct = async (productId: string, values: any) => {
     console.log(response);
     //router.push(`/products/`);
     toast.success("Product updated successfully");
-    return response
+    return response;
   } catch (error) {
     toast.error("Something went wrong");
   }
-}
+};
+
+// REGISTRATION
+type PartialRegistration = {
+  name: string;
+  country: string;
+  product: string;
+  status: string;
+  applicationId: string;
+};
+
+export const createRegistrations = async (data: PartialRegistration[]) => {
+  try {
+    const response = await axios.post("/api/registrations", data);
+    console.log(response.data);
+    toast.success("Registrations created successfully");
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
 
 // SUBSTANCE
 export const fetchSubstances = async () => {

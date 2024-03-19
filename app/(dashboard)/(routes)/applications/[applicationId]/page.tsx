@@ -9,6 +9,7 @@ import {
   Country,
   Product,
   Product2Application,
+  Registration,
 } from "@prisma/client";
 import { SideNav } from "@/components/side-nav";
 import { BasicDetailsForm } from "../_components/basic-details-form";
@@ -24,6 +25,7 @@ import { applicationProductColumns } from "./_components/application-product-col
 import { applicationCountryColumns } from "./_components/application-country-columns";
 import { countryAddRecordPopupColumns } from "./_components/country-add-record-popup-columns";
 import { RecordActions } from "./_components/record-actions";
+import { applicationRegistrationColumns } from "./_components/application-registration-columns";
 
 interface ExtendedProduct2Application extends Product2Application {
   product: Product;
@@ -32,6 +34,7 @@ interface ExtendedProduct2Application extends Product2Application {
 interface ExtendedApplication extends Application {
   products2Application: ExtendedProduct2Application[];
   countries: Country[];
+  registrations: Registration[];
 }
 
 export default function Application({
@@ -173,6 +176,14 @@ export default function Application({
                   queryKey="application"
                 />
               )}
+            </Section>
+
+            {/* REGISTRATIONS */}
+            <Section name="Registrations" expanded={true}>
+              <DataTable
+                columns={applicationRegistrationColumns}
+                data={application.registrations}
+              />
             </Section>
           </>
         )}
