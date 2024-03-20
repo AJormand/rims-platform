@@ -127,7 +127,7 @@ export default function Application({
             </Section>
 
             {/* COUNTRIES */}
-            <Section name="Countries" expanded={true}>
+            <Section name="Countries" expanded={false}>
               <Button
                 size={"sm"}
                 variant={"outline"}
@@ -153,7 +153,7 @@ export default function Application({
             </Section>
 
             {/* PRODUCTS */}
-            <Section name="Products" expanded={true}>
+            <Section name="Products" expanded={false}>
               <Button
                 size={"sm"}
                 variant={"outline"}
@@ -179,7 +179,7 @@ export default function Application({
             </Section>
 
             {/* REGISTRATIONS */}
-            <Section name="Registrations" expanded={true}>
+            <Section name="Registrations" expanded={false}>
               <DataTable
                 columns={applicationRegistrationColumns}
                 data={application.registrations}
