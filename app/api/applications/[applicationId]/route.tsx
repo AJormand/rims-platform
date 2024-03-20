@@ -34,3 +34,28 @@ export async function GET(
     return new NextResponse("[GET APPLICATION]", { status: 400 });
   }
 }
+
+export async function PUT(
+  request: Request,
+  { params }: { params: { applicationId: string } }
+) {
+  const { values } = await request.json();
+  const { applicationId } = params;
+  console.log("values:", values);
+  console.log("applicationId:", applicationId);
+
+  try {
+    const updatedApplication = await db.application.update({
+      where: {
+        id: applicationId,
+      },
+      data: {
+        ...values,
+      },
+    });
+
+    return NextResponse.json(updatedApplication, { status: 200 });
+  } catch (error) {
+    return new NextResponse("[UPDATE APPLICATION]", { status: 400 });
+  }
+}

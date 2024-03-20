@@ -1,24 +1,24 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
-
-import { DataTable } from "@/components/ui/data-table";
+"use client";
 import { columns } from "./_components/application-columns";
 
-export default async function Applications() {
-  const userId = auth();
+import { useFetchApplications } from "@/app/services/hooks/hooks";
 
-  if (!userId) return redirect("/");
+import { DataTable } from "@/components/ui/data-table";
 
-  const data = await db.application.findMany();
+export default function Applications() {
+  const { data, isError, isLoading } = useFetchApplications();
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable
-        columns={columns}
-        data={data}
-        createRoute="/applications/create"
-      />
+      {isLoading && <div>Loading...</div>}
+      {isError && <div>Error</div>}
+      {data && (
+        <DataTable
+          columns={columns}
+          data={data}
+          createRoute="/applications/create"
+        />
+      )}
     </div>
   );
 }

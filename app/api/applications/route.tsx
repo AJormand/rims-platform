@@ -22,3 +22,12 @@ export async function POST(request: Request) {
     return new NextResponse("[CREATE PRODUCT]", { status: 400 });
   }
 }
+
+export async function GET(request: Request) {
+  try {
+    const applicationData = await db.application.findMany();
+    return NextResponse.json(applicationData);
+  } catch (error) {
+    return new NextResponse("[GET APPLICATION]", { status: 400 });
+  }
+}

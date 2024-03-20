@@ -59,7 +59,7 @@ export const BasicDetailsForm: React.FC<{
       name: data?.name || "",
       category: data?.category || "",
       origin: data?.origin || "",
-      status: data?.status || "draft",
+      status: data?.status || "Draft",
     },
   });
 
@@ -82,16 +82,15 @@ export const BasicDetailsForm: React.FC<{
   const onSubmitEdit = async (values: z.infer<typeof formSchema>) => {
     const productId = data?.id;
     if (!productId) return;
-      const response = await editProduct(productId, values);
-      if (response?.status === 200) {
-        router.push(`/products/`);
-        await queryClient.invalidateQueries({
-          queryKey: ["product"],
-          refetchType: "active",
-        });
-      }
-  }
-
+    const response = await editProduct(productId, values);
+    if (response?.status === 200) {
+      router.push(`/products/`);
+      await queryClient.invalidateQueries({
+        queryKey: ["product"],
+        refetchType: "active",
+      });
+    }
+  };
 
   return (
     <Form {...form}>
