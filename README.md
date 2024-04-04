@@ -12,7 +12,8 @@
 - Done need to fix issue where product doesnt refresh on edit
 - Done implement change status
 - Done fix status bar rerender issue
-- Creating Registrations
+- Done Creating Registrations
+- Done PRoduct status bar issue
 
 ## Challenges
 

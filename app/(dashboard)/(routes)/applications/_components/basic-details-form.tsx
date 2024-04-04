@@ -8,8 +8,9 @@ import { useRouter } from "next/navigation";
 import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
-import { Application } from "@prisma/client";
+import { editApplication } from "@/app/services/api-client/api-client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import { Application } from "@prisma/client";
+
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }).max(250),
   country: z.string(),
@@ -35,6 +38,7 @@ export const BasicDetailsForm: React.FC<{
   type: "new" | "edit";
 }> = ({ data, type }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
 
   // 1. Define your form.
@@ -67,17 +71,13 @@ export const BasicDetailsForm: React.FC<{
   const onSubmitEdit = async (values: z.infer<typeof formSchema>) => {
     const applicationId = data?.id;
     if (!applicationId) return;
-
-    try {
-      const response = await axios.put(`/api/applications`, {
-        applicationId,
-        values,
+    const response = await editApplication(applicationId, values);
+    if (response?.status === 200) {
+      router.push(`/applications/`);
+      await queryClient.invalidateQueries({
+        queryKey: ["application"],
+        refetchType: "active",
       });
-      //router.refresh();
-      toast.success("Application created successfully");
-      setIsEditing(false);
-    } catch (error) {
-      toast.error("Something went wrong");
     }
   };
 

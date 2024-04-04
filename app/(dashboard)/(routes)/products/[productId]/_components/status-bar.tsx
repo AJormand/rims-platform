@@ -1,14 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
-import { cva } from "class-variance-authority";
 
 import { editProduct } from "@/app/services/api-client/api-client";
 
-
-
-export const StatusBar = ({ data, cv}: { data: any; cv: string}) => {
+export const StatusBar = ({ data, cv }: { data: any; cv: string }) => {
   const queryClient = useQueryClient();
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
   const [isOpen, setIsOpen] = useState(false);
@@ -20,12 +17,13 @@ export const StatusBar = ({ data, cv}: { data: any; cv: string}) => {
   const handleStatusChange = async (status: string) => {
     console.log(status);
     const response = await editProduct(data.id, { status });
-    if(response?.status === 200) {
+    if (response?.status === 200) {
       setIsOpen(false);
-      queryClient.invalidateQueries({queryKey: ["product"]});
+      queryClient.invalidateQueries({ queryKey: ["product"] });
     }
-  }
+  };
 
+<<<<<<< HEAD
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Draft":
@@ -44,6 +42,45 @@ export const StatusBar = ({ data, cv}: { data: any; cv: string}) => {
       <div className="relative">
         <button
           className={`px-4 py-1 rounded-full text-white text-sm font-semibold bg-${getStatusColor(data.status)}`}
+=======
+  const getStatusTextColor = (status: string) => {
+    switch (status) {
+      case "Draft":
+        return "text-gray-400";
+      case "Active":
+        return "text-sky-700";
+      case "Inactive":
+        return "text-red-500";
+      default:
+        return "text-gray-400";
+    }
+  };
+
+  const getStatusBackgroundColor = (status: string) => {
+    switch (status) {
+      case "Draft":
+        return "bg-gray-400";
+      case "Active":
+        return "bg-sky-700";
+      case "Inactive":
+        return "bg-red-500";
+      default:
+        return "bg-gray-400";
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-4 my-2 pb-2 border-b-2">
+      <h1 className={`font-bold ${getStatusTextColor(data.status)}`}>
+        {data.name}
+      </h1>
+
+      <div className="relative">
+        <button
+          className={`px-4 py-1 rounded-full text-white text-sm font-semibold ${getStatusBackgroundColor(
+            data.status
+          )}`}
+>>>>>>> 104494ab344599a95bb203b817609d52ce202e47
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {data.status}

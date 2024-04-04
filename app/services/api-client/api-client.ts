@@ -55,13 +55,117 @@ export const editProduct = async (productId: string, values: any) => {
       values,
     });
     console.log(response);
-    //router.push(`/products/`);
     toast.success("Product updated successfully");
-    return response
+    return response;
   } catch (error) {
     toast.error("Something went wrong");
   }
+};
+
+//APPLICATION
+
+export const fetchApplications = async () => {
+  try {
+    const { data } = await axios.get("/api/applications");
+    return data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
+export const editApplication = async (applicationId: string, values: any) => {
+  try {
+    console.log("editApplication");
+    console.log(values);
+    const response = await axios.put(`/api/applications/${applicationId}`, {
+      values,
+    });
+    console.log(response);
+    toast.success("Applicaiton updated successfully");
+    return response;
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
+
+// REGISTRATION
+type PartialRegistration = {
+  name: string;
+  country: string;
+  product: string;
+  status: string;
+  applicationId: string;
+};
+
+export const fetchRegistrations = async () => {
+  try {
+    const { data } = await axios.get("/api/registrations");
+    return data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
+interface ProductSubstance extends Product2Substance {
+  substance: Substance;
 }
+
+// export const fetchRegistration = async (registrationId: string) => {
+//   try {
+//     const { data } = await axios.get(`/api/registrations/${registrationId}`);
+
+//     const activeSubstances = data.productSubstances.filter(
+//       (productSubstance: ProductSubstance) =>
+//         productSubstance.substance.type === "Active Substance"
+//     );
+
+//     const inactiveSubstances = data.productSubstances.filter(
+//       (productSubstance: ProductSubstance) =>
+//         productSubstance.substance.type !== "Active Substance"
+//     );
+
+//     const applications = data.productApplications.map(
+//       (item: any) => item.application
+//     );
+
+//     return {
+//       data,
+//       activeSubstances,
+//       inactiveSubstances,
+//       applications,
+//     };
+//   } catch (error) {
+//     console.log(error);
+//     return {};
+//   }
+// };
+
+// export const editRegistration = async (productId: string, values: any) => {
+//   try {
+//     console.log(values);
+//     const response = await axios.put(`/api/products/${productId}`, {
+//       values,
+//     });
+//     console.log(response);
+//     //router.push(`/products/`);
+//     toast.success("Product updated successfully");
+//     return response;
+//   } catch (error) {
+//     toast.error("Something went wrong");
+//   }
+// };
+
+export const createRegistrations = async (data: PartialRegistration[]) => {
+  try {
+    const response = await axios.post("/api/registrations", data);
+    console.log(response.data);
+    toast.success("Registrations created successfully");
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
 
 // SUBSTANCE
 export const fetchSubstances = async () => {

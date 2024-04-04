@@ -2,6 +2,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchProducts,
   fetchProduct,
+  fetchApplications,
+  fetchRegistrations,
+  // fetchRegistration,
   fetchSubstances,
   deleteSubstance,
   fetchOrganizations,
@@ -27,6 +30,29 @@ export const usefetchProduct = (productId: string) => {
     queryFn: () => fetchProduct(productId),
   });
 };
+
+//APPLICATION
+export const useFetchApplications = () => {
+  return useQuery({
+    queryKey: ["applications"],
+    queryFn: () => fetchApplications(),
+  });
+};
+
+//REGISTRATION
+export const useFetchRegistrations = () => {
+  return useQuery({
+    queryKey: ["registrations"],
+    queryFn: () => fetchRegistrations(),
+  });
+};
+
+// export const usefetchRegistration = (registrationId: string) => {
+//   return useQuery({
+//     queryKey: ["registration"],
+//     queryFn: () => fetchRegistration(registrationId),
+//   });
+// };
 
 //SUBSTANCE
 export const useFetchSubstances = () => {

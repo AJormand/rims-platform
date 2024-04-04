@@ -9,6 +9,7 @@ import {
   Country,
   Product,
   Product2Application,
+  Registration,
 } from "@prisma/client";
 import { SideNav } from "@/components/side-nav";
 import { BasicDetailsForm } from "../_components/basic-details-form";
@@ -23,6 +24,8 @@ import { productAddRecordPopupColumns } from "./_components/product-add-record-p
 import { applicationProductColumns } from "./_components/application-product-columns";
 import { applicationCountryColumns } from "./_components/application-country-columns";
 import { countryAddRecordPopupColumns } from "./_components/country-add-record-popup-columns";
+import { RecordActions } from "./_components/record-actions";
+import { applicationRegistrationColumns } from "./_components/application-registration-columns";
 
 interface ExtendedProduct2Application extends Product2Application {
   product: Product;
@@ -31,6 +34,7 @@ interface ExtendedProduct2Application extends Product2Application {
 interface ExtendedApplication extends Application {
   products2Application: ExtendedProduct2Application[];
   countries: Country[];
+  registrations: Registration[];
 }
 
 export default function Application({
@@ -116,13 +120,14 @@ export default function Application({
       <div className="w-full px-6">
         {application && (
           <>
+            <RecordActions data={applicationData} />
             {/* BASIC */}
             <Section name="Basic Details" expanded={true}>
               <BasicDetailsForm data={applicationData} type="edit" />
             </Section>
 
             {/* COUNTRIES */}
-            <Section name="Countries" expanded={true}>
+            <Section name="Countries" expanded={false}>
               <Button
                 size={"sm"}
                 variant={"outline"}
@@ -148,7 +153,7 @@ export default function Application({
             </Section>
 
             {/* PRODUCTS */}
-            <Section name="Products" expanded={true}>
+            <Section name="Products" expanded={false}>
               <Button
                 size={"sm"}
                 variant={"outline"}
@@ -171,6 +176,14 @@ export default function Application({
                   queryKey="application"
                 />
               )}
+            </Section>
+
+            {/* REGISTRATIONS */}
+            <Section name="Registrations" expanded={false}>
+              <DataTable
+                columns={applicationRegistrationColumns}
+                data={application.registrations}
+              />
             </Section>
           </>
         )}
