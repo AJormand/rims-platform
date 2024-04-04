@@ -26,38 +26,24 @@ export const StatusBar = ({ data, cv}: { data: any; cv: string}) => {
     }
   }
 
-  const getBackgroundColor = (status: string) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case "Draft":
-        return "bg-orange-500";
+        return "orange-500";
       case "Active":
-        return "bg-sky-700";
+        return "sky-700";
       case "Inactive":
-        return "bg-red-500";
+        return "red-500";
       default:
-        return "bg-gray-400";
-    }}
-
-  const getTextColor = (status: string) => {
-    switch (status) {
-      case "Draft":
-        return "text-orange-500";
-      case "Active":
-        return "text-sky-700";
-      case "Inactive":
-        return "text-red-500";
-      default:
-        return "text-gray-400";
+        return "gray-400";
     }}
 
   return (
-    <div className="flex items-center gap-4 my-2 pb-2 border-b-2">
-      <h1 className={`font-bold ${getTextColor(data.status)}`}>{data.name}</h1>
-  
-
+    <div className={`flex items-center gap-4 my-2 pb-2 border-b-2 border-${getStatusColor(data.status)}`}>
+      <h1 className={`font-bold text-${getStatusColor(data.status)}`}>{data.name}</h1>
       <div className="relative">
         <button
-          className={`px-4 py-1 rounded-full text-white text-sm font-semibold ${getBackgroundColor(data.status)}`}
+          className={`px-4 py-1 rounded-full text-white text-sm font-semibold bg-${getStatusColor(data.status)}`}
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {data.status}
