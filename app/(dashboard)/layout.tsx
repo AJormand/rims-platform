@@ -1,3 +1,6 @@
+import { NavbarRoutes } from "@/components/navbar-routes";
+import { TopNavigationBar } from "@/components/top-navigation-bar";
+
 export default function DashBoardLayout({
   children,
 }: {
@@ -5,7 +8,8 @@ export default function DashBoardLayout({
 }) {
   return (
     <section>
-      <nav></nav>
+      <NavbarRoutes />
+      <TopNavigationBar />
       {children}
     </section>
   );

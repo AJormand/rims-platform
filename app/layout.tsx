@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
 
 import { NavbarRoutes } from "../components/navbar-routes";
 import { TopNavigationBar } from "@/components/top-navigation-bar";
@@ -24,17 +24,18 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
-          <TenstackProvider>
-            <div className="flex flex-col h-screen">
-              <NavbarRoutes />
-              <TopNavigationBar />
-              <AppContextProvider>
-                <div className="overflow-y-auto">{children}</div>
-              </AppContextProvider>
-            </div>
-            <ToasterProvider />
-          </TenstackProvider>
+        <body className={inter.className}>  
+            <TenstackProvider>
+              <div className="flex flex-col h-screen">
+                <AppContextProvider>
+                  <div className="overflow-y-auto">{children}</div>
+                </AppContextProvider>
+              </div>
+              <ToasterProvider />
+            </TenstackProvider>
+
+
+
         </body>
       </html>
     </ClerkProvider>
