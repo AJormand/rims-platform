@@ -13,7 +13,8 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import Image from "next/image";
+
+import { NavbarAvatar } from "./navbar-avatar";
 
 export const NavbarRoutes = () => {
   return (
@@ -83,7 +84,8 @@ export const NavbarRoutes = () => {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <UserButton afterSignOutUrl="/" />
+
+      <NavbarAvatar />
     </div>
   );
 };
