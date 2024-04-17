@@ -1,5 +1,6 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
@@ -45,6 +46,18 @@ export const applicationProductColumns: ColumnDef<ExtendedProduct2Application>[]
     {
       accessorKey: "product.name",
       header: "Name",
+      cell: ({ row }) => {
+        const product = row.original;
+
+        return (
+          <Link
+            href={`/products/${product.productId}`}
+            className="underline text-sky-700"
+          >
+            {product.product.name}
+          </Link>
+        );
+      },
     },
 
     {

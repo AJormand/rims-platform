@@ -150,7 +150,6 @@ export default function Product({ params }: { params: { productId: string } }) {
             <DataTable
               columns={applicationColumns}
               data={data.productData?.applications}
-              createRoute="/applications/create"
             />
           </Section>
 
@@ -159,7 +158,6 @@ export default function Product({ params }: { params: { productId: string } }) {
             <DataTable
               columns={applicationColumns}
               data={data.registrationsData}
-              createRoute="/registrations/create"
             />
           </Section>
         </div>
