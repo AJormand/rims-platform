@@ -93,14 +93,24 @@ export const editApplication = async (applicationId: string, values: any) => {
 type PartialRegistration = {
   name: string;
   country: string;
-  product: string;
   status: string;
   applicationId: string;
+  productId: string;
 };
 
 export const fetchRegistrations = async () => {
   try {
     const { data } = await axios.get("/api/registrations");
+    return data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
+export const fetchRegistrationsForProduct = async (productId: string) => {
+  try {
+    const { data } = await axios.get(`/api/registrations/${productId}`);
     return data;
   } catch (error) {
     console.log(error);

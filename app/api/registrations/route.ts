@@ -15,7 +15,6 @@ export async function POST(request: Request) {
     const newRegistrations = await db.registration.createMany({
       data: receivedData,
     });
-    console.log(newRegistrations);
 
     return NextResponse.json(newRegistrations, { status: 201 });
   } catch (error) {

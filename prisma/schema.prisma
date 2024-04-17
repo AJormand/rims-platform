@@ -30,6 +30,7 @@ model Product {
   origin   String
 
   productApplications  Product2Application[] // Establish a relation with the junction model
+  productRegistrations Registration[] // Establish a relation with the junction model
   productSubstances    Product2Substance[] // Establish a relation with the junction model
   productOrganizations Product2Organization[] // Establish a relation with the junction model
 
@@ -93,8 +94,10 @@ model Registration {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   name   String @unique
   status String
-  product String
   country String
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?      @db.ObjectId
 
   application   Application? @relation(fields: [applicationId], references: [id])
   applicationId String?      @db.ObjectId

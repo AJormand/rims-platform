@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { applicationColumns } from "./_components/application-columns";
 import { activeSubstanceColumns } from "./_components/active-substance-columns";
@@ -24,12 +24,6 @@ import {
   Product2Substance,
 } from "@prisma/client";
 
-type ProductData = ProductType & {
-  include: { application: true; substance: true };
-  productSubstances: Substance[];
-  productApplications: Application[];
-};
-
 type ObjectWithId = {
   id: string;
 };
@@ -43,11 +37,7 @@ export default function Product({ params }: { params: { productId: string } }) {
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
 
-  const {
-    data: productData,
-    isError,
-    isLoading,
-  } = usefetchProduct(params.productId);
+  const { data, isError, isLoading } = usefetchProduct(params.productId);
 
   const addRecordPopup = async (
     popupName: string,
@@ -74,12 +64,12 @@ export default function Product({ params }: { params: { productId: string } }) {
       <SideNav sections={sideNavSections} />
       {isLoading && <div>Loading...</div>}
       {isError && <div>Error</div>}
-      {productData && (
+      {data && (
         <div className="w-full px-6">
-          <StatusBar data={productData.data} cv={"product-status"} />
+          <StatusBar data={data.productData} cv={"product-status"} />
           {/* BASIC DETAILS */}
           <Section name="Basic Details" expanded={true}>
-            <BasicDetailsForm data={productData?.data} type="edit" />
+            <BasicDetailsForm data={data?.productData.data} type="edit" />
           </Section>
 
           {/* ACTIVE SUBSTANCES */}
@@ -91,7 +81,7 @@ export default function Product({ params }: { params: { productId: string } }) {
                 addRecordPopup(
                   "activeSubstance",
                   "/api/substances",
-                  productData?.activeSubstances.map(
+                  data?.productData.activeSubstances.map(
                     (el: ProductSubstance) => el.substance
                   )
                 );
@@ -101,7 +91,7 @@ export default function Product({ params }: { params: { productId: string } }) {
             </Button>
             <DataTable
               columns={activeSubstanceColumns}
-              data={productData?.activeSubstances}
+              data={data.productData?.activeSubstances}
             />
             {addRecordPopupVisible === "activeSubstance" && (
               <AddRecordPopup
@@ -127,7 +117,7 @@ export default function Product({ params }: { params: { productId: string } }) {
                 addRecordPopup(
                   "inactiveSubstance",
                   "/api/substances",
-                  productData?.inactiveSubstances.map(
+                  data.productData?.inactiveSubstances.map(
                     (el: ProductSubstance) => el.substance
                   )
                 );
@@ -137,7 +127,7 @@ export default function Product({ params }: { params: { productId: string } }) {
             </Button>
             <DataTable
               columns={activeSubstanceColumns}
-              data={productData?.inactiveSubstances}
+              data={data.productData?.inactiveSubstances}
             />
             {addRecordPopupVisible === "inactiveSubstance" && (
               <AddRecordPopup
@@ -159,7 +149,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           <Section name="Applications" expanded={false}>
             <DataTable
               columns={applicationColumns}
-              data={productData?.applications}
+              data={data.productData?.applications}
               createRoute="/applications/create"
             />
           </Section>
@@ -168,7 +158,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           <Section name="Registrations" expanded={false}>
             <DataTable
               columns={applicationColumns}
-              data={[{ id: "xxx", name: "ccc", status: "success" }]}
+              data={data.registrationsData}
               createRoute="/registrations/create"
             />
           </Section>

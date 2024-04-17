@@ -17,9 +17,9 @@ import { createRegistrations } from "@/app/services/api-client/api-client";
 type PartialRegistration = {
   name: string;
   country: string;
-  product: string;
   status: string;
   applicationId: string;
+  productId: string;
 };
 
 export const RecordActions = ({ data }: any) => {
@@ -33,7 +33,7 @@ export const RecordActions = ({ data }: any) => {
             " - " +
             data.products2Application[j].product.name,
           country: data.countries[i].name,
-          product: data.products2Application[j].product.name,
+          productId: data.products2Application[j].product.id,
           status: "Draft",
           applicationId: data.id,
         });

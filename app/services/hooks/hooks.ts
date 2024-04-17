@@ -4,6 +4,7 @@ import {
   fetchProduct,
   fetchApplications,
   fetchRegistrations,
+  fetchRegistrationsForProduct,
   // fetchRegistration,
   fetchSubstances,
   deleteSubstance,
@@ -27,7 +28,16 @@ export const useFetchProducts = () => {
 export const usefetchProduct = (productId: string) => {
   return useQuery({
     queryKey: ["product"],
-    queryFn: () => fetchProduct(productId),
+    queryFn: async () => {
+      const [productData, registrationsData] = await Promise.all([
+        fetchProduct(productId),
+        fetchRegistrationsForProduct(productId),
+      ]);
+      return {
+        productData: productData,
+        registrationsData: registrationsData,
+      };
+    },
   });
 };
 
