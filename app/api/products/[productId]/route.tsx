@@ -31,6 +31,9 @@ export const GET = async (
       },
     });
 
+    console.log(product);
+    // get Registrations from each applicaiton
+
     return NextResponse.json(product);
   } catch (error) {
     return new NextResponse("[GET PRODUCT]", { status: 400 });

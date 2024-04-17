@@ -39,8 +39,13 @@ export const RecordActions = ({ data }: any) => {
         });
       }
     }
-    console.log(registrationsArray);
-    createRegistrations(registrationsArray);
+    // filters out registrations that already exist
+    let missingRegistrations = registrationsArray.filter(
+      (registration) =>
+        !data.registrations.some((item: any) => item.name === registration.name)
+    );
+
+    createRegistrations(missingRegistrations);
   };
 
   return (

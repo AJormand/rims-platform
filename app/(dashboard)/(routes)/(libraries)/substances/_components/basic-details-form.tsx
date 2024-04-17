@@ -78,7 +78,7 @@ export const BasicDetailsForm: React.FC<{
     if (!substanceId) return;
 
     try {
-      await axios.put(`/api/substancesss/${substanceId}`, {
+      await axios.put(`/api/substances/${substanceId}`, {
         values,
       });
       router.push(`/substances`);

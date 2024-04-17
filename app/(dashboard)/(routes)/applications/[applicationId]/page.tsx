@@ -5,7 +5,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 import {
-  Application,
+  Application as ApplicationType,
   Country,
   Product,
   Product2Application,
@@ -31,7 +31,7 @@ interface ExtendedProduct2Application extends Product2Application {
   product: Product;
 }
 
-interface ExtendedApplication extends Application {
+interface ExtendedApplication extends ApplicationType {
   products2Application: ExtendedProduct2Application[];
   countries: Country[];
   registrations: Registration[];
@@ -120,6 +120,7 @@ export default function Application({
       <div className="w-full px-6">
         {application && (
           <>
+            {/* RECORD ACTIONS WIZARD */}
             <RecordActions data={applicationData} />
             {/* BASIC */}
             <Section name="Basic Details" expanded={true}>
