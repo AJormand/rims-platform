@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { applicationColumns } from "./_components/application-columns";
 import { activeSubstanceColumns } from "./_components/active-substance-columns";

@@ -51,7 +51,7 @@ export const applicationProductColumns: ColumnDef<ExtendedProduct2Application>[]
 
         return (
           <Link
-            href={`/products/${product.productId}`}
+            href={`/products/${product.product.id}`}
             className="underline text-sky-700"
           >
             {product.product.name}
