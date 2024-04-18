@@ -27,7 +27,7 @@ export const useFetchProducts = () => {
 
 export const usefetchProduct = (productId: string) => {
   return useQuery({
-    queryKey: ["product"],
+    queryKey: ["product", productId],
     queryFn: async () => {
       const [productData, registrationsData] = await Promise.all([
         fetchProduct(productId),
