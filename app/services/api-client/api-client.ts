@@ -74,6 +74,20 @@ export const fetchApplications = async () => {
   }
 };
 
+export const fetchApplication = async (applicationId: string) => {
+  try {
+    const { data } = await axios.get(`/api/applications/${applicationId}`);
+    const productsArr = data?.products2Application?.map(
+      (item: any) => item.product
+    );
+
+    return { applicationData: data, applicationProducts: productsArr };
+  } catch (error) {
+    console.error(error);
+    toast.error(`"${error}`);
+  }
+};
+
 export const editApplication = async (applicationId: string, values: any) => {
   try {
     console.log("editApplication");

@@ -27,6 +27,8 @@ import { countryAddRecordPopupColumns } from "./_components/country-add-record-p
 import { RecordActions } from "./_components/record-actions";
 import { applicationRegistrationColumns } from "./_components/application-registration-columns";
 
+import { useFetchApplication } from "@/app/services/hooks/hooks";
+
 interface ExtendedProduct2Application extends Product2Application {
   product: Product;
 }
@@ -42,43 +44,17 @@ export default function Application({
 }: {
   params: { applicationId: string };
 }) {
-  const [application, setApplication] = useState<
-    ExtendedApplication | undefined
-  >();
-  const [linkedProducts, setLinkedProducts] = useState<Product[]>([]);
+  const {
+    data: application,
+    isError,
+    isLoading,
+  } = useFetchApplication(params.applicationId);
+
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
   const [popUpData, setPopUpData] = useState([]);
 
   const sideNavSections = ["Basic Details", "Products"];
-
-  const fetchApplication = async () => {
-    try {
-      const { data } = await axios.get(
-        `/api/applications/${params.applicationId}`
-      );
-      console.log("usequery", data);
-      const productsArr = data?.products2Application?.map(
-        (item: any) => item.product
-      );
-      setApplication(data);
-      setLinkedProducts(productsArr);
-
-      return data;
-    } catch (error) {
-      toast.error(`"${error}`);
-    }
-  };
-
-  const {
-    data: applicationData,
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery({
-    queryKey: ["application"],
-    queryFn: fetchApplication,
-  });
 
   type ObjectWithId = {
     id: string;
@@ -101,15 +77,18 @@ export default function Application({
 
   const addProduct = async () => {
     setAddRecordPopupVisible("product");
-    const data = await fetchPopUpData(`/api/products`, linkedProducts);
-    setPopUpData(data);
+    const response = await fetchPopUpData(
+      `/api/products`,
+      application?.applicationProducts
+    );
+    setPopUpData(response);
   };
 
   const addCountry = async () => {
     setAddRecordPopupVisible("country");
     const data = await fetchPopUpData(
       `/api/countries`,
-      application?.countries || []
+      application?.applicationData.countries || []
     );
     setPopUpData(data);
   };
@@ -121,10 +100,13 @@ export default function Application({
         {application && (
           <>
             {/* RECORD ACTIONS WIZARD */}
-            <RecordActions data={applicationData} />
+            <RecordActions data={application.applicationData} />
             {/* BASIC */}
             <Section name="Basic Details" expanded={true}>
-              <BasicDetailsForm data={applicationData} type="edit" />
+              <BasicDetailsForm
+                data={application.applicationData}
+                type="edit"
+              />
             </Section>
 
             {/* COUNTRIES */}
@@ -138,7 +120,7 @@ export default function Application({
               </Button>
               <DataTable
                 columns={applicationCountryColumns}
-                data={application.countries}
+                data={application.applicationData.countries}
               />
               {addRecordPopupVisible === "country" && (
                 <AddRecordPopup
@@ -164,7 +146,7 @@ export default function Application({
               </Button>
               <DataTable
                 columns={applicationProductColumns}
-                data={application.products2Application}
+                data={application.applicationData.products2Application}
               />
               {addRecordPopupVisible === "product" && (
                 <AddRecordPopup
@@ -183,7 +165,7 @@ export default function Application({
             <Section name="Registrations" expanded={false}>
               <DataTable
                 columns={applicationRegistrationColumns}
-                data={application.registrations}
+                data={application.applicationData.registrations}
               />
             </Section>
           </>

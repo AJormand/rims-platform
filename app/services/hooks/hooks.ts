@@ -3,6 +3,7 @@ import {
   fetchProducts,
   fetchProduct,
   fetchApplications,
+  fetchApplication,
   fetchRegistrations,
   fetchRegistrationsForProduct,
   // fetchRegistration,
@@ -46,6 +47,13 @@ export const useFetchApplications = () => {
   return useQuery({
     queryKey: ["applications"],
     queryFn: () => fetchApplications(),
+  });
+};
+
+export const useFetchApplication = (applicaitonId: string) => {
+  return useQuery({
+    queryKey: ["application", applicaitonId],
+    queryFn: () => fetchApplication(applicaitonId),
   });
 };
 
