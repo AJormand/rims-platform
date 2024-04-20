@@ -14,7 +14,8 @@
 - Done fix status bar rerender issue
 - Done Creating Registrations
 - Done PRoduct status bar issue
-- clicking on product on application doesnt properly fetch product
+- Done clicking on product on application doesnt properly fetch product
+- Error - Get Registrations for product
 - add link to Registrations inside Applicaiton-Registrations joint
 - Product Status button stopped working
 - Registration - edit route
