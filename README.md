@@ -16,6 +16,7 @@
 - Done PRoduct status bar issue
 - Done clicking on product on application doesnt properly fetch product
 - Done Product Status button stopped working
+- in progress - finish product localstorage hook
 - Error - Get Registrations for product
 - add link to Registrations inside Applicaiton-Registrations joint
 
