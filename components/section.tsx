@@ -4,14 +4,22 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { boolean } from "zod";
 
 interface SectionProps {
   name: string;
   children: React.ReactNode;
   expanded: boolean;
+  defaultAccordionValue: string[];
 }
 
-export const Section = ({ name, children, expanded }: SectionProps) => {
+export const Section = ({
+  name,
+  children,
+  defaultAccordionValue,
+}: SectionProps) => {
+  const expanded = defaultAccordionValue?.includes("Basic Details");
+
   return (
     <div id={name}>
       <Accordion

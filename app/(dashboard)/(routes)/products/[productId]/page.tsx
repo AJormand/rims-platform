@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 import { applicationColumns } from "./_components/application-columns";
 import { activeSubstanceColumns } from "./_components/active-substance-columns";
@@ -33,11 +34,34 @@ interface ProductSubstance extends Product2Substance {
 }
 
 export default function Product({ params }: { params: { productId: string } }) {
+  const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
+    "expanded-product-sections",
+    { "Basic Details": true }
+  );
   const [popUpData, setPopUpData] = useState([]);
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
 
   const { data, isError, isLoading } = usefetchProduct(params.productId);
+
+  console.log(expanded);
+
+  const defaultAccordionValue: string[] = Object.keys(expanded).reduce(
+    (acc: string[], key: string) => {
+      if (expanded[key]) {
+        acc.push(key);
+      }
+      return acc;
+    },
+    []
+  );
+
+  const onExpand = (name: string) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
 
   const addRecordPopup = async (
     popupName: string,
@@ -62,15 +86,22 @@ export default function Product({ params }: { params: { productId: string } }) {
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />
+      <button onClick={() => onExpand("123")}>XXXXX</button>
       {isLoading && <div>Loading...</div>}
       {isError && <div>Error</div>}
       {data && (
         <div className="w-full px-6">
           <StatusBar data={data.productData.data} cv={"product-status"} />
           {/* BASIC DETAILS */}
-          <Section name="Basic Details" expanded={true}>
-            <BasicDetailsForm data={data?.productData.data} type="edit" />
-          </Section>
+          <div onClick={() => onExpand("Basic Details")}>
+            <Section
+              name="Basic Details"
+              expanded={true}
+              defaultAccordionValue={defaultAccordionValue}
+            >
+              <BasicDetailsForm data={data?.productData.data} type="edit" />
+            </Section>
+          </div>
 
           {/* ACTIVE SUBSTANCES */}
           <Section name="Active Substances" expanded={false}>
