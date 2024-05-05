@@ -9,7 +9,6 @@ import { boolean } from "zod";
 interface SectionProps {
   name: string;
   children: React.ReactNode;
-  expanded: boolean;
   defaultAccordionValue: string[];
 }
 

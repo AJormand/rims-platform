@@ -96,15 +96,14 @@ export default function Product({ params }: { params: { productId: string } }) {
           <div onClick={() => onExpand("Basic Details")}>
             <Section
               name="Basic Details"
-              expanded={true}
-              defaultAccordionValue={defaultAccordionValue}
+              defaultAccordionValue={defaultAccordionValue} 
             >
               <BasicDetailsForm data={data?.productData.data} type="edit" />
             </Section>
           </div>
 
           {/* ACTIVE SUBSTANCES */}
-          <Section name="Active Substances" expanded={false}>
+          <Section name="Active Substances" defaultAccordionValue={defaultAccordionValue}>
             <Button
               size={"sm"}
               variant={"outline"}
@@ -140,7 +139,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           </Section>
 
           {/* INACTIVE SUBSTANCES */}
-          <Section name="Inactive Substances" expanded={false}>
+          <Section name="Inactive Substances" defaultAccordionValue={defaultAccordionValue}>
             <Button
               size={"sm"}
               variant={"outline"}
@@ -177,7 +176,7 @@ export default function Product({ params }: { params: { productId: string } }) {
 
           {/* APPLICATIONS */}
 
-          <Section name="Applications" expanded={false}>
+          <Section name="Applications" defaultAccordionValue={defaultAccordionValue}>
             <DataTable
               columns={applicationColumns}
               data={data.productData?.applications}
@@ -185,7 +184,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           </Section>
 
           {/* REGISTRATIONS */}
-          <Section name="Registrations" expanded={false}>
+          <Section name="Registrations" defaultAccordionValue={defaultAccordionValue}>
             <DataTable
               columns={applicationColumns}
               data={data.registrationsData}
