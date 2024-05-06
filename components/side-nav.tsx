@@ -1,11 +1,33 @@
 import { ChevronDown } from "lucide-react";
 
-export const SideNav = ({ sections }: { sections: string[] }) => {
+interface SideNavProps {
+  sections: string[];
+  onClick?: (name: string) => void;
+  setExpandedSections: (value: any) => void;
+}
+
+export const SideNav = ({
+  sections,
+  onClick,
+  setExpandedSections,
+}: SideNavProps) => {
+  const handleClick = (name: string) => {
+    setExpandedSections((prev: any) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
+
   return (
     <div className="flex flex-col w-[200px] border-r p-4 gap-1 text-sm underline">
       <div className="flex- flex-col sticky top-5">
         {sections.map((section) => (
-          <a href={`#${section}`} key={section} className="flex">
+          <a
+            href={`#${section}`}
+            key={section}
+            onClick={() => handleClick(section)}
+            className="flex"
+          >
             {section} <ChevronDown size={"14"} />
           </a>
         ))}

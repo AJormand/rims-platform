@@ -116,7 +116,10 @@ export default function Application({
 
   return (
     <div className="flex w-full h-screen-minus-navbar">
-      <SideNav sections={sideNavSections} />
+      <SideNav
+        sections={sideNavSections}
+        setExpandedSections={setExpandedSections}
+      />
       <div className="w-full px-6">
         {application && (
           <>

@@ -82,7 +82,11 @@ export default function Product({ params }: { params: { productId: string } }) {
 
   return (
     <div className="flex w-full h-screen-minus-navbar">
-      <SideNav sections={sideNavSections} />
+      <SideNav
+        sections={sideNavSections}
+        onClick={handleSectionClick}
+        setExpandedSections={setExpandedSections}
+      />
       {isLoading && <div>Loading...</div>}
       {isError && <div>Error</div>}
       {data && (
