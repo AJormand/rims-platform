@@ -34,30 +34,27 @@ interface ProductSubstance extends Product2Substance {
 }
 
 export default function Product({ params }: { params: { productId: string } }) {
-  const [expandedSections, setExpandedSections] = useLocalStorage<
-    Record<string, any>
-  >("expanded-product-sections", { "Basic Details": true });
+  const [expandedSectionsLocalStorage, setExpandedSectionsLocalStorage] =
+    useLocalStorage<Record<string, any>>("expanded-product-sections", {
+      "Basic Details": true,
+    });
+  const [expandedSections, setExpandedSections] = useState<Record<string, any>>(
+    expandedSectionsLocalStorage
+  );
+
   const [popUpData, setPopUpData] = useState([]);
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
 
   const { data, isError, isLoading } = usefetchProduct(params.productId);
 
-  const defaultAccordionValue: string[] = Object.keys(expandedSections).reduce(
-    (acc: string[], key: string) => {
-      if (expandedSections[key]) {
-        acc.push(key);
-      }
-      return acc;
-    },
-    []
-  );
-
   const handleSectionClick = (name: string) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [name]: !prev[name],
-    }));
+    const newExpandedSections = {
+      ...expandedSectionsLocalStorage,
+      [name]: !expandedSectionsLocalStorage[name],
+    };
+    setExpandedSections(newExpandedSections);
+    setExpandedSectionsLocalStorage(newExpandedSections);
   };
 
   const addRecordPopup = async (
@@ -95,7 +92,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           {/* BASIC DETAILS */}
           <Section
             name="Basic Details"
-            defaultAccordionValue={defaultAccordionValue}
+            expandedSections={expandedSections}
             onClick={handleSectionClick}
           >
             <BasicDetailsForm data={data?.productData.data} type="edit" />
@@ -104,7 +101,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           {/* ACTIVE SUBSTANCES */}
           <Section
             name="Active Substances"
-            defaultAccordionValue={defaultAccordionValue}
+            expandedSections={expandedSections}
             onClick={handleSectionClick}
           >
             <Button
@@ -144,7 +141,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           {/* INACTIVE SUBSTANCES */}
           <Section
             name="Inactive Substances"
-            defaultAccordionValue={defaultAccordionValue}
+            expandedSections={expandedSections}
             onClick={handleSectionClick}
           >
             <Button
@@ -185,7 +182,7 @@ export default function Product({ params }: { params: { productId: string } }) {
 
           <Section
             name="Applications"
-            defaultAccordionValue={defaultAccordionValue}
+            expandedSections={expandedSections}
             onClick={handleSectionClick}
           >
             <DataTable
@@ -197,7 +194,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           {/* REGISTRATIONS */}
           <Section
             name="Registrations"
-            defaultAccordionValue={defaultAccordionValue}
+            expandedSections={expandedSections}
             onClick={handleSectionClick}
           >
             <DataTable

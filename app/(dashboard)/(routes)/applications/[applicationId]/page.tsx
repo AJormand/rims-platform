@@ -128,7 +128,7 @@ export default function Application({
             {/* BASIC */}
             <Section
               name="Basic Details"
-              defaultAccordionValue={defaultAccordionValue}
+              expandedSections={defaultAccordionValue}
               onClick={handleSectionClick}
             >
               <BasicDetailsForm
@@ -140,7 +140,7 @@ export default function Application({
             {/* COUNTRIES */}
             <Section
               name="Countries"
-              defaultAccordionValue={defaultAccordionValue}
+              expandedSections={defaultAccordionValue}
               onClick={handleSectionClick}
             >
               <Button
@@ -170,7 +170,7 @@ export default function Application({
             {/* PRODUCTS */}
             <Section
               name="Products"
-              defaultAccordionValue={defaultAccordionValue}
+              expandedSections={defaultAccordionValue}
               onClick={handleSectionClick}
             >
               <Button
@@ -200,7 +200,7 @@ export default function Application({
             {/* REGISTRATIONS */}
             <Section
               name="Registrations"
-              defaultAccordionValue={defaultAccordionValue}
+              expandedSections={defaultAccordionValue}
               onClick={handleSectionClick}
             >
               <DataTable

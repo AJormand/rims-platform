@@ -11,12 +11,12 @@ export const SideNav = ({
   onClick,
   setExpandedSections,
 }: SideNavProps) => {
-  const handleClick = (name: string) => {
-    setExpandedSections((prev: any) => ({
-      ...prev,
-      [name]: !prev[name],
-    }));
-  };
+  // const handleClick = (name: string) => {
+  //   setExpandedSections((prev: Record<string, any>) => ({
+  //     ...prev,
+  //     [name]: !prev[name],
+  //   }));
+  // };
 
   return (
     <div className="flex flex-col w-[200px] border-r p-4 gap-1 text-sm underline">
@@ -25,8 +25,8 @@ export const SideNav = ({
           <a
             href={`#${section}`}
             key={section}
-            onClick={() => handleClick(section)}
-            className="flex"
+            onClick={() => onClick?.(section)}
+            className="flex py-1"
           >
             {section} <ChevronDown size={"14"} />
           </a>

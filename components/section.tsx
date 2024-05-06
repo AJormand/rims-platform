@@ -1,3 +1,6 @@
+"use client";
+import { useState, useEffect } from "react";
+
 import {
   Accordion,
   AccordionContent,
@@ -9,25 +12,32 @@ import { boolean } from "zod";
 interface SectionProps {
   name: string;
   children: React.ReactNode;
-  defaultAccordionValue: string[];
+  expandedSections: Record<string, any>;
   onClick?: (name: string) => void;
 }
 
 export const Section = ({
   name,
   children,
-  defaultAccordionValue,
+  expandedSections,
   onClick,
 }: SectionProps) => {
-  const expanded = defaultAccordionValue?.includes(name);
-  console.log("xxx", defaultAccordionValue);
+  const isSectionExpanded = expandedSections[name] === true;
+  console.log(expandedSections);
+  const [key, setKey] = useState(`${name}-${isSectionExpanded}`); // Key to trigger re-render of Accordion component
+
+  useEffect(() => {
+    // changing of key will trigger re-render of Accordion component
+    setKey(`${name}-${isSectionExpanded}`);
+  }, [isSectionExpanded]);
 
   return (
     <div id={name} onClick={() => onClick?.(name)}>
       <Accordion
         type="single"
         collapsible
-        defaultValue={expanded ? "item-1" : ""}
+        defaultValue={isSectionExpanded ? "item-1" : ""}
+        key={key}
       >
         <AccordionItem value="item-1">
           <AccordionTrigger>{name}</AccordionTrigger>
