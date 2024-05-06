@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useLocalStorage } from "usehooks-ts";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -50,11 +51,29 @@ export default function Application({
     isLoading,
   } = useFetchApplication(params.applicationId);
 
+  const [expandedSections, setExpandedSections] = useLocalStorage<
+    Record<string, any>
+  >("expanded-product-sections", { "Basic Details": true });
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
   const [popUpData, setPopUpData] = useState([]);
 
-  const sideNavSections = ["Basic Details", "Products"];
+  const defaultAccordionValue: string[] = Object.keys(expandedSections).reduce(
+    (acc: string[], key: string) => {
+      if (expandedSections[key]) {
+        acc.push(key);
+      }
+      return acc;
+    },
+    []
+  );
+
+  const handleSectionClick = (name: string) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
 
   type ObjectWithId = {
     id: string;
@@ -93,6 +112,8 @@ export default function Application({
     setPopUpData(data);
   };
 
+  const sideNavSections = ["Basic Details", "Products"];
+
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />
@@ -102,7 +123,11 @@ export default function Application({
             {/* RECORD ACTIONS WIZARD */}
             <RecordActions data={application.applicationData} />
             {/* BASIC */}
-            <Section name="Basic Details" expanded={true}>
+            <Section
+              name="Basic Details"
+              defaultAccordionValue={defaultAccordionValue}
+              onClick={handleSectionClick}
+            >
               <BasicDetailsForm
                 data={application.applicationData}
                 type="edit"
@@ -110,7 +135,11 @@ export default function Application({
             </Section>
 
             {/* COUNTRIES */}
-            <Section name="Countries" expanded={false}>
+            <Section
+              name="Countries"
+              defaultAccordionValue={defaultAccordionValue}
+              onClick={handleSectionClick}
+            >
               <Button
                 size={"sm"}
                 variant={"outline"}
@@ -136,7 +165,11 @@ export default function Application({
             </Section>
 
             {/* PRODUCTS */}
-            <Section name="Products" expanded={false}>
+            <Section
+              name="Products"
+              defaultAccordionValue={defaultAccordionValue}
+              onClick={handleSectionClick}
+            >
               <Button
                 size={"sm"}
                 variant={"outline"}
@@ -162,7 +195,11 @@ export default function Application({
             </Section>
 
             {/* REGISTRATIONS */}
-            <Section name="Registrations" expanded={false}>
+            <Section
+              name="Registrations"
+              defaultAccordionValue={defaultAccordionValue}
+              onClick={handleSectionClick}
+            >
               <DataTable
                 columns={applicationRegistrationColumns}
                 data={application.applicationData.registrations}
