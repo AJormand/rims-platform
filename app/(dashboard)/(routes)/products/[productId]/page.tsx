@@ -34,21 +34,18 @@ interface ProductSubstance extends Product2Substance {
 }
 
 export default function Product({ params }: { params: { productId: string } }) {
-  const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
-    "expanded-product-sections",
-    { "Basic Details": true }
-  );
+  const [expandedSections, setExpandedSections] = useLocalStorage<
+    Record<string, any>
+  >("expanded-product-sections", { "Basic Details": true });
   const [popUpData, setPopUpData] = useState([]);
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
 
   const { data, isError, isLoading } = usefetchProduct(params.productId);
 
-  console.log(expanded);
-
-  const defaultAccordionValue: string[] = Object.keys(expanded).reduce(
+  const defaultAccordionValue: string[] = Object.keys(expandedSections).reduce(
     (acc: string[], key: string) => {
-      if (expanded[key]) {
+      if (expandedSections[key]) {
         acc.push(key);
       }
       return acc;
@@ -56,8 +53,8 @@ export default function Product({ params }: { params: { productId: string } }) {
     []
   );
 
-  const onExpand = (name: string) => {
-    setExpanded((prev) => ({
+  const handleSectionClick = (name: string) => {
+    setExpandedSections((prev) => ({
       ...prev,
       [name]: !prev[name],
     }));
@@ -86,24 +83,26 @@ export default function Product({ params }: { params: { productId: string } }) {
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />
-      <button onClick={() => onExpand("123")}>XXXXX</button>
       {isLoading && <div>Loading...</div>}
       {isError && <div>Error</div>}
       {data && (
         <div className="w-full px-6">
           <StatusBar data={data.productData.data} cv={"product-status"} />
           {/* BASIC DETAILS */}
-          <div onClick={() => onExpand("Basic Details")}>
-            <Section
-              name="Basic Details"
-              defaultAccordionValue={defaultAccordionValue} 
-            >
-              <BasicDetailsForm data={data?.productData.data} type="edit" />
-            </Section>
-          </div>
+          <Section
+            name="Basic Details"
+            defaultAccordionValue={defaultAccordionValue}
+            onClick={handleSectionClick}
+          >
+            <BasicDetailsForm data={data?.productData.data} type="edit" />
+          </Section>
 
           {/* ACTIVE SUBSTANCES */}
-          <Section name="Active Substances" defaultAccordionValue={defaultAccordionValue}>
+          <Section
+            name="Active Substances"
+            defaultAccordionValue={defaultAccordionValue}
+            onClick={handleSectionClick}
+          >
             <Button
               size={"sm"}
               variant={"outline"}
@@ -139,7 +138,11 @@ export default function Product({ params }: { params: { productId: string } }) {
           </Section>
 
           {/* INACTIVE SUBSTANCES */}
-          <Section name="Inactive Substances" defaultAccordionValue={defaultAccordionValue}>
+          <Section
+            name="Inactive Substances"
+            defaultAccordionValue={defaultAccordionValue}
+            onClick={handleSectionClick}
+          >
             <Button
               size={"sm"}
               variant={"outline"}
@@ -176,7 +179,11 @@ export default function Product({ params }: { params: { productId: string } }) {
 
           {/* APPLICATIONS */}
 
-          <Section name="Applications" defaultAccordionValue={defaultAccordionValue}>
+          <Section
+            name="Applications"
+            defaultAccordionValue={defaultAccordionValue}
+            onClick={handleSectionClick}
+          >
             <DataTable
               columns={applicationColumns}
               data={data.productData?.applications}
@@ -184,7 +191,11 @@ export default function Product({ params }: { params: { productId: string } }) {
           </Section>
 
           {/* REGISTRATIONS */}
-          <Section name="Registrations" defaultAccordionValue={defaultAccordionValue}>
+          <Section
+            name="Registrations"
+            defaultAccordionValue={defaultAccordionValue}
+            onClick={handleSectionClick}
+          >
             <DataTable
               columns={applicationColumns}
               data={data.registrationsData}

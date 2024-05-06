@@ -10,17 +10,20 @@ interface SectionProps {
   name: string;
   children: React.ReactNode;
   defaultAccordionValue: string[];
+  onClick?: (name: string) => void;
 }
 
 export const Section = ({
   name,
   children,
   defaultAccordionValue,
+  onClick,
 }: SectionProps) => {
-  const expanded = defaultAccordionValue?.includes("Basic Details");
+  const expanded = defaultAccordionValue?.includes(name);
+  console.log("xxx", defaultAccordionValue);
 
   return (
-    <div id={name}>
+    <div id={name} onClick={() => onClick?.(name)}>
       <Accordion
         type="single"
         collapsible
