@@ -42,7 +42,7 @@ export const activeSubstanceColumns: ColumnDef<ActiveSubstance>[] = [
 
       return (
         <Link
-          href={`/applications/${substance.id}`}
+          href={`/substances/${substance.substance.id}`}
           className="underline text-sky-700"
         >
           {substance.substance.name}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 import { applicationColumns } from "./_components/application-columns";
+import { registrationColumns } from "./_components/registration-columns";
 import { activeSubstanceColumns } from "./_components/active-substance-columns";
 import { BasicDetailsForm } from "../_components/basic-details-form";
 import { activeSubstanceAddRecordPopupColumns } from "./_components/active-substance-add-record-popup-columns";
@@ -198,7 +199,7 @@ export default function Product({ params }: { params: { productId: string } }) {
             onClick={handleSectionClick}
           >
             <DataTable
-              columns={applicationColumns}
+              columns={registrationColumns}
               data={data.registrationsData}
             />
           </Section>
