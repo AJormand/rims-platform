@@ -47,11 +47,7 @@ export default function Substance({
 
   return (
     <div className="flex w-full h-screen-minus-navbar">
-      <SideNav
-        sections={sideNavSections}
-        onClick={handleSectionClick}
-        setExpandedSections={setExpandedSections}
-      />
+      <SideNav sections={sideNavSections} onClick={handleSectionClick} />
       <div className="w-full px-6">
         {substanceData && (
           <Section
