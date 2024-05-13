@@ -6,7 +6,7 @@ import {
   fetchApplication,
   fetchRegistrations,
   fetchRegistrationsForProduct,
-  // fetchRegistration,
+  fetchRegistration,
   fetchSubstances,
   deleteSubstance,
   fetchOrganizations,
@@ -65,12 +65,12 @@ export const useFetchRegistrations = () => {
   });
 };
 
-// export const usefetchRegistration = (registrationId: string) => {
-//   return useQuery({
-//     queryKey: ["registration"],
-//     queryFn: () => fetchRegistration(registrationId),
-//   });
-// };
+export const useFetchRegistration = (registrationId: string) => {
+  return useQuery({
+    queryKey: ["registration"],
+    queryFn: () => fetchRegistration(registrationId),
+  });
+};
 
 //SUBSTANCE
 export const useFetchSubstances = () => {

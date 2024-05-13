@@ -1,9 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 
 import {
   Application as ApplicationType,
@@ -12,15 +11,14 @@ import {
   Product2Application,
   Registration,
 } from "@prisma/client";
+
 import { SideNav } from "@/components/side-nav";
-import { BasicDetailsForm } from "../_components/basic-details-form";
-
 import { Section } from "@/components/section";
-
 import { Button } from "@/components/ui/button";
 import { AddRecordPopup } from "@/components/add-record-popup/add-record-popup";
 import { DataTable } from "@/components/ui/data-table";
 
+import { BasicDetailsForm } from "../_components/basic-details-form";
 import { productAddRecordPopupColumns } from "./_components/product-add-record-popup-columns";
 import { applicationProductColumns } from "./_components/application-product-columns";
 import { applicationCountryColumns } from "./_components/application-country-columns";
