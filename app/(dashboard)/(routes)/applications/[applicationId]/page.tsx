@@ -49,15 +49,16 @@ export default function Application({
     isLoading,
   } = useFetchApplication(params.applicationId);
 
-  const [expandedSections, setExpandedSections] = useLocalStorage<
-    Record<string, any>
-  >("expanded-application-sections", { "Basic Details": true });
+  const [expandedSectionsLocalStorage, setExpandedSectionsLocalStorage] =
+    useLocalStorage<Record<string, any>>("expanded-application-sections", {
+      "Basic Details": true,
+    });
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
   const [popUpData, setPopUpData] = useState([]);
 
   const handleSectionClick = (name: string) => {
-    setExpandedSections((prev) => ({
+    setExpandedSectionsLocalStorage((prev) => ({
       ...prev,
       [name]: !prev[name],
     }));
@@ -113,7 +114,7 @@ export default function Application({
             {/* BASIC */}
             <Section
               name="Basic Details"
-              expandedSections={expandedSections}
+              expandedSections={expandedSectionsLocalStorage}
               onClick={handleSectionClick}
             >
               <BasicDetailsForm
@@ -125,7 +126,7 @@ export default function Application({
             {/* COUNTRIES */}
             <Section
               name="Countries"
-              expandedSections={expandedSections}
+              expandedSections={expandedSectionsLocalStorage}
               onClick={handleSectionClick}
             >
               <Button
@@ -155,7 +156,7 @@ export default function Application({
             {/* PRODUCTS */}
             <Section
               name="Products"
-              expandedSections={expandedSections}
+              expandedSections={expandedSectionsLocalStorage}
               onClick={handleSectionClick}
             >
               <Button
@@ -185,7 +186,7 @@ export default function Application({
             {/* REGISTRATIONS */}
             <Section
               name="Registrations"
-              expandedSections={expandedSections}
+              expandedSections={expandedSectionsLocalStorage}
               onClick={handleSectionClick}
             >
               <DataTable

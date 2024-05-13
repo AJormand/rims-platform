@@ -33,15 +33,16 @@ export default function Registration({
 
   console.log(registration?.data);
 
-  const [expandedSections, setExpandedSections] = useLocalStorage<
-    Record<string, any>
-  >("expanded-registration-sections", { "Basic Details": true });
+  const [expandedSectionsLocalStorage, setExpandedSectionsLocalStorage] =
+    useLocalStorage<Record<string, any>>("expanded-registration-sections", {
+      "Basic Details": true,
+    });
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
   const [popUpData, setPopUpData] = useState([]);
 
   const handleSectionClick = (name: string) => {
-    setExpandedSections((prev) => ({
+    setExpandedSectionsLocalStorage((prev) => ({
       ...prev,
       [name]: !prev[name],
     }));
@@ -62,7 +63,7 @@ export default function Registration({
             {/* BASIC */}
             <Section
               name="Basic Details"
-              expandedSections={expandedSections}
+              expandedSections={expandedSectionsLocalStorage}
               onClick={handleSectionClick}
             >
               <></>
