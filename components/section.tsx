@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 
 import {
   Accordion,
@@ -7,7 +6,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { boolean } from "zod";
+
+import { Skeleton } from "./ui/skeleton";
+
+import { ChevronDown } from "lucide-react";
 
 interface SectionProps {
   name: string;
@@ -36,6 +38,15 @@ export const Section = ({
           <AccordionContent>{children}</AccordionContent>
         </AccordionItem>
       </Accordion>
+    </div>
+  );
+};
+
+Section.Skeleton = function skeletonSection() {
+  return (
+    <div className="w-full border-b-[1px] border-gray-200 py-4 flex justify-between">
+      <Skeleton className="h-8 w-48 rounded-sm" />
+      <ChevronDown className="w-4 text-gray-400" />
     </div>
   );
 };

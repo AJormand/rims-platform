@@ -48,10 +48,6 @@ export default function Registration({
     }));
   };
 
-  type ObjectWithId = {
-    id: string;
-  };
-
   const sideNavSections = ["Basic Details", "Products"];
 
   return (

@@ -17,6 +17,7 @@
 - Done clicking on product on application doesnt properly fetch product
 - Done Product Status button stopped working
 - Done - finish product localstorage hook --> localstorage should be red from main page and then pushed to the sections
+- In Progress - Product Skeleton -> fix overlaping
 - In Progress - Edit Registration
 - Error - Get Registrations for product
 - add link to Registrations inside Applicaiton-Registrations joint

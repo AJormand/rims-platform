@@ -73,6 +73,21 @@ export default function Product({ params }: { params: { productId: string } }) {
     "Registrations",
   ];
 
+  if (isLoading) {
+    return (
+      <div className="flex w-full h-screen-minus-navbar">
+        <SideNav sections={sideNavSections} />
+        <div className="flex flex-col w-full px-6">
+          <BasicDetailsForm.Skeleton />
+          <Section.Skeleton />
+          <Section.Skeleton />
+          <Section.Skeleton />
+          <Section.Skeleton />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} onClick={handleSectionClick} />
