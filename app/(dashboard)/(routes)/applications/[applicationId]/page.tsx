@@ -53,7 +53,7 @@ export default function Application({
 
   const [expandedSections, setExpandedSections] = useLocalStorage<
     Record<string, any>
-  >("expanded-product-sections", { "Basic Details": true });
+  >("expanded-application-sections", { "Basic Details": true });
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
   const [popUpData, setPopUpData] = useState([]);
