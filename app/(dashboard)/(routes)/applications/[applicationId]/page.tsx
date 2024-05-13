@@ -58,16 +58,6 @@ export default function Application({
     useState<string>("");
   const [popUpData, setPopUpData] = useState([]);
 
-  const defaultAccordionValue: string[] = Object.keys(expandedSections).reduce(
-    (acc: string[], key: string) => {
-      if (expandedSections[key]) {
-        acc.push(key);
-      }
-      return acc;
-    },
-    []
-  );
-
   const handleSectionClick = (name: string) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -128,7 +118,7 @@ export default function Application({
             {/* BASIC */}
             <Section
               name="Basic Details"
-              expandedSections={defaultAccordionValue}
+              expandedSections={expandedSections}
               onClick={handleSectionClick}
             >
               <BasicDetailsForm
@@ -140,7 +130,7 @@ export default function Application({
             {/* COUNTRIES */}
             <Section
               name="Countries"
-              expandedSections={defaultAccordionValue}
+              expandedSections={expandedSections}
               onClick={handleSectionClick}
             >
               <Button
@@ -170,7 +160,7 @@ export default function Application({
             {/* PRODUCTS */}
             <Section
               name="Products"
-              expandedSections={defaultAccordionValue}
+              expandedSections={expandedSections}
               onClick={handleSectionClick}
             >
               <Button
@@ -200,7 +190,7 @@ export default function Application({
             {/* REGISTRATIONS */}
             <Section
               name="Registrations"
-              expandedSections={defaultAccordionValue}
+              expandedSections={expandedSections}
               onClick={handleSectionClick}
             >
               <DataTable
