@@ -19,6 +19,8 @@
 - Done - finish product localstorage hook --> localstorage should be red from main page and then pushed to the sections
 - In Progress - Product Skeleton -> fix overlaping
 - In Progress - Edit Registration
+- todo - add skeleton to other objects
+- todo - add localstorage for open sections to other objects
 - Error - Get Registrations for product
 - add link to Registrations inside Applicaiton-Registrations joint
 
