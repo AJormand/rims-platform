@@ -24,6 +24,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "./skeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -147,3 +148,64 @@ export function DataTable<TData, TValue>({
     </div>
   );
 }
+
+DataTable.skeleton = function skeletonDataTable() {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="border-[1px] h-10 w-80 rounded-md text-sm text-gray-400 p-2">
+        Filter...
+      </div>
+      <div className="border-[1px] rounded-md">
+        <div className="border-b-[1px] flex justify-between py-4 pl-2 pr-24">
+          <Skeleton className="h-6 w-48 rounded-sm" />
+          <Skeleton className="h-6 w-28 rounded-sm" />
+          <Skeleton className="h-6 w-24 rounded-sm" />
+          <Skeleton className="h-6 w-20 rounded-sm" />
+          <div className="font-bold">...</div>
+        </div>
+        <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
+          <Skeleton className="h-6 w-48 rounded-sm" />
+          <Skeleton className="h-6 w-28 rounded-sm" />
+          <Skeleton className="h-6 w-24 rounded-sm" />
+          <Skeleton className="h-6 w-20 rounded-sm" />
+          <div className="font-bold">...</div>
+        </div>
+        <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
+          <Skeleton className="h-6 w-48 rounded-sm" />
+          <Skeleton className="h-6 w-28 rounded-sm" />
+          <Skeleton className="h-6 w-24 rounded-sm" />
+          <Skeleton className="h-6 w-20 rounded-sm" />
+          <div className="font-bold">...</div>
+        </div>
+        <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
+          <Skeleton className="h-6 w-48 rounded-sm" />
+          <Skeleton className="h-6 w-28 rounded-sm" />
+          <Skeleton className="h-6 w-24 rounded-sm" />
+          <Skeleton className="h-6 w-20 rounded-sm" />
+          <div className="font-bold">...</div>
+        </div>
+        <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
+          <Skeleton className="h-6 w-48 rounded-sm" />
+          <Skeleton className="h-6 w-28 rounded-sm" />
+          <Skeleton className="h-6 w-24 rounded-sm" />
+          <Skeleton className="h-6 w-20 rounded-sm" />
+          <div className="font-bold">...</div>
+        </div>
+        <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
+          <Skeleton className="h-6 w-48 rounded-sm" />
+          <Skeleton className="h-6 w-28 rounded-sm" />
+          <Skeleton className="h-6 w-24 rounded-sm" />
+          <Skeleton className="h-6 w-20 rounded-sm" />
+          <div className="font-bold">...</div>
+        </div>
+        <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
+          <Skeleton className="h-6 w-48 rounded-sm" />
+          <Skeleton className="h-6 w-28 rounded-sm" />
+          <Skeleton className="h-6 w-24 rounded-sm" />
+          <Skeleton className="h-6 w-20 rounded-sm" />
+          <div className="font-bold">...</div>
+        </div>
+      </div>
+    </div>
+  );
+};

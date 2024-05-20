@@ -79,6 +79,7 @@ export default function Product({ params }: { params: { productId: string } }) {
         <SideNav sections={sideNavSections} />
         <div className="flex flex-col w-full px-6">
           <BasicDetailsForm.Skeleton />
+          <div className="border-b-[1px] mt-4"></div>
           <Section.Skeleton />
           <Section.Skeleton />
           <Section.Skeleton />

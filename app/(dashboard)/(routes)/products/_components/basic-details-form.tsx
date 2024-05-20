@@ -211,7 +211,7 @@ export const BasicDetailsForm: React.FC<{
 
 BasicDetailsForm.Skeleton = function skeletonBasicDetailsForm() {
   return (
-    <div className="flex flex-col w-full h-72 border-b-[1px] border-gray-200">
+    <div className="flex flex-col w-full h-72 border-gray-200 mb-16">
       {/* Status button component */}
       <div className="flex items-center gap-4 my-2 pb-2 border-b-2">
         <Skeleton className="h-6 w-60 rounded-md" />
