@@ -7,9 +7,15 @@ import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
 export default function ControlledVocabularies() {
   const { data, isError, isLoading } = useFetchControlledVocabularies();
 
+  if (isLoading)
+    return (
+      <div className="container mx-auto py-10">
+        <DataTable.skeleton />
+      </div>
+    );
+
   return (
     <div className="container mx-auto py-10">
-      {isLoading && <div>Loading...</div>}
       {isError && <div>Error</div>}
       {data && (
         <DataTable

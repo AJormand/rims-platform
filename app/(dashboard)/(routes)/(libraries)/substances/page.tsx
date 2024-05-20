@@ -8,9 +8,15 @@ import { useFetchSubstances } from "@/app/services/hooks/hooks";
 export default function Substances() {
   const { data, isError, isLoading } = useFetchSubstances();
 
+  if (isLoading)
+    return (
+      <div className="container mx-auto py-10">
+        <DataTable.skeleton />
+      </div>
+    );
+
   return (
     <div className="container mx-auto py-10">
-      {isLoading && <div>Loading...</div>}
       {isError && <div>Error</div>}
       {data && (
         <DataTable
