@@ -50,6 +50,22 @@ export default function Registration({
 
   const sideNavSections = ["Basic Details", "Products"];
 
+  if (isLoading) {
+    return (
+      <div className="flex w-full h-screen-minus-navbar">
+        <SideNav sections={sideNavSections} />
+        <div className="flex flex-col w-full px-6">
+          <BasicDetailsForm.Skeleton />
+          <div className="border-b-[1px] mt-4"></div>
+          <Section.Skeleton />
+          <Section.Skeleton />
+          <Section.Skeleton />
+          <Section.Skeleton />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />

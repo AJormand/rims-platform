@@ -26,13 +26,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { ControlledVocabulary } from "@prisma/client";
 
@@ -45,7 +39,9 @@ const formSchema = z.object({
 export const BasicDetailsForm: React.FC<{
   data: RegistrationType | null;
   type: "new" | "edit";
-}> = ({ data, type }) => {
+}> & {
+  Skeleton: React.FC<{}>;
+} = ({ data, type }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
@@ -150,5 +146,52 @@ export const BasicDetailsForm: React.FC<{
         </div>
       </form>
     </Form>
+  );
+};
+
+BasicDetailsForm.Skeleton = function skeletonBasicDetailsForm() {
+  return (
+    <div className="flex flex-col w-full h-72 border-gray-200 mb-16">
+      {/* Status button component */}
+      <div className="flex items-center gap-4 my-2 pb-2 border-b-2">
+        <Skeleton className="h-6 w-60 rounded-md" />
+        <Skeleton className="h-8 w-20 rounded-full" />
+      </div>
+
+      {/* Section name */}
+      <Skeleton className="h-8 w-48 rounded-sm" />
+      {/* Section buttons */}
+      <div className="flex w-full mt-10 flex-row-reverse">
+        <div className="flex gap-4">
+          <Skeleton className="h-10 w-14 rounded-sm" />
+          <Skeleton className="h-10 w-14 rounded-sm" />
+        </div>
+        <div></div>
+      </div>
+      {/* Section content */}
+      <div className="flex gap-8 mt-8">
+        <div className="flex-1 flex flex-col gap-8">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-8 w-24 rounded-sm" />
+            <Skeleton className="h-8 w-full rounded-sm" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-8 w-24 rounded-sm" />
+            <Skeleton className="h-8 w-full rounded-sm" />
+          </div>
+        </div>
+
+        <div className="flex-1 flex flex-col gap-8">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-8 w-24 rounded-sm" />
+            <Skeleton className="h-8 w-full rounded-sm" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-8 w-24 rounded-sm" />
+            <Skeleton className="h-8 w-full rounded-sm" />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
