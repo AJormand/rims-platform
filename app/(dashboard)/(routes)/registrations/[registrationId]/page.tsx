@@ -98,7 +98,19 @@ export default function Registration({
                 filter={false}
               />
             </Section>
-            {/* Countries */}
+
+            {/* APPLICATIONS */}
+            <Section
+              name="Applications"
+              expandedSections={expandedSectionsLocalStorage}
+              onClick={handleSectionClick}
+            >
+              <DataTable
+                columns={productColumns}
+                data={[registration.data.application]}
+                filter={false}
+              />
+            </Section>
           </>
         )}
       </div>
