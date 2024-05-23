@@ -44,8 +44,7 @@ const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }).max(250),
   status: z.string(),
   country: z.string(),
-  product: z.string(),
-  productId: z.string(),
+  registrationNumber: z.string().max(100),
 });
 
 export const BasicDetailsForm: React.FC<{
@@ -66,8 +65,7 @@ export const BasicDetailsForm: React.FC<{
       name: data?.name || "",
       status: data?.status || "Draft",
       country: data?.country || "",
-      productId: data?.productId || "",
-      product: data?.product.name || "",
+      registrationNumber: data?.registrationNumber || "",
     },
   });
 
@@ -128,7 +126,7 @@ export const BasicDetailsForm: React.FC<{
           <FormField
             control={form.control}
             name="name"
-            disabled={!isEditing}
+            disabled={true}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
@@ -146,10 +144,25 @@ export const BasicDetailsForm: React.FC<{
           <FormField
             control={form.control}
             name="country"
-            disabled={!isEditing}
+            disabled={true}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <Input placeholder="" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="registrationNumber"
+            disabled={!isEditing}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Registration Number</FormLabel>
                 <FormControl>
                   <Input placeholder="" {...field} />
                 </FormControl>

@@ -18,6 +18,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(newRegistrations, { status: 201 });
   } catch (error) {
+    console.log(error);
     return new NextResponse("[CREATE REGISTRATION]", { status: 400 });
   }
 }
@@ -32,6 +33,7 @@ export async function GET() {
     const registrations = await db.registration.findMany({});
     return NextResponse.json(registrations, { status: 200 });
   } catch (error) {
+    console.log(error);
     return new NextResponse("[GET REGISTRATION]", { status: 400 });
   }
 }
@@ -52,6 +54,7 @@ export async function DELETE(request: Request) {
     });
     return NextResponse.json("Registration deleted", { status: 200 });
   } catch (error) {
+    console.log(error);
     return new NextResponse("[DELETE REGISTRATION]", { status: 400 });
   }
 }

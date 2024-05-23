@@ -95,6 +95,7 @@ model Registration {
   name   String @unique
   status String
   country String
+  registrationNumber String?
 
   product   Product? @relation(fields: [productId], references: [id])
   productId String?      @db.ObjectId
