@@ -13,7 +13,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
 import { editRegistration } from "@/app/services/api-client/api-client";
 
-import { Registration as RegistrationType } from "@prisma/client";
+import {
+  Registration as RegistrationType,
+  Product as ProductType,
+  Application as ApplicationType,
+} from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -29,15 +33,23 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { ControlledVocabulary } from "@prisma/client";
+import Link from "next/link";
+
+type ExtendedRegistrationType = RegistrationType & {
+  product: ProductType;
+  applicaiton: ApplicationType;
+};
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }).max(250),
   status: z.string(),
   country: z.string(),
+  product: z.string(),
+  productId: z.string(),
 });
 
 export const BasicDetailsForm: React.FC<{
-  data: RegistrationType | null;
+  data: ExtendedRegistrationType | null;
   type: "new" | "edit";
 }> & {
   Skeleton: React.FC<{}>;
@@ -54,6 +66,8 @@ export const BasicDetailsForm: React.FC<{
       name: data?.name || "",
       status: data?.status || "Draft",
       country: data?.country || "",
+      productId: data?.productId || "",
+      product: data?.product.name || "",
     },
   });
 
