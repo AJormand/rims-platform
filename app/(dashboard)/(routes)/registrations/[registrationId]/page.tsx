@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import toast from "react-hot-toast";
-import axios from "axios";
 
 import { Registration as RegistrationType } from "@prisma/client";
 
@@ -13,7 +11,6 @@ import { AddRecordPopup } from "@/components/add-record-popup/add-record-popup";
 import { DataTable } from "@/components/ui/data-table";
 
 import { BasicDetailsForm } from "./_components/basic-details-form";
-
 import { productColumns } from "./_components/product-columns";
 
 import { useFetchRegistration } from "@/app/services/hooks/hooks";
@@ -25,16 +22,6 @@ export default function Registration({
 }: {
   params: { registrationId: string };
 }) {
-  const {
-    data: registration,
-    isError,
-    isLoading,
-  } = useFetchRegistration(params.registrationId);
-
-  console.log("regID", params.registrationId);
-
-  console.log(registration?.data);
-
   const [expandedSectionsLocalStorage, setExpandedSectionsLocalStorage] =
     useLocalStorage<Record<string, any>>("expanded-registration-sections", {
       "Basic Details": true,
@@ -43,6 +30,10 @@ export default function Registration({
   const [addRecordPopupVisible, setAddRecordPopupVisible] =
     useState<string>("");
   const [popUpData, setPopUpData] = useState([]);
+
+  const { data, isError, isLoading } = useFetchRegistration(
+    params.registrationId
+  );
 
   const handleSectionClick = (name: string) => {
     setExpandedSectionsLocalStorage((prev) => ({
@@ -69,51 +60,49 @@ export default function Registration({
     );
   }
 
-  console.log(registration);
-
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} />
-      <div className="w-full px-6">
-        {registration && (
-          <>
-            {/* BASIC */}
-            <Section
-              name="Basic Details"
-              expandedSections={expandedSectionsLocalStorage}
-              onClick={handleSectionClick}
-            >
-              <BasicDetailsForm data={registration?.data} type="edit" />
-            </Section>
+      {isError && <div>Error</div>}
 
-            {/* PRODUCTS */}
-            <Section
-              name="Products"
-              expandedSections={expandedSectionsLocalStorage}
-              onClick={handleSectionClick}
-            >
-              <DataTable
-                columns={productColumns}
-                data={[registration.data.product]}
-                filter={false}
-              />
-            </Section>
+      {data && (
+        <div className="w-full px-6">
+          {/* BASIC */}
+          <Section
+            name="Basic Details"
+            expandedSections={expandedSectionsLocalStorage}
+            onClick={handleSectionClick}
+          >
+            <BasicDetailsForm data={data?.data} type="edit" />
+          </Section>
 
-            {/* APPLICATIONS */}
-            <Section
-              name="Applications"
-              expandedSections={expandedSectionsLocalStorage}
-              onClick={handleSectionClick}
-            >
-              <DataTable
-                columns={productColumns}
-                data={[registration.data.application]}
-                filter={false}
-              />
-            </Section>
-          </>
-        )}
-      </div>
+          {/* PRODUCTS */}
+          <Section
+            name="Products"
+            expandedSections={expandedSectionsLocalStorage}
+            onClick={handleSectionClick}
+          >
+            <DataTable
+              columns={productColumns}
+              data={[data.data.product]}
+              filter={false}
+            />
+          </Section>
+
+          {/* APPLICATIONS */}
+          <Section
+            name="Applications"
+            expandedSections={expandedSectionsLocalStorage}
+            onClick={handleSectionClick}
+          >
+            <DataTable
+              columns={productColumns}
+              data={[data.data.application]}
+              filter={false}
+            />
+          </Section>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 import { applicationColumns } from "./_components/application-columns";
@@ -92,7 +92,6 @@ export default function Product({ params }: { params: { productId: string } }) {
   return (
     <div className="flex w-full h-screen-minus-navbar">
       <SideNav sections={sideNavSections} onClick={handleSectionClick} />
-      {isLoading && <div>Loading...</div>}
       {isError && <div>Error</div>}
       {data && (
         <div className="w-full px-6">
