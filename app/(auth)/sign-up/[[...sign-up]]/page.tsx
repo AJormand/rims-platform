@@ -9,7 +9,7 @@ export default function Page() {
         <div className="flex flex-col items-center justify-center gap-2">
           <div className="flex gap-2 text-white">
             <h1 className="text-4xl font-bold">RIMS PLATFORM</h1>
-            <FolderHeart />
+            <FolderHeart size={60} />
           </div>
           <p className="text-sm text-gray-800 font-bold mt-4">
             Ensures your Pharmaceutical Information is managed
