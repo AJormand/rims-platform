@@ -13,12 +13,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
 import { editRegistration } from "@/app/services/api-client/api-client";
 
-import {
-  Registration as RegistrationType,
-  Product as ProductType,
-  Application as ApplicationType,
-} from "@prisma/client";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -29,6 +23,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+import {
+  Registration as RegistrationType,
+  Product as ProductType,
+  Application as ApplicationType,
+} from "@prisma/client";
+
+
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -72,7 +74,7 @@ export const BasicDetailsForm: React.FC<{
   useEffect(() => {
     //reseting the form so that data is loaded in the default values properly - at time of form load data may not be available
     form.reset();
-  }, []);
+  }, [data]);
 
   // Define a submit handler.
   const onSubmitNew = async (values: z.infer<typeof formSchema>) => {

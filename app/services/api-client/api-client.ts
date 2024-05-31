@@ -150,7 +150,7 @@ export const fetchRegistration = async (registrationId: string) => {
     };
   } catch (error) {
     console.log(error);
-    return {};
+    toast.error(`"${error}`);
   }
 };
 
