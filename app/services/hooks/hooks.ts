@@ -67,7 +67,7 @@ export const useFetchRegistrations = () => {
 
 export const useFetchRegistration = (registrationId: string) => {
   return useQuery({
-    queryKey: ["registration"],
+    queryKey: ["registration", registrationId],
     queryFn: () => fetchRegistration(registrationId),
   });
 };

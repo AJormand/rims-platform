@@ -1,7 +1,8 @@
 "use client";
 
-import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+
+import { FolderHeart } from "lucide-react";
 
 import {
   NavigationMenu,
@@ -18,13 +19,14 @@ import { NavbarAvatar } from "./navbar-avatar";
 
 export const NavbarRoutes = () => {
   return (
-    <div className="flex justify-between px-4 py-2 border w-full z-50">
+    <div className="flex justify-between px-6 py-2 border w-full z-50">
       <div className="flex items-center">
         <Link
           href={"/"}
-          className="mr-[100px] text-sky-700 font-bold flex flex-col"
+          className="mr-[100px] text-sky-700 font-bold flex"
         >
-          RIMS
+          <h1>RIMS</h1>
+          <FolderHeart />
         </Link>
 
         <Link href={"/"} className="text-sm font-bold mr-2 text-sky-700">

@@ -91,7 +91,7 @@ export default function Home() {
               >
                 <Card>
                   <CardHeader>
-                    <CardTitle>{item.name}</CardTitle>
+                    <CardTitle className="text-sm">{item.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="flex justify-center">
                     {item.icon}
@@ -113,7 +113,7 @@ export default function Home() {
               >
                 <Card className="flex items-center">
                   <CardHeader>
-                    <CardTitle>{item.name}</CardTitle>
+                    <CardTitle className="text-sm">{item.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="flex justify-center items-center py-0 px-4">
                     {item.icon}

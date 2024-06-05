@@ -11,7 +11,7 @@ export const NavbarAvatar = () => {
 
   return (
     <div className="flex items-center justify-center gap-3">
-      Hello, {user.firstName}
+      <p className="text-xs font-bold">Hello, {user.firstName}</p>
       <UserButton afterSignOutUrl="/" />
     </div>
   );

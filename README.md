@@ -18,7 +18,7 @@
 - Done Product Status button stopped working
 - Done - finish product localstorage hook --> localstorage should be red from main page and then pushed to the sections
 - Done - Product Skeleton -> fix overlaping
-- In Progress - Edit Registration
+- Done - Edit Registration
 - todo - add skeleton to other objects
 - todo - add localstorage for open sections to other objects
 - Error - Get Registrations for product
