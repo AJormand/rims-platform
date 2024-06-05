@@ -162,52 +162,52 @@ DataTable.skeleton = function skeletonDataTable() {
       </div>
       <div className="border-[1px] rounded-md">
         <div className="border-b-[1px] flex justify-between py-4 pl-2 pr-24">
-          <Skeleton className="h-6 w-48 rounded-sm" />
-          <Skeleton className="h-6 w-28 rounded-sm" />
-          <Skeleton className="h-6 w-24 rounded-sm" />
-          <Skeleton className="h-6 w-20 rounded-sm" />
+          <Skeleton className="h-6 w-48 rounded-xl" />
+          <Skeleton className="h-6 w-28 rounded-xl" />
+          <Skeleton className="h-6 w-24 rounded-xl" />
+          <Skeleton className="h-6 w-20 rounded-xl" />
           <div className="font-bold">...</div>
         </div>
         <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
-          <Skeleton className="h-6 w-48 rounded-sm" />
-          <Skeleton className="h-6 w-28 rounded-sm" />
-          <Skeleton className="h-6 w-24 rounded-sm" />
-          <Skeleton className="h-6 w-20 rounded-sm" />
+          <Skeleton className="h-6 w-48 rounded-xl" />
+          <Skeleton className="h-6 w-28 rounded-xl" />
+          <Skeleton className="h-6 w-24 rounded-xl" />
+          <Skeleton className="h-6 w-20 rounded-xl" />
           <div className="font-bold">...</div>
         </div>
         <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
-          <Skeleton className="h-6 w-48 rounded-sm" />
-          <Skeleton className="h-6 w-28 rounded-sm" />
-          <Skeleton className="h-6 w-24 rounded-sm" />
-          <Skeleton className="h-6 w-20 rounded-sm" />
+          <Skeleton className="h-6 w-48 rounded-xl" />
+          <Skeleton className="h-6 w-28 rounded-xl" />
+          <Skeleton className="h-6 w-24 rounded-xl" />
+          <Skeleton className="h-6 w-20 rounded-xl" />
           <div className="font-bold">...</div>
         </div>
         <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
-          <Skeleton className="h-6 w-48 rounded-sm" />
-          <Skeleton className="h-6 w-28 rounded-sm" />
-          <Skeleton className="h-6 w-24 rounded-sm" />
-          <Skeleton className="h-6 w-20 rounded-sm" />
+          <Skeleton className="h-6 w-48 rounded-xl" />
+          <Skeleton className="h-6 w-28 rounded-xl" />
+          <Skeleton className="h-6 w-24 rounded-xl" />
+          <Skeleton className="h-6 w-20 rounded-xl" />
           <div className="font-bold">...</div>
         </div>
         <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
-          <Skeleton className="h-6 w-48 rounded-sm" />
-          <Skeleton className="h-6 w-28 rounded-sm" />
-          <Skeleton className="h-6 w-24 rounded-sm" />
-          <Skeleton className="h-6 w-20 rounded-sm" />
+          <Skeleton className="h-6 w-48 rounded-xl" />
+          <Skeleton className="h-6 w-28 rounded-xl" />
+          <Skeleton className="h-6 w-24 rounded-xl" />
+          <Skeleton className="h-6 w-20 rounded-xl" />
           <div className="font-bold">...</div>
         </div>
         <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
-          <Skeleton className="h-6 w-48 rounded-sm" />
-          <Skeleton className="h-6 w-28 rounded-sm" />
-          <Skeleton className="h-6 w-24 rounded-sm" />
-          <Skeleton className="h-6 w-20 rounded-sm" />
+          <Skeleton className="h-6 w-48 rounded-xl" />
+          <Skeleton className="h-6 w-28 rounded-xl" />
+          <Skeleton className="h-6 w-24 rounded-xl" />
+          <Skeleton className="h-6 w-20 rounded-xl" />
           <div className="font-bold">...</div>
         </div>
         <div className="border-b-[1px] flex justify-between py-5 pl-2 pr-24">
-          <Skeleton className="h-6 w-48 rounded-sm" />
-          <Skeleton className="h-6 w-28 rounded-sm" />
-          <Skeleton className="h-6 w-24 rounded-sm" />
-          <Skeleton className="h-6 w-20 rounded-sm" />
+          <Skeleton className="h-6 w-48 rounded-xl" />
+          <Skeleton className="h-6 w-28 rounded-xl" />
+          <Skeleton className="h-6 w-24 rounded-xl" />
+          <Skeleton className="h-6 w-20 rounded-xl" />
           <div className="font-bold">...</div>
         </div>
       </div>
