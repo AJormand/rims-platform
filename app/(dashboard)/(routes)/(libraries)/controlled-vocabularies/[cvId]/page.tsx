@@ -7,10 +7,15 @@ import { fetchControlledVocabulary } from "@/app/services/api-client/api-client"
 import { BasicDetailsForm } from "../_components/basic-details-form";
 import { Section } from "@/components/section";
 
-import { ControlledVocabulary } from "@prisma/client";
+import type { ControlledVocabulary } from "@prisma/client";
 
-export default function ControlledVocabulary({ params }: { params: { cvId: string } }) {
-  const [controlledVocabularyData, setControlledVocabularyData] = useState<ControlledVocabulary>();
+export default function ControlledVocabulary({
+  params,
+}: {
+  params: { cvId: string };
+}) {
+  const [controlledVocabularyData, setControlledVocabularyData] =
+    useState<ControlledVocabulary>();
 
   const fetchData = async () => {
     const data = await fetchControlledVocabulary(params.cvId);
@@ -24,7 +29,10 @@ export default function ControlledVocabulary({ params }: { params: { cvId: strin
   return (
     <div className="container mx-auto py-10">
       {controlledVocabularyData && (
-        <Section name="Basic Details" expanded={true}>
+        <Section
+          name="Basic Details"
+          expandedSections={{ "Basic Details": true }}
+        >
           <BasicDetailsForm data={controlledVocabularyData} type="edit" />
         </Section>
       )}
