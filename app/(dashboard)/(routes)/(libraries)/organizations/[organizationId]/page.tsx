@@ -7,7 +7,7 @@ import { fetchOrganization } from "@/app/services/api-client/api-client";
 import { BasicDetailsForm } from "../_components/basic-details-form";
 import { Section } from "@/components/section";
 
-import { Organization } from "@prisma/client";
+import type { Organization } from "@prisma/client";
 
 export default function Organization({
   params,
@@ -28,7 +28,10 @@ export default function Organization({
   return (
     <div className="container mx-auto py-10">
       {organizationData && (
-        <Section name="Basic Details" expanded={true}>
+        <Section
+          name="Basic Details"
+          expandedSections={{ "Basic Details": true }}
+        >
           <BasicDetailsForm data={organizationData} type="edit" />
         </Section>
       )}
