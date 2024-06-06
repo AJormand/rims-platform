@@ -46,7 +46,7 @@ export default function Substance({
   const sideNavSections = ["Basic Details"];
 
   return (
-    <div className="flex w-full h-screen-minus-navbar">
+    <div className="flex w-full h-screen-minus-navbar-topbar">
       <SideNav sections={sideNavSections} onClick={handleSectionClick} />
       <div className="w-full px-6">
         {substanceData && (

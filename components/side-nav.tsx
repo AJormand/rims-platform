@@ -9,7 +9,7 @@ interface SideNavProps {
 export const SideNav = ({ sections, onClick }: SideNavProps) => {
   return (
     <div className="flex flex-col w-[200px] border-r p-4 gap-1 text-sm underline">
-      <div className="flex- flex-col sticky top-5">
+      <div className="flex flex-col sticky top-5">
         {sections.map((section) => (
           <a
             href={`#${section.name}`}
@@ -18,7 +18,7 @@ export const SideNav = ({ sections, onClick }: SideNavProps) => {
             className="flex py-1"
           >
             {section.name}
-            {section.name !== "Basic Details" ? ` [${section.count}]` : null}
+            {section.name !== "Basic Details" ? `[${section.count}]` : null}
             <ChevronDown size={"14"} />
           </a>
         ))}

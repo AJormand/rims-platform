@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       height: {
-        "screen-minus-navbar": "calc(100vh - 58px)",
+        "screen-minus-navbar-topbar": "calc(100vh - 114px)",
       },
       colors: {
         border: "hsl(var(--border))",

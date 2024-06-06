@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 import { fetchControlledVocabulary } from "@/app/services/api-client/api-client";
 
 import { BasicDetailsForm } from "../_components/basic-details-form";
+
 import { Section } from "@/components/section";
+import { SideNav } from "@/components/side-nav";
 
 import type { ControlledVocabulary } from "@prisma/client";
 
@@ -27,14 +29,17 @@ export default function ControlledVocabulary({
   }, []);
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="flex w-full h-screen-minus-navbar-topbar">
+      <SideNav sections={[{ name: "Basic Details", count: 0 }]} />
       {controlledVocabularyData && (
-        <Section
-          name="Basic Details"
-          expandedSections={{ "Basic Details": true }}
-        >
-          <BasicDetailsForm data={controlledVocabularyData} type="edit" />
-        </Section>
+        <div className="w-full px-6">
+          <Section
+            name="Basic Details"
+            expandedSections={{ "Basic Details": true }}
+          >
+            <BasicDetailsForm data={controlledVocabularyData} type="edit" />
+          </Section>
+        </div>
       )}
     </div>
   );

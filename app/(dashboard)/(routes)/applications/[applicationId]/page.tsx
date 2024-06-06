@@ -105,7 +105,7 @@ export default function Application({
 
   if (isLoading) {
     return (
-      <div className="flex w-full h-screen-minus-navbar">
+      <div className="flex w-full h-screen-minus-navbar-topbar">
         <SideNav.Skeleton />
         <div className="flex flex-col w-full px-6">
           <BasicDetailsForm.Skeleton />
@@ -120,9 +120,9 @@ export default function Application({
   }
 
   return (
-    <div className="flex w-full h-screen-minus-navbar">
+    <div className="flex w-full h-screen-minus-navbar-topbar">
       <SideNav sections={sideNavSections} />
-      <div className="w-full px-6">
+      <div className="w-full px-6 overflow-scroll">
         {application && (
           <>
             {/* RECORD ACTIONS WIZARD */}

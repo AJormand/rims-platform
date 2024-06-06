@@ -1,70 +1,55 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { ArrowLeft, ChevronLeftCircle, ChevronLeft } from "lucide-react"; // Assuming you have an icon library, like Lucide
+import { ArrowLeft, ChevronLeftCircle, ChevronLeft, Key } from "lucide-react"; // Assuming you have an icon library, like Lucide
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export const TopNavigationBar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const routeItems = pathname.split("/").slice(1);
 
   // Handle navigation back
   const navigateBack = () => {
     router.back();
   };
 
-  const getCurrentPageName = () => {
-    switch (pathname) {
-      case "/":
-        return "Home";
-
-      case "/products":
-        return "Products";
-      case "/products/create":
-        return "Create Product";
-      case "/products/[productId]":
-        return "Product";
-
-      case "/applications":
-        return "Applications";
-      case "/applications/create":
-        return "Create Application";
-
-      case "/registrations":
-        return "Registrations";
-      case "/submissions":
-        return "Submissions";
-
-      case "/substances":
-        return "Substance Library";
-      case "/substances/create":
-        return "Create Substance";
-
-      case "/organizations":
-        return "Organization Library";
-      case "/organizations/create":
-        return "Create Organization";
-
-      default:
-        return pathname;
-    }
-  };
-  let currentPageName = getCurrentPageName();
+  console.log(pathname.split("/").slice(1));
 
   return (
-    <div className="flex items-center gap-10 p-4 w-1/3 relative">
-      <div className="h-[1px] w-[500px] absolute bottom-0 bg-gradient-to-r from-gray-200 to-white"></div>
-      <div className="text-gray-400">
-        <button onClick={navigateBack} className="flex items-center">
-          <ChevronLeft size={20} />
-          <span className="ml-2">Back</span>
-        </button>
-      </div>
-      <div>
-        <h1 className="text-base font-semibold underline text-gray-400">
-          {currentPageName}
-        </h1>
-      </div>
-      <div></div> {/* Add any additional elements you want on the right */}
+    <div className="flex items-center gap-10 p-4 relative">
+      <Breadcrumb>
+        <BreadcrumbList>
+          {/* HOME */}
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+
+          {/* ROUTES */}
+          {routeItems.map((item, index) => (
+            <div key={index} className="flex">
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                {index === routeItems.length - 1 ? (
+                  <BreadcrumbPage className="text-gray-400">
+                    {item}
+                  </BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink href={`/${item}`}>{item}</BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+            </div>
+          ))}
+        </BreadcrumbList>
+      </Breadcrumb>
     </div>
   );
 };

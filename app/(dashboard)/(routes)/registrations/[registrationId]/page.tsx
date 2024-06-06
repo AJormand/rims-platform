@@ -46,7 +46,7 @@ export default function Registration({
 
   if (isLoading) {
     return (
-      <div className="flex w-full h-screen-minus-navbar">
+      <div className="flex w-full h-screen-minus-navbar-topbar">
         <SideNav.Skeleton />
         <div className="flex flex-col w-full px-6">
           <BasicDetailsForm.Skeleton />
@@ -61,7 +61,7 @@ export default function Registration({
   }
 
   return (
-    <div className="flex w-full h-screen-minus-navbar">
+    <div className="flex w-full h-screen-minus-navbar-topbar">
       <SideNav sections={sideNavSections} />
       {isError && <div>Error</div>}
 

@@ -125,7 +125,7 @@ export default function Product({ params }: { params: { productId: string } }) {
 
   if (isLoading) {
     return (
-      <div className="flex w-full h-screen-minus-navbar">
+      <div className="flex w-full h-screen-minus-navbar-topbar">
         <SideNav.Skeleton />
         <div className="flex flex-col w-full px-6">
           <BasicDetailsForm.Skeleton />
@@ -140,11 +140,11 @@ export default function Product({ params }: { params: { productId: string } }) {
   }
 
   return (
-    <div className="flex w-full h-screen-minus-navbar">
+    <div className="flex w-full h-screen-minus-navbar-topbar">
       <SideNav sections={sideNavSections} onClick={handleSectionClick} />
       {isError && <div>Error</div>}
       {data && (
-        <div className="w-full px-6">
+        <div className="w-full px-6 overflow-scroll">
           <StatusBar data={data.productData.data} cv={"product-status"} />
           {/* BASIC DETAILS */}
           <Section

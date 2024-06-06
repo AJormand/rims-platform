@@ -20,7 +20,7 @@
 - Done - Product Skeleton -> fix overlaping
 - Done - Edit Registration
 - Done - Product - Sidenav count
-- todo - Add sidenav count for all other objects!!!!!
+- todo - Add sidenav count for all other objects!!!!! [app, reg, sub, org, country]
 - todo - add skeleton to other objects
 - todo - add localstorage for open sections to other objects
 - Error - Get Registrations for product
