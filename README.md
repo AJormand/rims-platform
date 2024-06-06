@@ -19,6 +19,8 @@
 - Done - finish product localstorage hook --> localstorage should be red from main page and then pushed to the sections
 - Done - Product Skeleton -> fix overlaping
 - Done - Edit Registration
+- Done - Product - Sidenav count
+- todo - Add sidenav count for all other objects!!!!!
 - todo - add skeleton to other objects
 - todo - add localstorage for open sections to other objects
 - Error - Get Registrations for product
