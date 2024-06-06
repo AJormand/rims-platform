@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 import { applicationColumns } from "./_components/application-columns";
@@ -45,6 +45,7 @@ export default function Product({ params }: { params: { productId: string } }) {
     useState<string>("");
 
   const { data, isError, isLoading } = usefetchProduct(params.productId);
+  console.log(data);
 
   const handleSectionClick = (name: string) => {
     setExpandedSectionsLocalStorage((prev) => ({
@@ -65,13 +66,62 @@ export default function Product({ params }: { params: { productId: string } }) {
     setPopUpData(data);
   };
 
-  const sideNavSections = [
-    "Basic Details",
-    "Active Substances",
-    "Inactive Substances",
-    "Applications",
-    "Registrations",
-  ];
+  // const sideNavSections = [
+  //   "Basic Details",
+  //   "Active Substances",
+  //   "Inactive Substances",
+  //   "Applications",
+  //   "Registrations",
+  // ];
+
+  useEffect(() => {
+    console.log(data);
+    getSectionRecordCount();
+  }, [data]);
+
+  const getSectionRecordCount = () => {
+    const activeSubstancesNum = data?.productData.activeSubstances.length;
+    const inactiveSubstancesNum = data?.productData.inactiveSubstances.length;
+    const applicationsNum = data?.productData.applications.length;
+    const registrationsNum = data?.registrationsData.length;
+    console.log({
+      first: activeSubstancesNum,
+      second: inactiveSubstancesNum,
+      third: applicationsNum,
+      fourth: registrationsNum,
+    });
+    return [
+      activeSubstancesNum,
+      inactiveSubstancesNum,
+      applicationsNum,
+      registrationsNum,
+    ];
+  };
+
+  const sideNavSections = useMemo(() => {
+    if (!data)
+      return [
+        { name: "Basic Details", count: 0 },
+        { name: "Active Substances", count: 0 },
+        { name: "Inactive Substances", count: 0 },
+        { name: "Applications", count: 0 },
+        { name: "Registrations", count: 0 },
+      ];
+
+    const activeSubstancesNum = data.productData.activeSubstances.length;
+    const inactiveSubstancesNum = data.productData.inactiveSubstances.length;
+    const applicationsNum = data.productData.applications.length;
+    const registrationsNum = data.registrationsData.length;
+    return [
+      { name: "Basic Details", count: null },
+      { name: "Active Substances", count: activeSubstancesNum },
+      { name: "Inactive Substances", count: inactiveSubstancesNum },
+      { name: "Applications", count: applicationsNum },
+      { name: "Registrations", count: registrationsNum },
+    ];
+  }, [data]);
+
+  console.log(sideNavSections);
 
   if (isLoading) {
     return (

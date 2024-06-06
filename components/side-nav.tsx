@@ -2,7 +2,7 @@ import { ChevronDown } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
 
 interface SideNavProps {
-  sections: string[];
+  sections: { name: string; count: number }[];
   onClick?: (name: string) => void;
 }
 
@@ -12,12 +12,14 @@ export const SideNav = ({ sections, onClick }: SideNavProps) => {
       <div className="flex- flex-col sticky top-5">
         {sections.map((section) => (
           <a
-            href={`#${section}`}
-            key={section}
-            onClick={() => onClick?.(section)}
+            href={`#${section.name}`}
+            key={section.name}
+            onClick={() => onClick?.(section.name)}
             className="flex py-1"
           >
-            {section} <ChevronDown size={"14"} />
+            {section.name}
+            {section.name !== "Basic Details" ? ` [${section.count}]` : null}
+            <ChevronDown size={"14"} />
           </a>
         ))}
       </div>
