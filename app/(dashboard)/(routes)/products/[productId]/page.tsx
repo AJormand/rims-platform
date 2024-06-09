@@ -66,38 +66,6 @@ export default function Product({ params }: { params: { productId: string } }) {
     setPopUpData(data);
   };
 
-  // const sideNavSections = [
-  //   "Basic Details",
-  //   "Active Substances",
-  //   "Inactive Substances",
-  //   "Applications",
-  //   "Registrations",
-  // ];
-
-  useEffect(() => {
-    console.log(data);
-    getSectionRecordCount();
-  }, [data]);
-
-  const getSectionRecordCount = () => {
-    const activeSubstancesNum = data?.productData.activeSubstances.length;
-    const inactiveSubstancesNum = data?.productData.inactiveSubstances.length;
-    const applicationsNum = data?.productData.applications.length;
-    const registrationsNum = data?.registrationsData.length;
-    console.log({
-      first: activeSubstancesNum,
-      second: inactiveSubstancesNum,
-      third: applicationsNum,
-      fourth: registrationsNum,
-    });
-    return [
-      activeSubstancesNum,
-      inactiveSubstancesNum,
-      applicationsNum,
-      registrationsNum,
-    ];
-  };
-
   const sideNavSections = useMemo(() => {
     if (!data)
       return [
@@ -120,8 +88,6 @@ export default function Product({ params }: { params: { productId: string } }) {
       { name: "Registrations", count: registrationsNum },
     ];
   }, [data]);
-
-  console.log(sideNavSections);
 
   if (isLoading) {
     return (

@@ -48,7 +48,7 @@ export default function Substance({
   return (
     <div className="flex w-full h-screen-minus-navbar-topbar">
       <SideNav sections={sideNavSections} onClick={handleSectionClick} />
-      <div className="w-full px-6">
+      <div className="w-full px-6 overflow-scroll">
         {substanceData && (
           <Section
             name="Basic Details"

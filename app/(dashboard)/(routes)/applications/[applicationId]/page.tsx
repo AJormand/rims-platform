@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -43,11 +43,9 @@ export default function Application({
 }: {
   params: { applicationId: string };
 }) {
-  const {
-    data: application,
-    isError,
-    isLoading,
-  } = useFetchApplication(params.applicationId);
+  const { data, isError, isLoading } = useFetchApplication(
+    params.applicationId
+  );
 
   const [expandedSectionsLocalStorage, setExpandedSectionsLocalStorage] =
     useLocalStorage<Record<string, any>>("expanded-application-sections", {
@@ -87,21 +85,43 @@ export default function Application({
     setAddRecordPopupVisible("product");
     const response = await fetchPopUpData(
       `/api/products`,
-      application?.applicationProducts
+      data?.applicationProducts
     );
     setPopUpData(response);
   };
 
   const addCountry = async () => {
     setAddRecordPopupVisible("country");
-    const data = await fetchPopUpData(
+    const response = await fetchPopUpData(
       `/api/countries`,
-      application?.applicationData.countries || []
+      data?.applicationData.countries || []
     );
-    setPopUpData(data);
+    setPopUpData(response);
   };
 
-  const sideNavSections = ["Basic Details", "Products"];
+  console.log({ data });
+  const sideNavSections = useMemo(() => {
+    if (!data)
+      return [
+        { name: "Basic Details", count: 0 },
+        { name: "Countries", count: 0 },
+        { name: "Products", count: 0 },
+        { name: "Registraitons", count: 0 },
+      ];
+
+    const countries = data.applicationData.countries.length;
+    const products = data.applicationData.products2Application.length;
+    const registrations = data.applicationData.registrations.length;
+
+    return [
+      { name: "Basic Details", count: null },
+      { name: "Countries", count: countries },
+      { name: "Products", count: products },
+      { name: "Registraitons", count: registrations },
+    ];
+  }, [data]);
+
+  // const sideNavSections = ["Basic Details", "Products"];
 
   if (isLoading) {
     return (
@@ -123,20 +143,17 @@ export default function Application({
     <div className="flex w-full h-screen-minus-navbar-topbar">
       <SideNav sections={sideNavSections} />
       <div className="w-full px-6 overflow-scroll">
-        {application && (
+        {data && (
           <>
             {/* RECORD ACTIONS WIZARD */}
-            <RecordActions data={application.applicationData} />
+            <RecordActions data={data.applicationData} />
             {/* BASIC */}
             <Section
               name="Basic Details"
               expandedSections={expandedSectionsLocalStorage}
               onClick={handleSectionClick}
             >
-              <BasicDetailsForm
-                data={application.applicationData}
-                type="edit"
-              />
+              <BasicDetailsForm data={data.applicationData} type="edit" />
             </Section>
 
             {/* COUNTRIES */}
@@ -154,7 +171,7 @@ export default function Application({
               </Button>
               <DataTable
                 columns={applicationCountryColumns}
-                data={application.applicationData.countries}
+                data={data.applicationData.countries}
               />
               {addRecordPopupVisible === "country" && (
                 <AddRecordPopup
@@ -184,7 +201,7 @@ export default function Application({
               </Button>
               <DataTable
                 columns={applicationProductColumns}
-                data={application.applicationData.products2Application}
+                data={data.applicationData.products2Application}
               />
               {addRecordPopupVisible === "product" && (
                 <AddRecordPopup
@@ -207,7 +224,7 @@ export default function Application({
             >
               <DataTable
                 columns={applicationRegistrationColumns}
-                data={application.applicationData.registrations}
+                data={data.applicationData.registrations}
               />
             </Section>
           </>

@@ -26,7 +26,7 @@ export default function Country({ params }: { params: { countryId: string } }) {
     <div className="flex w-full h-[80vh] ">
       <SideNav sections={[{ name: "Basic Details", count: 0 }]} />
       {countryData && (
-        <div className="w-full px-6">
+        <div className="w-full px-6 overflow-scroll">
           <Section
             name="Basic Details"
             expandedSections={{ "Basic Details": true }}

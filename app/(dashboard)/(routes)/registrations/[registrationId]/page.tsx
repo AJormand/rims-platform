@@ -66,7 +66,7 @@ export default function Registration({
       {isError && <div>Error</div>}
 
       {data && (
-        <div className="w-full px-6">
+        <div className="w-full px-6 overflow-scroll">
           {/* BASIC */}
           <Section
             name="Basic Details"

@@ -32,7 +32,7 @@ export default function ControlledVocabulary({
     <div className="flex w-full h-screen-minus-navbar-topbar">
       <SideNav sections={[{ name: "Basic Details", count: 0 }]} />
       {controlledVocabularyData && (
-        <div className="w-full px-6">
+        <div className="w-full px-6 overflow-scroll">
           <Section
             name="Basic Details"
             expandedSections={{ "Basic Details": true }}
