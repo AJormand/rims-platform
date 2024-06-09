@@ -6,6 +6,7 @@ import { fetchOrganization } from "@/app/services/api-client/api-client";
 
 import { BasicDetailsForm } from "../_components/basic-details-form";
 import { Section } from "@/components/section";
+import { SideNav } from "@/components/side-nav";
 
 import type { Organization } from "@prisma/client";
 
@@ -25,15 +26,20 @@ export default function Organization({
     fetchData();
   }, []);
 
+  const sideNavSections = [{ name: "Basic Details", count: 0 }];
+
   return (
-    <div className="container mx-auto py-10">
+    <div className="flex w-full h-[80vh] ">
+      <SideNav sections={sideNavSections} />
       {organizationData && (
-        <Section
-          name="Basic Details"
-          expandedSections={{ "Basic Details": true }}
-        >
-          <BasicDetailsForm data={organizationData} type="edit" />
-        </Section>
+        <div className="w-full px-6 overflow-scroll">
+          <Section
+            name="Basic Details"
+            expandedSections={{ "Basic Details": true }}
+          >
+            <BasicDetailsForm data={organizationData} type="edit" />
+          </Section>
+        </div>
       )}
     </div>
   );

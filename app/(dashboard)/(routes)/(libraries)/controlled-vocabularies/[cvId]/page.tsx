@@ -28,9 +28,11 @@ export default function ControlledVocabulary({
     fetchData();
   }, []);
 
+  const sideNavSections = [{ name: "Basic Details", count: 0 }];
+
   return (
     <div className="flex w-full h-screen-minus-navbar-topbar">
-      <SideNav sections={[{ name: "Basic Details", count: 0 }]} />
+      <SideNav sections={sideNavSections} />
       {controlledVocabularyData && (
         <div className="w-full px-6 overflow-scroll">
           <Section

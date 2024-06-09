@@ -43,7 +43,7 @@ export default function Substance({
     setExpandedSectionsLocalStorage(newExpandedSections);
   };
 
-  const sideNavSections = ["Basic Details"];
+  const sideNavSections = [{ name: "Basic Details", count: 0 }];
 
   return (
     <div className="flex w-full h-screen-minus-navbar-topbar">

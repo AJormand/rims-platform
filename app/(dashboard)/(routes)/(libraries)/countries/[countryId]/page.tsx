@@ -22,9 +22,11 @@ export default function Country({ params }: { params: { countryId: string } }) {
     fetchData();
   }, []);
 
+  const sideNavSections = [{ name: "Basic Details", count: 0 }];
+
   return (
     <div className="flex w-full h-[80vh] ">
-      <SideNav sections={[{ name: "Basic Details", count: 0 }]} />
+      <SideNav sections={sideNavSections} />
       {countryData && (
         <div className="w-full px-6 overflow-scroll">
           <Section
