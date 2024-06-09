@@ -99,7 +99,6 @@ export default function Application({
     setPopUpData(response);
   };
 
-  console.log({ data });
   const sideNavSections = useMemo(() => {
     if (!data)
       return [
@@ -114,14 +113,12 @@ export default function Application({
     const registrations = data.applicationData.registrations.length;
 
     return [
-      { name: "Basic Details", count: null },
+      { name: "Basic Details", count: 0 },
       { name: "Countries", count: countries },
       { name: "Products", count: products },
       { name: "Registraitons", count: registrations },
     ];
   }, [data]);
-
-  // const sideNavSections = ["Basic Details", "Products"];
 
   if (isLoading) {
     return (

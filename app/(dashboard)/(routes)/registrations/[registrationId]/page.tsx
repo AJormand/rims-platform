@@ -1,21 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 import { Registration as RegistrationType } from "@prisma/client";
 
 import { SideNav } from "@/components/side-nav";
 import { Section } from "@/components/section";
-import { Button } from "@/components/ui/button";
-import { AddRecordPopup } from "@/components/add-record-popup/add-record-popup";
+
 import { DataTable } from "@/components/ui/data-table";
 
 import { BasicDetailsForm } from "./_components/basic-details-form";
 import { productColumns } from "./_components/product-columns";
 
 import { useFetchRegistration } from "@/app/services/hooks/hooks";
-
-interface ExtendedRegistration extends RegistrationType {}
 
 export default function Registration({
   params,
@@ -42,7 +39,24 @@ export default function Registration({
     }));
   };
 
-  const sideNavSections = ["Basic Details", "Products"];
+  const sideNavSections = useMemo(() => {
+    if (!data)
+      return [
+        { name: "Basic Details", count: 0 },
+        { name: "Products", count: 0 },
+        { name: "Applications", count: 0 },
+      ];
+
+    //Application has only 1 product and 1 application therefore returned as object and needs to be converted to array
+    const products = [data.data.product].length;
+    const applicaitons = [data.data.application].length;
+
+    return [
+      { name: "Basic Details", count: 0 },
+      { name: "Products", count: products },
+      { name: "Applications", count: applicaitons },
+    ];
+  }, [data]);
 
   if (isLoading) {
     return (

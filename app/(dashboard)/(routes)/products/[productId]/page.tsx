@@ -81,7 +81,7 @@ export default function Product({ params }: { params: { productId: string } }) {
     const applicationsNum = data.productData.applications.length;
     const registrationsNum = data.registrationsData.length;
     return [
-      { name: "Basic Details", count: null },
+      { name: "Basic Details", count: 0 },
       { name: "Active Substances", count: activeSubstancesNum },
       { name: "Inactive Substances", count: inactiveSubstancesNum },
       { name: "Applications", count: applicationsNum },
