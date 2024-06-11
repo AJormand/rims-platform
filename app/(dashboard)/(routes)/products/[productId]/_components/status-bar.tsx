@@ -5,7 +5,21 @@ import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
 
 import { editProduct } from "@/app/services/api-client/api-client";
 
-export const StatusBar = ({ data, cv }: { data: any; cv: string }) => {
+import { Minimize2, Maximize2 } from "lucide-react";
+
+interface StatusBarProps {
+  data: any;
+  cv: string;
+  expandAll: () => void;
+  collapseAll: () => void;
+}
+
+export const StatusBar = ({
+  data,
+  cv,
+  expandAll,
+  collapseAll,
+}: StatusBarProps) => {
   const queryClient = useQueryClient();
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
   const [isOpen, setIsOpen] = useState(false);
@@ -83,6 +97,21 @@ export const StatusBar = ({ data, cv }: { data: any; cv: string }) => {
             ></div>
           </>
         )}
+      </div>
+
+      <div className="flex ml-auto gap-1 mt-10 text-slate-500">
+        <button
+          className="border p-1 rounded-md hover:bg-slate-100"
+          onClick={collapseAll}
+        >
+          <Minimize2 size={15} />
+        </button>
+        <button
+          className="border p-1 rounded-md hover:bg-slate-100"
+          onClick={expandAll}
+        >
+          <Maximize2 size={15} />
+        </button>
       </div>
     </div>
   );

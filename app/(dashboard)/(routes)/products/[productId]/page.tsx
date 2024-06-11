@@ -63,6 +63,20 @@ export default function Product({ params }: { params: { productId: string } }) {
     }));
   };
 
+  const expandAllSidenavSections = () => {
+    setExpandedSectionsLocalStorage({
+      "Basic Details": true,
+      "Active Substances": true,
+      "Inactive Substances": true,
+      Applications: true,
+      Registrations: true,
+    });
+  };
+
+  const collapseAllSidenavSections = () => {
+    setExpandedSectionsLocalStorage({});
+  };
+
   const addRecordPopup = async (
     popupName: string,
     fetchRoute: string,
@@ -120,7 +134,12 @@ export default function Product({ params }: { params: { productId: string } }) {
       {isError && <div>Error</div>}
       {data && (
         <div className="w-full px-6 overflow-scroll">
-          <StatusBar data={data.productData.data} cv={"product-status"} />
+          <StatusBar
+            data={data.productData.data}
+            cv={"product-status"}
+            expandAll={expandAllSidenavSections}
+            collapseAll={collapseAllSidenavSections}
+          />
           {/* BASIC DETAILS */}
           <Section
             name="Basic Details"
