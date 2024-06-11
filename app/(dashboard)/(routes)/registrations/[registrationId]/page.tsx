@@ -89,7 +89,6 @@ export default function Registration({
           >
             <BasicDetailsForm data={data?.data} type="edit" />
           </Section>
-          <BasicDetailsForm data={data?.data} type="edit" />
 
           {/* PRODUCTS */}
           <Section
