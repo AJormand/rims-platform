@@ -14,24 +14,26 @@ import { ChevronDown } from "lucide-react";
 interface SectionProps {
   name: string;
   children: React.ReactNode;
-  expandedSections: Record<string, any>;
+  isExpanded?: boolean;
   onClick?: (name: string) => void;
 }
 
 export const Section = ({
   name,
   children,
-  expandedSections,
+  isExpanded,
   onClick,
 }: SectionProps) => {
-  const isSectionExpanded = expandedSections[name] === true;
-
   return (
-    <div id={name} onClick={() => onClick?.(name)}>
+    <div
+      id={name}
+      onClick={() => onClick?.(name)}
+      key={`${name}-${isExpanded}`}
+    >
       <Accordion
         type="single"
         collapsible
-        defaultValue={isSectionExpanded ? "item-1" : ""}
+        defaultValue={isExpanded ? "item-1" : ""}
       >
         <AccordionItem value="item-1">
           <AccordionTrigger>{name}</AccordionTrigger>

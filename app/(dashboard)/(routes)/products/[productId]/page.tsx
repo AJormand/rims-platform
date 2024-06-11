@@ -38,6 +38,8 @@ export default function Product({ params }: { params: { productId: string } }) {
   const [expandedSectionsLocalStorage, setExpandedSectionsLocalStorage] =
     useLocalStorage<Record<string, any>>("expanded-product-sections", {
       "Basic Details": true,
+      Products: false,
+      Applications: false,
     });
 
   const [popUpData, setPopUpData] = useState([]);
@@ -51,6 +53,13 @@ export default function Product({ params }: { params: { productId: string } }) {
     setExpandedSectionsLocalStorage((prev) => ({
       ...prev,
       [name]: !prev[name],
+    }));
+  };
+
+  const handleSideNavClick = (name: string) => {
+    setExpandedSectionsLocalStorage((prev) => ({
+      ...prev,
+      [name]: true,
     }));
   };
 
@@ -107,7 +116,7 @@ export default function Product({ params }: { params: { productId: string } }) {
 
   return (
     <div className="flex w-full h-screen-minus-navbar-topbar">
-      <SideNav sections={sideNavSections} onClick={handleSectionClick} />
+      <SideNav sections={sideNavSections} onClick={handleSideNavClick} />
       {isError && <div>Error</div>}
       {data && (
         <div className="w-full px-6 overflow-scroll">
@@ -115,8 +124,8 @@ export default function Product({ params }: { params: { productId: string } }) {
           {/* BASIC DETAILS */}
           <Section
             name="Basic Details"
-            expandedSections={expandedSectionsLocalStorage}
             onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Basic Details"]}
           >
             <BasicDetailsForm data={data?.productData.data} type="edit" />
           </Section>
@@ -124,8 +133,8 @@ export default function Product({ params }: { params: { productId: string } }) {
           {/* ACTIVE SUBSTANCES */}
           <Section
             name="Active Substances"
-            expandedSections={expandedSectionsLocalStorage}
             onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Active Substances"]}
           >
             <Button
               size={"sm"}
@@ -164,7 +173,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           {/* INACTIVE SUBSTANCES */}
           <Section
             name="Inactive Substances"
-            expandedSections={expandedSectionsLocalStorage}
+            isExpanded={expandedSectionsLocalStorage["Inactive Substances"]}
             onClick={handleSectionClick}
           >
             <Button
@@ -205,7 +214,7 @@ export default function Product({ params }: { params: { productId: string } }) {
 
           <Section
             name="Applications"
-            expandedSections={expandedSectionsLocalStorage}
+            isExpanded={expandedSectionsLocalStorage["Applications"]}
             onClick={handleSectionClick}
           >
             <DataTable
@@ -217,7 +226,7 @@ export default function Product({ params }: { params: { productId: string } }) {
           {/* REGISTRATIONS */}
           <Section
             name="Registrations"
-            expandedSections={expandedSectionsLocalStorage}
+            isExpanded={expandedSectionsLocalStorage["Registrations"]}
             onClick={handleSectionClick}
           >
             <DataTable
