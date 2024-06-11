@@ -19,6 +19,8 @@ import { StatusBar } from "./_components/status-bar";
 import { usefetchProduct } from "@/app/services/hooks/hooks";
 import { fetchPopUpData } from "@/app/services/api-client/api-client";
 
+import { Minimize2, Maximize2 } from "lucide-react";
+
 import {
   Product as ProductType,
   Substance,
@@ -134,12 +136,30 @@ export default function Product({ params }: { params: { productId: string } }) {
       {isError && <div>Error</div>}
       {data && (
         <div className="w-full px-6 overflow-scroll">
-          <StatusBar
-            data={data.productData.data}
-            cv={"product-status"}
-            expandAll={expandAllSidenavSections}
-            collapseAll={collapseAllSidenavSections}
-          />
+          <div className="flex border-b-2 py-2 rounded-lg bg-slate-50">
+            <StatusBar
+              data={data.productData.data}
+              cv={"product-status"}
+              expandAll={expandAllSidenavSections}
+              collapseAll={collapseAllSidenavSections}
+            />
+
+            <div className="flex ml-auto gap-1 text-slate-500">
+              <button
+                className="border p-1 rounded-md hover:bg-slate-100"
+                onClick={collapseAllSidenavSections}
+              >
+                <Minimize2 size={15} />
+              </button>
+              <button
+                className="border p-1 rounded-md hover:bg-slate-100"
+                onClick={expandAllSidenavSections}
+              >
+                <Maximize2 size={15} />
+              </button>
+            </div>
+          </div>
+
           {/* BASIC DETAILS */}
           <Section
             name="Basic Details"

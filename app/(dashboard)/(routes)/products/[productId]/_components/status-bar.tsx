@@ -64,7 +64,7 @@ export const StatusBar = ({
   };
 
   return (
-    <div className="flex items-center gap-4 my-2 pb-2 border-b-2">
+    <div className="flex items-center gap-4">
       <h1 className={`font-bold ${getStatusTextColor(data.status)}`}>
         {data.name}
       </h1>
@@ -97,21 +97,6 @@ export const StatusBar = ({
             ></div>
           </>
         )}
-      </div>
-
-      <div className="flex ml-auto gap-1 mt-10 text-slate-500">
-        <button
-          className="border p-1 rounded-md hover:bg-slate-100"
-          onClick={collapseAll}
-        >
-          <Minimize2 size={15} />
-        </button>
-        <button
-          className="border p-1 rounded-md hover:bg-slate-100"
-          onClick={expandAll}
-        >
-          <Maximize2 size={15} />
-        </button>
       </div>
     </div>
   );
