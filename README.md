@@ -23,7 +23,9 @@
 - Done - Product - scroll fix
 - Done - scroll fix for other objects
 - Done - Add sidenav count for all other objects!!!!! [app, reg, sub, org, country]
-- todo - build expand of sections when clicking on sidenav
+- Done - expand sections from sidenav for PRD
+- todo - FIX editing of basic details not working now with expand of section
+- todo - build expand of sections when clicking on sidenav for other objects
 - todo - add skeleton to other objects
 - todo - add localstorage for open sections to other objects
 - Error - Get Registrations for product
