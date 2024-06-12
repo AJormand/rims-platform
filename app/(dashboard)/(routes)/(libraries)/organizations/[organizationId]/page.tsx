@@ -33,10 +33,7 @@ export default function Organization({
       <SideNav sections={sideNavSections} />
       {organizationData && (
         <div className="w-full px-6 overflow-scroll">
-          <Section
-            name="Basic Details"
-            expandedSections={{ "Basic Details": true }}
-          >
+          <Section name="Basic Details" isExpanded={true}>
             <BasicDetailsForm data={organizationData} type="edit" />
           </Section>
         </div>

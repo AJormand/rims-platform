@@ -29,10 +29,7 @@ export default function Country({ params }: { params: { countryId: string } }) {
       <SideNav sections={sideNavSections} />
       {countryData && (
         <div className="w-full px-6 overflow-scroll">
-          <Section
-            name="Basic Details"
-            expandedSections={{ "Basic Details": true }}
-          >
+          <Section name="Basic Details" isExpanded={true}>
             <BasicDetailsForm data={countryData} type="edit" />
           </Section>
         </div>

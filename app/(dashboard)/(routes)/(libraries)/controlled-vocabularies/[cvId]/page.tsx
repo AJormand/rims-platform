@@ -35,10 +35,7 @@ export default function ControlledVocabulary({
       <SideNav sections={sideNavSections} />
       {controlledVocabularyData && (
         <div className="w-full px-6 overflow-scroll">
-          <Section
-            name="Basic Details"
-            expandedSections={{ "Basic Details": true }}
-          >
+          <Section name="Basic Details" isExpanded={true}>
             <BasicDetailsForm data={controlledVocabularyData} type="edit" />
           </Section>
         </div>

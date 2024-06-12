@@ -52,8 +52,8 @@ export default function Substance({
         {substanceData && (
           <Section
             name="Basic Details"
-            expandedSections={expandedSections}
             onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Basic Details"]}
           >
             <BasicDetailsForm data={substanceData} type="edit" />
           </Section>
