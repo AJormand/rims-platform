@@ -37,7 +37,10 @@ export const Section = ({
       >
         <AccordionItem value="item-1">
           <AccordionTrigger>{name}</AccordionTrigger>
-          <AccordionContent>{children}</AccordionContent>
+          {/* stopPropagation to prevent the accordion from closing when clicking on the content */}
+          <AccordionContent onClick={(e) => e.stopPropagation()}>
+            {children}
+          </AccordionContent>
         </AccordionItem>
       </Accordion>
     </div>
