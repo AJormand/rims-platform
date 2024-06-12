@@ -25,8 +25,12 @@ import { applicationCountryColumns } from "./_components/application-country-col
 import { countryAddRecordPopupColumns } from "./_components/country-add-record-popup-columns";
 import { RecordActions } from "./_components/record-actions";
 import { applicationRegistrationColumns } from "./_components/application-registration-columns";
+import { StatusBar } from "@/components/status-bar";
 
 import { useFetchApplication } from "@/app/services/hooks/hooks";
+import { editApplication } from "@/app/services/api-client/api-client";
+
+import { Minimize2, Maximize2 } from "lucide-react";
 
 interface ExtendedProduct2Application extends Product2Application {
   product: Product;
@@ -46,6 +50,8 @@ export default function Application({
   const { data, isError, isLoading } = useFetchApplication(
     params.applicationId
   );
+
+  console.log({ data });
 
   const [expandedSectionsLocalStorage, setExpandedSectionsLocalStorage] =
     useLocalStorage<Record<string, any>>("expanded-application-sections", {
@@ -162,6 +168,29 @@ export default function Application({
       {isError && <div>Error</div>}
       {data && (
         <div className="w-full px-6 overflow-scroll">
+          <div className="flex border-b-2 py-2 rounded-lg bg-slate-50">
+            <StatusBar
+              data={data.applicationData}
+              cvName={"product-status"}
+              queryKey="application"
+              editApiFunction={editApplication}
+            />
+
+            <div className="flex ml-auto gap-1 text-slate-500">
+              <button
+                className="border p-1 rounded-md hover:bg-slate-100"
+                onClick={collapseAllSidenavSections}
+              >
+                <Minimize2 size={15} />
+              </button>
+              <button
+                className="border p-1 rounded-md hover:bg-slate-100"
+                onClick={expandAllSidenavSections}
+              >
+                <Maximize2 size={15} />
+              </button>
+            </div>
+          </div>
           {/* RECORD ACTIONS WIZARD */}
           <RecordActions data={data.applicationData} />
           {/* BASIC */}

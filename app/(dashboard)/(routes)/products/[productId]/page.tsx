@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 import { applicationColumns } from "./_components/application-columns";
@@ -14,10 +14,11 @@ import { DataTable } from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/section";
 import { SideNav } from "@/components/side-nav";
-import { StatusBar } from "./_components/status-bar";
+import { StatusBar } from "@/components/status-bar";
 
 import { usefetchProduct } from "@/app/services/hooks/hooks";
 import { fetchPopUpData } from "@/app/services/api-client/api-client";
+import { editProduct } from "@/app/services/api-client/api-client";
 
 import { Minimize2, Maximize2 } from "lucide-react";
 
@@ -136,9 +137,9 @@ export default function Product({ params }: { params: { productId: string } }) {
           <div className="flex border-b-2 py-2 rounded-lg bg-slate-50">
             <StatusBar
               data={data.productData.data}
-              cv={"product-status"}
-              expandAll={expandAllSidenavSections}
-              collapseAll={collapseAllSidenavSections}
+              cvName={"product-status"}
+              queryKey="product"
+              editApiFunction={editProduct}
             />
 
             <div className="flex ml-auto gap-1 text-slate-500">

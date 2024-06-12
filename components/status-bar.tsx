@@ -5,35 +5,35 @@ import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
 
 import { editProduct } from "@/app/services/api-client/api-client";
 
-import { Minimize2, Maximize2 } from "lucide-react";
-
 interface StatusBarProps {
   data: any;
-  cv: string;
-  expandAll: () => void;
-  collapseAll: () => void;
+  cvName: string;
+  editApiFunction: (id: string, data: any) => Promise<any>;
+  queryKey: string;
 }
 
 export const StatusBar = ({
   data,
-  cv,
-  expandAll,
-  collapseAll,
+  cvName,
+  editApiFunction,
+  queryKey,
 }: StatusBarProps) => {
   const queryClient = useQueryClient();
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
   const [isOpen, setIsOpen] = useState(false);
 
+  console.log({ xxx: data });
+
   const statusValues = controlledVocabularies?.filter(
-    (element: any) => element.name === cv
+    (element: any) => element.name === cvName
   );
 
   const handleStatusChange = async (status: string) => {
     console.log(status);
-    const response = await editProduct(data.id, { status });
+    const response = await editApiFunction(data.id, { status });
     if (response?.status === 200) {
       setIsOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["product"] });
+      queryClient.invalidateQueries({ queryKey: [queryKey] });
     }
   };
 
