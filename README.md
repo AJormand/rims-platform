@@ -25,6 +25,7 @@
 - Done - Add sidenav count for all other objects!!!!! [app, reg, sub, org, country]
 - Done - expand sections from sidenav for PRD
 - Done - FIX editing of basic details not working now with expand of section
+- Done - added status bar to Prd, Reg, App
 - todo - add status bar to other objects
 - todo - build expand of sections when clicking on sidenav for other objects
 - todo - add skeleton to other objects
