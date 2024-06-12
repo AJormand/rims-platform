@@ -24,7 +24,8 @@
 - Done - scroll fix for other objects
 - Done - Add sidenav count for all other objects!!!!! [app, reg, sub, org, country]
 - Done - expand sections from sidenav for PRD
-- todo - FIX editing of basic details not working now with expand of section
+- Done - FIX editing of basic details not working now with expand of section
+- todo - add status bar to other objects
 - todo - build expand of sections when clicking on sidenav for other objects
 - todo - add skeleton to other objects
 - todo - add localstorage for open sections to other objects

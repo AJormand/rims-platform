@@ -62,6 +62,26 @@ export default function Application({
     }));
   };
 
+  const handleSideNavClick = (name: string) => {
+    setExpandedSectionsLocalStorage((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+  };
+
+  const expandAllSidenavSections = () => {
+    setExpandedSectionsLocalStorage({
+      "Basic Details": true,
+      Countries: true,
+      Products: true,
+      Registrations: true,
+    });
+  };
+
+  const collapseAllSidenavSections = () => {
+    setExpandedSectionsLocalStorage({});
+  };
+
   type ObjectWithId = {
     id: string;
   };
@@ -138,95 +158,94 @@ export default function Application({
 
   return (
     <div className="flex w-full h-screen-minus-navbar-topbar">
-      <SideNav sections={sideNavSections} />
-      <div className="w-full px-6 overflow-scroll">
-        {data && (
-          <>
-            {/* RECORD ACTIONS WIZARD */}
-            <RecordActions data={data.applicationData} />
-            {/* BASIC */}
-            <Section
-              name="Basic Details"
-              expandedSections={expandedSectionsLocalStorage}
-              onClick={handleSectionClick}
-            >
-              <BasicDetailsForm data={data.applicationData} type="edit" />
-            </Section>
+      <SideNav sections={sideNavSections} onClick={handleSideNavClick} />
+      {isError && <div>Error</div>}
+      {data && (
+        <div className="w-full px-6 overflow-scroll">
+          {/* RECORD ACTIONS WIZARD */}
+          <RecordActions data={data.applicationData} />
+          {/* BASIC */}
+          <Section
+            name="Basic Details"
+            onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Basic Details"]}
+          >
+            <BasicDetailsForm data={data.applicationData} type="edit" />
+          </Section>
 
-            {/* COUNTRIES */}
-            <Section
-              name="Countries"
-              expandedSections={expandedSectionsLocalStorage}
-              onClick={handleSectionClick}
+          {/* COUNTRIES */}
+          <Section
+            name="Countries"
+            onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Countries"]}
+          >
+            <Button
+              size={"sm"}
+              variant={"outline"}
+              onClick={() => addCountry()}
             >
-              <Button
-                size={"sm"}
-                variant={"outline"}
-                onClick={() => addCountry()}
-              >
-                Add Country
-              </Button>
-              <DataTable
-                columns={applicationCountryColumns}
-                data={data.applicationData.countries}
+              Add Country
+            </Button>
+            <DataTable
+              columns={applicationCountryColumns}
+              data={data.applicationData.countries}
+            />
+            {addRecordPopupVisible === "country" && (
+              <AddRecordPopup
+                name="Countries"
+                setPopVisible={setAddRecordPopupVisible}
+                data={popUpData}
+                //fetchDataRoute={`/api/products`}
+                storeDataRoute={`/api/applications/${params.applicationId}/countries`}
+                columns={countryAddRecordPopupColumns}
+                queryKey="application"
               />
-              {addRecordPopupVisible === "country" && (
-                <AddRecordPopup
-                  name="Countries"
-                  setPopVisible={setAddRecordPopupVisible}
-                  data={popUpData}
-                  //fetchDataRoute={`/api/products`}
-                  storeDataRoute={`/api/applications/${params.applicationId}/countries`}
-                  columns={countryAddRecordPopupColumns}
-                  queryKey="application"
-                />
-              )}
-            </Section>
+            )}
+          </Section>
 
-            {/* PRODUCTS */}
-            <Section
-              name="Products"
-              expandedSections={expandedSectionsLocalStorage}
-              onClick={handleSectionClick}
+          {/* PRODUCTS */}
+          <Section
+            name="Products"
+            onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Products"]}
+          >
+            <Button
+              size={"sm"}
+              variant={"outline"}
+              onClick={() => addProduct()}
             >
-              <Button
-                size={"sm"}
-                variant={"outline"}
-                onClick={() => addProduct()}
-              >
-                Add Product
-              </Button>
-              <DataTable
-                columns={applicationProductColumns}
-                data={data.applicationData.products2Application}
+              Add Product
+            </Button>
+            <DataTable
+              columns={applicationProductColumns}
+              data={data.applicationData.products2Application}
+            />
+            {addRecordPopupVisible === "product" && (
+              <AddRecordPopup
+                name="Products"
+                setPopVisible={setAddRecordPopupVisible}
+                data={popUpData}
+                //fetchDataRoute={`/api/products`}
+                storeDataRoute={`/api/applications/${params.applicationId}/products`}
+                columns={productAddRecordPopupColumns}
+                queryKey="application"
               />
-              {addRecordPopupVisible === "product" && (
-                <AddRecordPopup
-                  name="Products"
-                  setPopVisible={setAddRecordPopupVisible}
-                  data={popUpData}
-                  //fetchDataRoute={`/api/products`}
-                  storeDataRoute={`/api/applications/${params.applicationId}/products`}
-                  columns={productAddRecordPopupColumns}
-                  queryKey="application"
-                />
-              )}
-            </Section>
+            )}
+          </Section>
 
-            {/* REGISTRATIONS */}
-            <Section
-              name="Registrations"
-              expandedSections={expandedSectionsLocalStorage}
-              onClick={handleSectionClick}
-            >
-              <DataTable
-                columns={applicationRegistrationColumns}
-                data={data.applicationData.registrations}
-              />
-            </Section>
-          </>
-        )}
-      </div>
+          {/* REGISTRATIONS */}
+          <Section
+            name="Registrations"
+            onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Registrations"]}
+          >
+            <DataTable
+              columns={applicationRegistrationColumns}
+              data={data.applicationData.registrations}
+            />
+          </Section>
+        </div>
+      )}
     </div>
   );
 }

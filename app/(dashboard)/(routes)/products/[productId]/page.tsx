@@ -49,7 +49,6 @@ export default function Product({ params }: { params: { productId: string } }) {
     useState<string>("");
 
   const { data, isError, isLoading } = usefetchProduct(params.productId);
-  console.log(data);
 
   const handleSectionClick = (name: string) => {
     setExpandedSectionsLocalStorage((prev) => ({
@@ -84,10 +83,8 @@ export default function Product({ params }: { params: { productId: string } }) {
     fetchRoute: string,
     linkedRecords: ObjectWithId[]
   ) => {
-    console.log("linked", linkedRecords);
     setAddRecordPopupVisible(popupName);
     const data = await fetchPopUpData(fetchRoute, linkedRecords);
-    console.log(data);
     setPopUpData(data);
   };
 
