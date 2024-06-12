@@ -39,6 +39,26 @@ export default function Registration({
     }));
   };
 
+  const handleSideNavClick = (name: string) => {
+    setExpandedSectionsLocalStorage((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+  };
+
+  const expandAllSidenavSections = () => {
+    setExpandedSectionsLocalStorage({
+      "Basic Details": true,
+      Countries: true,
+      Products: true,
+      Registrations: true,
+    });
+  };
+
+  const collapseAllSidenavSections = () => {
+    setExpandedSectionsLocalStorage({});
+  };
+
   const sideNavSections = useMemo(() => {
     if (!data)
       return [
@@ -76,7 +96,7 @@ export default function Registration({
 
   return (
     <div className="flex w-full h-screen-minus-navbar-topbar">
-      <SideNav sections={sideNavSections} />
+      <SideNav sections={sideNavSections} onClick={handleSideNavClick} />
       {isError && <div>Error</div>}
 
       {data && (
@@ -84,8 +104,8 @@ export default function Registration({
           {/* BASIC */}
           <Section
             name="Basic Details"
-            expandedSections={expandedSectionsLocalStorage}
             onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Basic Details"]}
           >
             <BasicDetailsForm data={data?.data} type="edit" />
           </Section>
@@ -93,8 +113,8 @@ export default function Registration({
           {/* PRODUCTS */}
           <Section
             name="Products"
-            expandedSections={expandedSectionsLocalStorage}
             onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Products"]}
           >
             <DataTable
               columns={productColumns}
@@ -106,8 +126,8 @@ export default function Registration({
           {/* APPLICATIONS */}
           <Section
             name="Applications"
-            expandedSections={expandedSectionsLocalStorage}
             onClick={handleSectionClick}
+            isExpanded={expandedSectionsLocalStorage["Applications"]}
           >
             <DataTable
               columns={productColumns}
