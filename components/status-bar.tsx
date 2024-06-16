@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
 
 import { editProduct } from "@/app/services/api-client/api-client";
+import { useRouter } from "next/navigation";
 
 interface StatusBarProps {
   data: any;
@@ -18,22 +19,23 @@ export const StatusBar = ({
   editApiFunction,
   queryKey,
 }: StatusBarProps) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
   const [isOpen, setIsOpen] = useState(false);
-
-  console.log({ xxx: data });
-
+  const [currentStatus, setCurrentStatus] = useState(data.status);
   const statusValues = controlledVocabularies?.filter(
     (element: any) => element.name === cvName
   );
 
+  console.log({ queryKey });
+
   const handleStatusChange = async (status: string) => {
-    console.log(status);
     const response = await editApiFunction(data.id, { status });
     if (response?.status === 200) {
+      setCurrentStatus(status);
       setIsOpen(false);
-      queryClient.invalidateQueries({ queryKey: [queryKey] });
+      //queryClient.invalidateQueries({ queryKey: [queryKey] });
     }
   };
 
@@ -65,18 +67,18 @@ export const StatusBar = ({
 
   return (
     <div className="flex items-center gap-4">
-      <h1 className={`font-bold ${getStatusTextColor(data.status)}`}>
+      <h1 className={`font-bold ${getStatusTextColor(currentStatus)}`}>
         {data.name}
       </h1>
 
       <div className="relative">
         <button
           className={`px-4 py-1 rounded-full text-white text-sm font-semibold ${getStatusBackgroundColor(
-            data.status
+            currentStatus
           )}`}
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          {data.status}
+          {currentStatus}
         </button>
         {isOpen && (
           <>
