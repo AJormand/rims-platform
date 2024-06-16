@@ -3,13 +3,16 @@
 import { useState, useEffect } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
-import axios from "axios";
-
 import { SideNav } from "@/components/side-nav";
 import { Section } from "@/components/section";
+import { StatusBar } from "@/components/status-bar";
+
 import { BasicDetailsForm } from "../_components/basic-details-form";
-import { DataTable } from "@/components/ui/data-table";
-import { fetchSubstance } from "@/app/services/api-client/api-client";
+
+import {
+  editSubstance,
+  fetchSubstance,
+} from "@/app/services/api-client/api-client";
 
 export default function Substance({
   params,
@@ -34,31 +37,27 @@ export default function Substance({
     fetchData();
   }, []);
 
-  const handleSectionClick = (name: string) => {
-    const newExpandedSections = {
-      ...expandedSectionsLocalStorage,
-      [name]: !expandedSectionsLocalStorage[name],
-    };
-    setExpandedSections(newExpandedSections);
-    setExpandedSectionsLocalStorage(newExpandedSections);
-  };
-
   const sideNavSections = [{ name: "Basic Details", count: 0 }];
 
   return (
     <div className="flex w-full h-screen-minus-navbar-topbar">
-      <SideNav sections={sideNavSections} onClick={handleSectionClick} />
-      <div className="w-full px-6 overflow-scroll">
-        {substanceData && (
-          <Section
-            name="Basic Details"
-            onClick={handleSectionClick}
-            isExpanded={expandedSectionsLocalStorage["Basic Details"]}
-          >
+      <SideNav sections={sideNavSections} />
+
+      {substanceData && (
+        <div className="w-full px-6 overflow-scroll">
+          <div className="flex border-b-2 py-2 rounded-lg bg-slate-50">
+            <StatusBar
+              data={substanceData}
+              cvName={"product-status"}
+              queryKey=""
+              editApiFunction={editSubstance}
+            />
+          </div>
+          <Section name="Basic Details" isExpanded={true}>
             <BasicDetailsForm data={substanceData} type="edit" />
           </Section>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

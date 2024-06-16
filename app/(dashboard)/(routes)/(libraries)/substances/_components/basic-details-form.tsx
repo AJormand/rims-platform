@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select";
 
 import { Input } from "@/components/ui/input";
+import { editSubstance } from "@/app/services/api-client/api-client";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }).max(250),
@@ -77,15 +78,7 @@ export const BasicDetailsForm: React.FC<{
     const substanceId = data?.id;
     if (!substanceId) return;
 
-    try {
-      await axios.put(`/api/substances/${substanceId}`, {
-        values,
-      });
-      router.push(`/substances`);
-      toast.success("Substance updated successfully");
-    } catch (error) {
-      toast.error("Something went wrong");
-    }
+    editSubstance(substanceId, values);
   };
 
   return (

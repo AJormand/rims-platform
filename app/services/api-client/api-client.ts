@@ -199,6 +199,21 @@ export const fetchSubstance = async (substanceId: string) => {
   }
 };
 
+export const editSubstance = async (substanceId: string, values: any) => {
+  try {
+    console.log("editSubstance");
+    console.log(values);
+    const response = await axios.put(`/api/substances/${substanceId}`, {
+      values,
+    });
+    console.log(response);
+    toast.success("Substance updated successfully");
+    return response;
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
+
 export const deleteSubstance = async (substanceId: string) => {
   try {
     await axios.delete("/api/substances", { data: { substanceId } });
