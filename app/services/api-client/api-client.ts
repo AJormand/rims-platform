@@ -339,6 +339,27 @@ export const fetchControlledVocabulary = async (
   }
 };
 
+export const editControlledVocabulary = async (
+  controlledVocabularyId: string,
+  values: any
+) => {
+  try {
+    console.log("editControlledVocabulary");
+    console.log(values);
+    const response = await axios.put(
+      `/api/controlled-vocabularies/${controlledVocabularyId}`,
+      {
+        values,
+      }
+    );
+    console.log(response);
+    toast.success("ControlledVocabulary updated successfully");
+    return response;
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
+
 export const deleteControlledVocabulary = async (
   controlledVocabularyId: string
 ) => {
