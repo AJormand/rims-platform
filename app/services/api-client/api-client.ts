@@ -244,6 +244,21 @@ export const fetchOrganization = async (organizationId: string) => {
   }
 };
 
+export const editOrganization = async (organizationId: string, values: any) => {
+  try {
+    console.log("editOrganization");
+    console.log(values);
+    const response = await axios.put(`/api/organizations/${organizationId}`, {
+      values,
+    });
+    console.log(response);
+    toast.success("Organization updated successfully");
+    return response;
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
+
 export const deleteOrganization = async (organizationId: string) => {
   try {
     await axios.delete("/api/organizations", { data: { organizationId } });

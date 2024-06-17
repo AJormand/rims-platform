@@ -26,7 +26,7 @@
 - Done - expand sections from sidenav for PRD
 - Done - FIX editing of basic details not working now with expand of section
 - Done - added status bar to Prd, Reg, App
-- todo - status bar does not need query key anymore as it is being updated via useState
+- Done - status bar does not need query key anymore as it is being updated via useState
 - todo - add status bar to other objects
 - todo - build expand of sections when clicking on sidenav for other objects
 - todo - add skeleton to other objects
