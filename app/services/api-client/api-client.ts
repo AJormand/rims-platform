@@ -289,6 +289,21 @@ export const fetchCountry = async (countryId: string) => {
   }
 };
 
+export const editCountry = async (countryId: string, values: any) => {
+  try {
+    console.log("editCountry");
+    console.log(values);
+    const response = await axios.put(`/api/countries/${countryId}`, {
+      values,
+    });
+    console.log(response);
+    toast.success("Country updated successfully");
+    return response;
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
+
 export const deleteCountry = async (countryId: string) => {
   try {
     await axios.delete("/api/countries", { data: { countryId } });
