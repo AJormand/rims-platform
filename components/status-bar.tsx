@@ -1,34 +1,29 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+// import { useQueryClient } from "@tanstack/react-query";
 import { useFetchControlledVocabularies } from "@/app/services/hooks/hooks";
 
 import { editProduct } from "@/app/services/api-client/api-client";
-import { useRouter } from "next/navigation";
 
 interface StatusBarProps {
   data: any;
   cvName: string;
   editApiFunction: (id: string, data: any) => Promise<any>;
-  queryKey: string;
+  // queryKey: string;
 }
 
 export const StatusBar = ({
   data,
   cvName,
   editApiFunction,
-  queryKey,
-}: StatusBarProps) => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
+}: // queryKey,
+StatusBarProps) => {
   const { data: controlledVocabularies } = useFetchControlledVocabularies();
   const [isOpen, setIsOpen] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(data.status);
   const statusValues = controlledVocabularies?.filter(
     (element: any) => element.name === cvName
   );
-
-  console.log({ queryKey });
 
   const handleStatusChange = async (status: string) => {
     const response = await editApiFunction(data.id, { status });

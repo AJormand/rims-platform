@@ -108,7 +108,6 @@ export default function Registration({
             <StatusBar
               data={data.data}
               cvName={"product-status"}
-              queryKey="registration"
               editApiFunction={editRegistration}
             />
 

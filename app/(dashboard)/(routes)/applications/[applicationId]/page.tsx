@@ -172,7 +172,6 @@ export default function Application({
             <StatusBar
               data={data.applicationData}
               cvName={"product-status"}
-              queryKey="application"
               editApiFunction={editApplication}
             />
 

@@ -138,7 +138,6 @@ export default function Product({ params }: { params: { productId: string } }) {
             <StatusBar
               data={data.productData.data}
               cvName={"product-status"}
-              queryKey="product"
               editApiFunction={editProduct}
             />
 

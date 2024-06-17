@@ -49,7 +49,6 @@ export default function Substance({
             <StatusBar
               data={substanceData}
               cvName={"product-status"}
-              queryKey=""
               editApiFunction={editSubstance}
             />
           </div>
