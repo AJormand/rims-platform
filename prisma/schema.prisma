@@ -22,6 +22,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model TemplateCollection {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String @unique
+  status   String
+}
+
 model Product {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   name     String @unique
