@@ -6,7 +6,8 @@ export async function POST(request: Request) {
     console.log("XXXXXX")
 
 
-    const receivedData = await request.json()
+    const {collectionName} = await request.json()
+    console.log(collectionName)
 
 
     try {
@@ -16,6 +17,15 @@ export async function POST(request: Request) {
         });
 
          console.log('Collection created!');
+
+         // Save schema information in your schema management table or collection
+         await db.templateCollection.create({
+             data: {
+                 name: collectionName,
+                 status: 'active',
+                 // Include other schema details as needed
+             }
+         });
 
 
         return NextResponse.json(newCollection);

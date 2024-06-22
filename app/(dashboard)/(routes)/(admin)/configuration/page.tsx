@@ -13,7 +13,7 @@ export default function Configurations() {
     const createNewCollection = async () => {
         console.log("CREATE COLLECTION FE")
         try {
-            const response = await axios.post("/api/create-collection", {})
+            const response = await axios.post("/api/create-collection", {collectionName: "colNew"})
             console.log(response)
         } catch (error) {
             console.log(error)
