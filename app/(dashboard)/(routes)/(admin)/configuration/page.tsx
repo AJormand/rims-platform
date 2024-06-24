@@ -13,7 +13,15 @@ export default function Configurations() {
     const createNewCollection = async () => {
         console.log("CREATE COLLECTION FE")
         try {
-            const response = await axios.post("/api/create-collection", {collectionName: "colNew"})
+            const collectionName = "colNew"
+            const schemaDefinition = `
+            id       String @id @default(auto()) @map("_id") @db.ObjectId
+            name     String @unique
+            status   String
+            createdAt DateTime @default(now())
+            updatedAt DateTime @updatedAt
+            `
+            const response = await axios.post("/api/create-collection", {collectionName: collectionName, schemaDefinition:schemaDefinition})
             console.log(response)
         } catch (error) {
             console.log(error)

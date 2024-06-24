@@ -1,6 +1,47 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
+import fs from 'fs';
+import { exec } from 'child_process';
+import path from 'path';
+
+
+export async function POST(request: Request) {
+    const {collectionName, schemaDefinition} = await request.json()
+
+    if (!collectionName || !schemaDefinition) {
+        return new NextResponse('Collection name and schema definition are required', { status: 400 });
+    }
+
+    try {
+        // Add the new model to schema.prisma
+        const schemaPath = path.join(process.cwd(), 'prisma/schema.prisma');
+        let schemaContent = fs.readFileSync(schemaPath, 'utf8');
+
+        const newModel = `model ${collectionName} {${schemaDefinition}}`;
+
+        schemaContent += newModel;
+
+        fs.writeFileSync(schemaPath, schemaContent, 'utf8');
+
+        // Run prisma generate to apply changes
+        exec('npx prisma generate', (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error running prisma generate: ${stderr}`);
+               
+            }
+
+            console.log(`Prisma generate output: ${stdout}`);
+        
+        });
+    } catch (error) {
+        console.error(error);
+    }
+
+
+}
+
+/*
 export async function POST(request: Request) {
 
     console.log("XXXXXX")
@@ -35,6 +76,7 @@ export async function POST(request: Request) {
         return new NextResponse("[CREATE COLLECTION]", { status: 400 });
     }
 }
+    */
 
 export async function GET(request: Request) {
     console.log("Get collections")
