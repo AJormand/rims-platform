@@ -18,27 +18,26 @@ export async function POST(request: Request) {
         const schemaPath = path.join(process.cwd(), 'prisma/schema.prisma');
         let schemaContent = fs.readFileSync(schemaPath, 'utf8');
 
-        const newModel = `model ${collectionName} {${schemaDefinition}}`;
+        const newModel = `
+
+model ${collectionName} {${schemaDefinition}}`;
 
         schemaContent += newModel;
 
         fs.writeFileSync(schemaPath, schemaContent, 'utf8');
 
         // Run prisma generate to apply changes
-        exec('npx prisma generate', (error, stdout, stderr) => {
+        exec('npx prisma db push', (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error running prisma generate: ${stderr}`);
                
             }
-
             console.log(`Prisma generate output: ${stdout}`);
-        
+            return new NextResponse('Collection created!', { status: 200 });
         });
     } catch (error) {
         console.error(error);
     }
-
-
 }
 
 /*
@@ -80,6 +79,12 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
     console.log("Get collections")
+    db.colNewa.create({
+        data: {
+            name: 'test',
+            status: 'active',
+        }
+    })
 
     try {
         const collecitons = await db.$runCommandRaw({
