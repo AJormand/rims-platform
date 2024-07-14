@@ -13,11 +13,11 @@ export default function Configurations() {
   const createNewCollection = async () => {
 
     const schemaDefinition = `
-id       String @id @default(auto()) @map("_id") @db.ObjectId
-name     String @unique
-status   String
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt`;
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String @unique
+  status   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt`;
 
     console.log("CREATE COLLECTION FE");
     try {

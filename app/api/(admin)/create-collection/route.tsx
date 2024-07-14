@@ -20,7 +20,8 @@ export async function POST(request: Request) {
 
         const newModel = `
 
-model ${collectionName} {${schemaDefinition}}`;
+model ${collectionName} {${schemaDefinition}
+}`;
 
         schemaContent += newModel;
 
