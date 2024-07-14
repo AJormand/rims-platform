@@ -80,13 +80,6 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
     console.log("Get collections")
-    db.colNewa.create({
-        data: {
-            name: 'test',
-            status: 'active',
-        }
-    })
-
     try {
         const collecitons = await db.$runCommandRaw({
             listCollections:1
@@ -99,5 +92,20 @@ export async function GET(request: Request) {
         return new NextResponse("[GET COLLECTIONS]", { status: 400 });
     }
 
+}
+
+export async function DELETE(request: Request) {
+    const {collectionName} = await request.json()
+    console.log(collectionName)
+    console.log("Delete collection")
+    try {
+        const result = await db.$runCommandRaw({
+            drop: collectionName,
+          });
+          console.log(`Collection '${collectionName}' dropped successfully`);
+          return new NextResponse(`Collection ${collectionName} deleted!`, { status: 200 });
+    } catch (error) {
+        console.log(error)
+    }
 }
 

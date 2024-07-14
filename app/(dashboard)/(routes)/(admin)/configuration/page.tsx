@@ -48,6 +48,18 @@ export default function Configurations() {
     }
   };
 
+  const deleteCollection = async (collectionName:string) => {
+    try {
+      const response = await axios.delete("/api/create-collection",{data: {collectionName}})
+      console.log(response)
+      if(response.status === 200){
+        getCollections()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div className="container mx-auto py-10">
       <Button variant={"outline"} onClick={createNewCollection}>
@@ -69,7 +81,11 @@ export default function Configurations() {
 
       <div>
         {collections.map((collection: any) => (
-          <div key={collection}>{collection}</div>
+          <div className="flex w-32">
+            <div key={collection}>{collection}</div>
+            <Button variant={"outline"} onClick={() => deleteCollection(collection)}>Delete</Button>
+          </div>
+     
         ))}
       </div>
     </div>
