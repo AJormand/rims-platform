@@ -223,3 +223,11 @@ model testq3 {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model testCollection {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String @unique
+  status   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

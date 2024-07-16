@@ -48,6 +48,24 @@ export default function Configurations() {
     }
   };
 
+  //Built in collections can't be deleted
+  const builtInCollections = [
+    "Product2Organization",
+    "Product2Application",
+    "Application",
+    "ProductApplication",
+    "Product2Substance",
+    "ControlledVocabulary",
+    "Substance",
+    "Product",
+    "Country",
+    "Submission",
+    "Organization",
+    "Registration",
+    "CVLibrary"
+  ]
+  
+
   const deleteCollection = async (collectionName:string) => {
     try {
       const response = await axios.delete("/api/create-collection",{data: {collectionName}})
@@ -83,7 +101,7 @@ export default function Configurations() {
         {collections.map((collection: any) => (
           <div className="flex w-32">
             <div key={collection}>{collection}</div>
-            <Button variant={"outline"} onClick={() => deleteCollection(collection)}>Delete</Button>
+            <Button variant={"outline"} disabled={builtInCollections.includes(collection)} onClick={() => deleteCollection(collection)}>Delete</Button>
           </div>
      
         ))}
