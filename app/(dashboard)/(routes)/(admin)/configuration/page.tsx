@@ -21,7 +21,7 @@ export default function Configurations() {
 
     console.log("CREATE COLLECTION FE");
     try {
-      const response = await axios.post("/api/create-collection", {
+      const response = await axios.post("/api/collections", {
         collectionName: newCollectionName,
         schemaDefinition: schemaDefinition,
       });
@@ -34,7 +34,7 @@ export default function Configurations() {
   const getCollections = async () => {
     console.log("GET COLLECTIONS FE");
     try {
-      const response = await axios.get("/api/create-collection");
+      const response = await axios.get("/api/collections");
       console.log(response);
       const responseCollections = response.data.cursor.firstBatch;
       console.log({ collections });
@@ -68,7 +68,7 @@ export default function Configurations() {
 
   const deleteCollection = async (collectionName:string) => {
     try {
-      const response = await axios.delete("/api/create-collection",{data: {collectionName}})
+      const response = await axios.delete("/api/collections",{data: {collectionName}})
       console.log(response)
       if(response.status === 200){
         getCollections()

@@ -41,51 +41,18 @@ model ${collectionName} {${schemaDefinition}
     }
 }
 
-/*
-export async function POST(request: Request) {
-
-    console.log("XXXXXX")
-
-
-    const {collectionName} = await request.json()
-    console.log(collectionName)
-
-
-    try {
-
-        const newCollection = await db.$runCommandRaw({
-            create: 'myNewCollection'
-        });
-
-         console.log('Collection created!');
-
-         // Save schema information in your schema management table or collection
-         await db.templateCollection.create({
-             data: {
-                 name: collectionName,
-                 status: 'active',
-                 // Include other schema details as needed
-             }
-         });
-
-
-        return NextResponse.json(newCollection);
-        
-    } catch (error) {
-        console.log(error)
-        return new NextResponse("[CREATE COLLECTION]", { status: 400 });
-    }
-}
-    */
 
 export async function GET(request: Request) {
     console.log("Get collections")
+
+    //console.log(schemaContent)
     try {
-        const collecitons = await db.$runCommandRaw({
+        const collections = await db.$runCommandRaw({
             listCollections:1
         })
 
-        return NextResponse.json(collecitons);
+
+        return NextResponse.json(collections);
         
     } catch (error) {
         console.log(error)
@@ -98,12 +65,25 @@ export async function DELETE(request: Request) {
     const {collectionName} = await request.json()
     console.log(collectionName)
     console.log("Delete collection")
+    const schemaPath = path.join(process.cwd(), 'prisma/schema.prisma');
+    let schemaContent = fs.readFileSync(schemaPath, 'utf8');
+
     try {
-        const result = await db.$runCommandRaw({
+        const response = await db.$runCommandRaw({
             drop: collectionName,
           });
-          console.log(`Collection '${collectionName}' dropped successfully`);
-          return new NextResponse(`Collection ${collectionName} deleted!`, { status: 200 });
+
+        console.log(response)
+        //update prisma schema
+        if(response.ok === 1){
+            const modelRegex = new RegExp(`model ${collectionName} \\{[^\\}]*\\}\\n*`, 'g');
+            console.log(modelRegex)
+            schemaContent = schemaContent.replace(modelRegex, '');
+            console.log(schemaContent)
+            fs.writeFileSync(schemaPath, schemaContent, 'utf8');
+        }
+        console.log(`Collection '${collectionName}' dropped successfully`);
+        return new NextResponse(`Collection ${collectionName} deleted!`, { status: 200 });
     } catch (error) {
         console.log(error)
     }
