@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import axios from "axios";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function Configurations() {
@@ -11,7 +12,6 @@ export default function Configurations() {
   const [newCollectionName, setNewCollectionName] = useState("");
 
   const createNewCollection = async () => {
-
     const schemaDefinition = `
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   name     String @unique
@@ -30,6 +30,10 @@ export default function Configurations() {
       console.log(error);
     }
   };
+
+  useEffect(()=> {
+    getCollections()
+  },[])
 
   const getCollections = async () => {
     console.log("GET COLLECTIONS FE");
@@ -80,28 +84,31 @@ export default function Configurations() {
 
   return (
     <div className="container mx-auto py-10">
-      <Button variant={"outline"} onClick={createNewCollection}>
-        Create New List
-      </Button>
       <input
+        className="p-1"
         placeholder="Collection name"
         value={newCollectionName}
         onChange={(e) => setNewCollectionName(e.target.value)}
       />
+      <Button variant={"outline"} onClick={createNewCollection}>
+        Create New List
+      </Button>
       <Button variant={"outline"} onClick={getCollections}>
         Get Collections
       </Button>
 
-
-
-      
-
-
-      <div>
+      <div className="mt-5">
         {collections.map((collection: any) => (
-          <div className="flex w-32">
+          <div className="flex max-w-sm justify-between">
             <div key={collection}>{collection}</div>
-            <Button variant={"outline"} disabled={builtInCollections.includes(collection)} onClick={() => deleteCollection(collection)}>Delete</Button>
+            <div>
+              <Button variant={"outline"} disabled={builtInCollections.includes(collection)} onClick={() => deleteCollection(collection)}>Delete</Button>
+              <Button variant={"outline"}>
+                <Link href={`/configuration/collections/${collection}`}>
+                  Edit
+                </Link>
+              </Button>
+            </div>
           </div>
      
         ))}
