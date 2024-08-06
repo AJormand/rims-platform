@@ -65,6 +65,23 @@ export default function Collection({
     setCollectionData(newCollectionData);
   };
 
+  const removeListData = (index: number) => {
+    console.log({ index });
+    console.log("removing list data");
+    setCollectionData((prev) => {
+      const newCollectionData = [...prev];
+      newCollectionData.splice(index, 1);
+      return newCollectionData;
+    });
+  };
+
+  const updateListData = async () => {
+    console.log("updating list data");
+
+    const newModel = collectionData;
+    console.log({ newModel });
+  };
+
   const sideNavSections = [{ name: "Basic Details", count: 0 }];
 
   return (
@@ -102,6 +119,15 @@ export default function Collection({
                       handleInputChange(index, 2, e.target.value)
                     }
                   />
+                  <Button
+                    variant={"outline"}
+                    size={"sm"}
+                    onClick={() => {
+                      removeListData(index);
+                    }}
+                  >
+                    X
+                  </Button>
                 </div>
               ))}
             </div>
@@ -113,6 +139,13 @@ export default function Collection({
               }
             >
               Add Field
+            </Button>
+            <Button
+              variant={"outline"}
+              className="mt-5"
+              onClick={() => updateListData()}
+            >
+              Save
             </Button>
           </Section>
         </div>
