@@ -17,6 +17,7 @@ import {
   Building2,
   Globe,
   CaseUpper,
+  Settings,
 } from "lucide-react";
 
 export default function Home() {
@@ -121,6 +122,24 @@ export default function Home() {
                 </Card>
               </Link>
             ))}
+          </div>
+
+          <div className="mt-10">
+            <h1 className="text-center text-sm text-gray-400">Configuration</h1>
+            <Link
+              href={"/configuration/collections"}
+              key="configuration"
+              className="hover:shadow-lg"
+            >
+              <Card className="flex items-center">
+                <CardHeader>
+                  <CardTitle className="text-sm">{"Collections"}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex justify-center items-center py-0 px-4">
+                  <Settings />
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
       </div>
