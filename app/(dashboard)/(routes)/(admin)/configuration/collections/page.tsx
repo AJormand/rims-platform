@@ -12,6 +12,10 @@ export default function Configurations() {
   const [newCollectionName, setNewCollectionName] = useState("");
 
   const createNewCollection = async () => {
+    if (!newCollectionName) {
+      throw new Error("Collection name is required");
+    }
+
     const schemaDefinition = `
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   name     String @unique
@@ -31,9 +35,9 @@ export default function Configurations() {
     }
   };
 
-  useEffect(()=> {
-    getCollections()
-  },[])
+  useEffect(() => {
+    getCollections();
+  }, []);
 
   const getCollections = async () => {
     console.log("GET COLLECTIONS FE");
@@ -66,21 +70,22 @@ export default function Configurations() {
     "Submission",
     "Organization",
     "Registration",
-    "CVLibrary"
-  ]
-  
+    "CVLibrary",
+  ];
 
-  const deleteCollection = async (collectionName:string) => {
+  const deleteCollection = async (collectionName: string) => {
     try {
-      const response = await axios.delete("/api/collections",{data: {collectionName}})
-      console.log(response)
-      if(response.status === 200){
-        getCollections()
+      const response = await axios.delete("/api/collections", {
+        data: { collectionName },
+      });
+      console.log(response);
+      if (response.status === 200) {
+        getCollections();
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto py-10">
@@ -102,7 +107,13 @@ export default function Configurations() {
           <div className="flex max-w-sm justify-between">
             <div key={collection}>{collection}</div>
             <div>
-              <Button variant={"outline"} disabled={builtInCollections.includes(collection)} onClick={() => deleteCollection(collection)}>Delete</Button>
+              <Button
+                variant={"outline"}
+                disabled={builtInCollections.includes(collection)}
+                onClick={() => deleteCollection(collection)}
+              >
+                Delete
+              </Button>
               <Button variant={"outline"}>
                 <Link href={`/configuration/collections/${collection}`}>
                   Edit
@@ -110,7 +121,6 @@ export default function Configurations() {
               </Button>
             </div>
           </div>
-     
         ))}
       </div>
     </div>
