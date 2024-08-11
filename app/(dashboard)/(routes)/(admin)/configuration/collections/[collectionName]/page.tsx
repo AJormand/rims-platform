@@ -78,8 +78,19 @@ export default function Collection({
   const updateListData = async () => {
     console.log("updating list data");
 
-    const newModel = collectionData;
-    console.log({ newModel });
+    const schemaDefinition = collectionData
+      .map((fieldElements: [string]) => fieldElements.join(" "))
+      .join("\n");
+    console.log({ schemaDefinition });
+
+    const updatedModel = `model ${collectionName} {
+      ${schemaDefinition}
+    }`;
+
+    const response = await axios.put(`/api/collections/${collectionName}`, {
+      updatedModel,
+    });
+    console.log(response);
   };
 
   const sideNavSections = [{ name: "Basic Details", count: 0 }];

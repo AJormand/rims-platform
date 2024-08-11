@@ -22,8 +22,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
-
 model Product {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   name     String @unique
@@ -93,14 +91,14 @@ model Application {
 }
 
 model Registration {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name   String @unique
-  status String
-  country String
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  name               String  @unique
+  status             String
+  country            String
   registrationNumber String?
 
   product   Product? @relation(fields: [productId], references: [id])
-  productId String?      @db.ObjectId
+  productId String?  @db.ObjectId
 
   application   Application? @relation(fields: [applicationId], references: [id])
   applicationId String?      @db.ObjectId
@@ -158,20 +156,20 @@ model Country {
 }
 
 model ControlledVocabulary {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   value       String
   description String?
 
-  status      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model newCol {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String @unique
-  status   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  surname String
+  address String
+  city    String
 }
