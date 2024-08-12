@@ -14,7 +14,7 @@ export default function Collection({
 }: {
   params: { collectionName: string };
 }) {
-  const [collectionData, setCollectionData] = useState<any>(null);
+  const [collectionData, setCollectionData] = useState<[string,string,string][]>([]);
   const { collectionName } = params;
 
   const getListData = async () => {
@@ -42,12 +42,13 @@ export default function Collection({
       });
 
       // join fields into three columns as prisma schema contains 3 columns - last column in prisma schema can contain spaces therefore joined together
-      const parsedFiedsInThreeColumns = parsedFields.map((field: string[]) => [
+      const parsedFieldsInThreeColumns = parsedFields.map((field: string[]) => [
         field[0],
         field[1],
         field.slice(2).join(" "),
       ]);
-      setCollectionData(parsedFiedsInThreeColumns);
+      setCollectionData(parsedFieldsInThreeColumns);
+      console.log({ parsedFieldsInThreeColumns });
     }
   };
 
@@ -79,7 +80,7 @@ export default function Collection({
     console.log("updating list data");
 
     const schemaDefinition = collectionData
-      .map((fieldElements: [string]) => fieldElements.join(" "))
+      .map((fieldElements: [string, string, string]) => fieldElements.join(" "))
       .join("\n");
     console.log({ schemaDefinition });
 
