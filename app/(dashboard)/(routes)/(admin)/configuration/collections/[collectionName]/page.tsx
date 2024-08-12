@@ -26,7 +26,6 @@ export default function Collection({
       "s"
     );
     const match = response.data.match(modelRegex);
-    console.log({ match });
 
     // Extract fields from model
     if (match) {
