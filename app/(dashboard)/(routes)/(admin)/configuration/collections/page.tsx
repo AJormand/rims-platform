@@ -43,20 +43,6 @@ export default function Configurations() {
   }, []);
 
   const getCollections = async () => {
-    // console.log("GET COLLECTIONS FE");
-    // try {
-    //   const response = await axios.get("/api/collections");
-    //   console.log(response);
-    //   const responseCollections = response.data.cursor.firstBatch;
-    //   console.log({ collections });
-    //   const collectionNames = responseCollections.map(
-    //     (collection: any) => collection.name
-    //   );
-    //   console.log(collectionNames);
-    //   setCollections(collectionNames);
-    // } catch (error) {
-    //   console.log(error);
-    // }
     const data = await fetchCollections();
     setCollections(data);
   };

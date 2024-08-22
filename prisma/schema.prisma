@@ -171,5 +171,6 @@ model newCol {
   name    String
   surname String
   address String
-  city    Int
+  city    String
+  age     Int
 }

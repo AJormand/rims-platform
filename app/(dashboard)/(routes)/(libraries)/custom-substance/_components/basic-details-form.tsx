@@ -49,21 +49,21 @@ export const BasicDetailsForm: React.FC<{
 }> = ({ data, type }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
-  const [formSchema, setFormSchema] = useState<z.ZodObject<any>>();
+  const [formSchema, setFormSchema] = useState<z.ZodObject<any>>(z.object({}));
+  const [defaultValues, setDefaultValues] = useState<Record<string, any>>({});
 
-  useEffect(() => {
-    async function fetchData() {
-      console.log("fetching data");
-      try {
-        const response = await axios.get("/api/collections/Substance");
-        const collectionData = await response.data
+  const fetchColumnNames = async () => {
+    console.log("fetching data");
+    try {
+      const response = await axios.get("/api/collections/Substance");
+      const collectionData = await response.data;
 
-        // Extract model from Prisma schema
-        const modelRegex = new RegExp(
-          `model ${"Substance"} \\{([^\\}]*)\\}`,
-          "s"
-        );
-        const match = response.data.match(modelRegex);
+      // Extract model from Prisma schema
+      const modelRegex = new RegExp(
+        `model ${"Substance"} \\{([^\\}]*)\\}`,
+        "s"
+      );
+      const match = response.data.match(modelRegex);
 
       // Extract fields from model
       if (match) {
@@ -72,44 +72,52 @@ export const BasicDetailsForm: React.FC<{
           .split("\n")
           .map((field: string) => field.trim())
           .filter((field: string) => field.length > 0);
-  
+
         const parsedFields = fields.map((field: string) => {
           const fieldComponents = field.split(/\s+/);
           return fieldComponents;
         });
-  
-        // join fields into three columns as prisma schema contains 3 columns - last column in prisma schema can contain spaces therefore joined together
-        const parsedFieldsInThreeColumns = parsedFields.map((field: string[]) => [
-          field[0],
-          field[1],
-          field.slice(2).join(" "),
-        ]);
-        setCollectionData(parsedFieldsInThreeColumns);
-        console.log({ parsedFieldsInThreeColumns });
-      }
 
-        console.log("collectionData", collectionData)
-      } catch (error) {
-        console.error("Failed to fetch collection data:", error);
+        // join fields into three columns as prisma schema contains 3 columns - last column in prisma schema can contain spaces therefore joined together
+        const fieldNames = parsedFields.map((field: string[]) => field[0]);
+        console.log(fieldNames);
+
+        return fieldNames;
       }
+    } catch (error) {
+      console.error("Failed to fetch collection data:", error);
     }
-    fetchData();
+  };
+
+  const buildFormSchema = async () => {
+    // Build dynamic Zod schema and default values
+    const fieldNames = await fetchColumnNames();
+
+    const schema: any = {};
+    const defaults: any = {};
+
+    fieldNames.forEach((field: string) => {
+      schema[field] = z.string().optional(); // Customize validation per field type
+      defaults[field] = data?.[field] || ""; // Set default value
+    });
+
+    setFormSchema(z.object(schema));
+    setDefaultValues(defaults);
+  };
+
+  useEffect(() => {
+    buildFormSchema();
   }, []);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: data?.name || "",
-      type: data?.type || "",
-      EVcode: data?.EVcode || "",
-      status: data?.status || "draft",
-    },
+    defaultValues: defaultValues,
   });
 
   useEffect(() => {
     //reseting the form so that data is loaded in the default values properly - at time of form load data may not be available
-    form.reset();
+    form.reset(defaultValues);
   }, []);
 
   // 2. Define a submit handler.
@@ -155,68 +163,23 @@ export const BasicDetailsForm: React.FC<{
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="name"
-            disabled={!isEditing}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Active Substance Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="type"
-            disabled={!isEditing}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Type</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    disabled={!isEditing}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Active Substance">
-                        Active Substance
-                      </SelectItem>
-                      <SelectItem value="Inactive Substance">
-                        Inactive Substance
-                      </SelectItem>
-                      <SelectItem value="Excipient">Excipient</SelectItem>
-                      <SelectItem value="Colorant">Colorant</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="EVcode"
-            disabled={!isEditing}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>EVcode</FormLabel>
-                <FormControl>
-                  <Input placeholder="" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {Object.keys(defaultValues).map((field) => (
+            <FormField
+              key={field}
+              control={form.control}
+              name={field}
+              disabled={!isEditing}
+              render={({ field: fieldProps }) => (
+                <FormItem>
+                  <FormLabel>{field}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={field} {...fieldProps} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          ))}
         </div>
       </form>
     </Form>
