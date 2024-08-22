@@ -397,3 +397,18 @@ export const fetchPopUpData = async (
     toast.error(`"${error}`);
   }
 };
+
+// COLLECTIONS
+export const fetchCollections = async () => {
+  try {
+    const response = await axios.get("/api/collections");
+    const responseCollections = response.data.cursor.firstBatch;
+    const collectionNames = responseCollections.map(
+      (collection: any) => collection.name
+    );
+    console.log(collectionNames);
+    return collectionNames;
+  } catch (error) {
+    toast.error(`"${error}`);
+  }
+};

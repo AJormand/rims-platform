@@ -7,6 +7,9 @@ import axios from "axios";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+import { builtInCollections } from "@/constants/builtInCollections";
+import { fetchCollections } from "@/app/services/api-client/api-client";
+
 export default function Configurations() {
   const [collections, setCollections] = useState([]);
   const [newCollectionName, setNewCollectionName] = useState("");
@@ -40,38 +43,23 @@ export default function Configurations() {
   }, []);
 
   const getCollections = async () => {
-    console.log("GET COLLECTIONS FE");
-    try {
-      const response = await axios.get("/api/collections");
-      console.log(response);
-      const responseCollections = response.data.cursor.firstBatch;
-      console.log({ collections });
-      const collectionNames = responseCollections.map(
-        (collection: any) => collection.name
-      );
-      console.log(collectionNames);
-      setCollections(collectionNames);
-    } catch (error) {
-      console.log(error);
-    }
+    // console.log("GET COLLECTIONS FE");
+    // try {
+    //   const response = await axios.get("/api/collections");
+    //   console.log(response);
+    //   const responseCollections = response.data.cursor.firstBatch;
+    //   console.log({ collections });
+    //   const collectionNames = responseCollections.map(
+    //     (collection: any) => collection.name
+    //   );
+    //   console.log(collectionNames);
+    //   setCollections(collectionNames);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    const data = await fetchCollections();
+    setCollections(data);
   };
-
-  //Built in collections can't be deleted
-  const builtInCollections = [
-    "Product2Organization",
-    "Product2Application",
-    "Application",
-    "ProductApplication",
-    "Product2Substance",
-    "ControlledVocabulary",
-    "Substance",
-    "Product",
-    "Country",
-    "Submission",
-    "Organization",
-    "Registration",
-    "CVLibrary",
-  ];
 
   const deleteCollection = async (collectionName: string) => {
     try {

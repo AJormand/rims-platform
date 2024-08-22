@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -19,8 +20,13 @@ import {
   CaseUpper,
   Settings,
 } from "lucide-react";
+import { fetchCollections } from "@/app/services/api-client/api-client";
+import { builtInCollections } from "@/constants/builtInCollections";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [customCollections, setCustomCollections] = useState([]);
+
   const quickNavigations = [
     {
       name: "Products",
@@ -75,6 +81,19 @@ export default function Home() {
       icon: <CaseUpper size={25} className="text-sky-700" />,
     },
   ];
+
+  const getCustomCollections = async () => {
+    const allCollections = await fetchCollections();
+    const onlyCustomCollections = allCollections.filter(
+      (collectionName: string) => !builtInCollections.includes(collectionName)
+    );
+    console.log({ onlyCustomCollections });
+    setCustomCollections(onlyCustomCollections);
+  };
+
+  useEffect(() => {
+    getCustomCollections();
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center mt-10">
@@ -140,6 +159,28 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
+          </div>
+        </div>
+
+        <div>
+          <h1 className="text-center text-sm text-gray-400">Custom Objects</h1>
+          <div className="gap-5 grid grid-cols-1 justify-center items-center mt-5">
+            {customCollections.map((item, index) => (
+              <Link
+                href={`/collections/${item}`}
+                key={`item` + index}
+                className="hover:shadow-lg"
+              >
+                <Card className="flex items-center">
+                  <CardHeader>
+                    <CardTitle className="text-sm">{item}</CardTitle>
+                  </CardHeader>
+                  {/* <CardContent className="flex justify-center items-center py-0 px-4">
+                    {item.icon}
+                  </CardContent> */}
+                </Card>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
