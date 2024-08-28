@@ -372,6 +372,18 @@ export const deleteControlledVocabulary = async (
     toast.error("Something went wrong");
   }
 };
+
+// CUSTOM OBJECT
+export const fetchCustomObjectData = async (customObjectName: string) => {
+  try {
+    const { data } = await axios.get(`/api/custom-objects/${customObjectName}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
 // POPUP
 
 type ObjectWithId = {

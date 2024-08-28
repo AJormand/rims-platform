@@ -7,17 +7,17 @@ import { SideNav } from "@/components/side-nav";
 import { Section } from "@/components/section";
 import { StatusBar } from "@/components/status-bar";
 
-import { BasicDetailsForm } from "../_components/basic-details-form";
+import { BasicDetailsForm } from "../../_components/basic-details-form";
 
 import {
   editSubstance,
   fetchSubstance,
 } from "@/app/services/api-client/api-client";
 
-export default function Substance({
+export default function CustomObject({
   params,
 }: {
-  params: { customSubstanceId: string };
+  params: { customObjectName: string; customObjectId: string };
 }) {
   const [expandedSectionsLocalStorage, setExpandedSectionsLocalStorage] =
     useLocalStorage<Record<string, any>>("expanded-substance-sections", {
@@ -27,9 +27,10 @@ export default function Substance({
     expandedSectionsLocalStorage
   );
   const [substanceData, setSubstanceData] = useState();
+  const { customObjectName, customObjectId } = params;
 
   const fetchData = async () => {
-    const data = await fetchSubstance(params.customSubstanceId);
+    const data = await fetchSubstance(customObjectId);
     setSubstanceData(data);
   };
 
@@ -54,7 +55,11 @@ export default function Substance({
             />
           </div>
           <Section name="Basic Details" isExpanded={true}>
-            <BasicDetailsForm data={substanceData} type="edit" />
+            <BasicDetailsForm
+              data={substanceData}
+              type="edit"
+              customObjectName={customObjectName}
+            />
           </Section>
         </div>
       )}

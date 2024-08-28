@@ -46,23 +46,25 @@ console.log(collectionData);
 export const BasicDetailsForm: React.FC<{
   data: Substance | null;
   type: "new" | "edit";
-}> = ({ data, type }) => {
+  customObjectName: string;
+}> = ({ data, type, customObjectName }) => {
   const router = useRouter();
+
   const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
   const [formSchema, setFormSchema] = useState<z.ZodObject<any>>(z.object({}));
   const [defaultValues, setDefaultValues] = useState<Record<string, any>>({});
 
+  console.log({ customObjectName });
+
+  //Get columns of form from Prisma schema
   const fetchColumnNames = async () => {
     console.log("fetching data");
     try {
-      const response = await axios.get("/api/collections/Substance");
+      const response = await axios.get("/api/collections/newCol");
       const collectionData = await response.data;
 
       // Extract model from Prisma schema
-      const modelRegex = new RegExp(
-        `model ${"Substance"} \\{([^\\}]*)\\}`,
-        "s"
-      );
+      const modelRegex = new RegExp(`model ${"newCol"} \\{([^\\}]*)\\}`, "s");
       const match = response.data.match(modelRegex);
 
       // Extract fields from model
@@ -78,7 +80,7 @@ export const BasicDetailsForm: React.FC<{
           return fieldComponents;
         });
 
-        // join fields into three columns as prisma schema contains 3 columns - last column in prisma schema can contain spaces therefore joined together
+        //prisma schema returns fields in 3 columns but since we only need the names take the first column
         const fieldNames = parsedFields.map((field: string[]) => field[0]);
         console.log(fieldNames);
 

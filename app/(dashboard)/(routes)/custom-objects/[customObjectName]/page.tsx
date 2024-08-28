@@ -1,12 +1,19 @@
 "use client";
 
-import { columns } from "./_components/columns";
+import { columns } from "../_components/columns";
 import { DataTable } from "@/components/ui/data-table";
 
-import { useFetchSubstances } from "@/app/services/hooks/hooks";
+import { useFetchCustomObjectData } from "@/app/services/hooks/hooks";
 
-export default function Substances() {
-  const { data, isError, isLoading } = useFetchSubstances();
+export default function CustomObjects({
+  params,
+}: {
+  params: { customObjectName: string };
+}) {
+  const { customObjectName } = params;
+
+  const { data, isError, isLoading } =
+    useFetchCustomObjectData(customObjectName);
 
   if (isLoading)
     return (

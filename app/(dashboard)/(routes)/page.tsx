@@ -167,7 +167,7 @@ export default function Home() {
           <div className="gap-5 grid grid-cols-1 justify-center items-center mt-5">
             {customCollections.map((item, index) => (
               <Link
-                href={`/collections/${item}`}
+                href={`/custom-objects/${item}`}
                 key={`item` + index}
                 className="hover:shadow-lg"
               >

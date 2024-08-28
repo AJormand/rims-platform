@@ -15,6 +15,7 @@ import {
   deleteCountry,
   fetchControlledVocabularies,
   deleteControlledVocabulary,
+  fetchCustomObjectData,
 } from "@/app/services/api-client/api-client";
 import toast from "react-hot-toast";
 
@@ -166,5 +167,14 @@ export const useDeleteControlledVocabulary = (
     onError: (err: any) => {
       toast.error("Controlled Vocabulary not deleted");
     },
+  });
+};
+
+// CONTROLLED VOCABULARY
+export const useFetchCustomObjectData = (customObjectName: string) => {
+  return useQuery({
+    queryKey: ["customObjectData"],
+    queryFn: () => fetchCustomObjectData(customObjectName),
+    staleTime: Infinity, // Set to Infinity to fetch data only once and call it from cache in other calls
   });
 };
