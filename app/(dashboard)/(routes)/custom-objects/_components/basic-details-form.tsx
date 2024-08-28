@@ -125,9 +125,9 @@ export const BasicDetailsForm: React.FC<{
   // 2. Define a submit handler.
   const onSubmitNew = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/substances`, values);
-      router.push(`/substances`);
-      toast.success("Substance created successfully");
+      await axios.post(`/api/custom-objects/${customObjectName}`, values);
+      router.push(`/custom-objects/${customObjectName}`);
+      toast.success(`${customObjectName} record created successfully`);
     } catch (error) {
       toast.error("Something went wrong");
     }

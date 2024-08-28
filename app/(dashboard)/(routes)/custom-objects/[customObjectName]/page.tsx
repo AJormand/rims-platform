@@ -30,7 +30,7 @@ export default function CustomObjects({
         <DataTable
           columns={columns}
           data={data}
-          createRoute="/substances/create"
+          createRoute={`/custom-objects/${customObjectName}/create`}
         />
       )}
     </div>
