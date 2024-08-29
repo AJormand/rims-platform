@@ -3,7 +3,7 @@
 import { columns } from "../_components/columns";
 import { DataTable } from "@/components/ui/data-table";
 
-import { useFetchCustomObjectData } from "@/app/services/hooks/hooks";
+import { useFetchCustomObjects } from "@/app/services/hooks/hooks";
 
 export default function CustomObjects({
   params,
@@ -12,8 +12,7 @@ export default function CustomObjects({
 }) {
   const { customObjectName } = params;
 
-  const { data, isError, isLoading } =
-    useFetchCustomObjectData(customObjectName);
+  const { data, isError, isLoading } = useFetchCustomObjects(customObjectName);
 
   if (isLoading)
     return (

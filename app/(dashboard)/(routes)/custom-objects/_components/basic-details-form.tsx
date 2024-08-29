@@ -33,16 +33,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { editSubstance } from "@/app/services/api-client/api-client";
 
-const collectionData = axios.get("/api/collections/Substance");
-console.log(collectionData);
-
-// const formSchema = z.object({
-//   name: z.string().min(1, { message: "Name is required" }).max(250),
-//   type: z.string(),
-//   EVcode: z.string(),
-//   status: z.string(),
-// });
-
 export const BasicDetailsForm: React.FC<{
   data: Substance | null;
   type: "new" | "edit";
@@ -60,11 +50,14 @@ export const BasicDetailsForm: React.FC<{
   const fetchColumnNames = async () => {
     console.log("fetching data");
     try {
-      const response = await axios.get("/api/collections/newCol");
+      const response = await axios.get(`/api/collections/${customObjectName}`);
       const collectionData = await response.data;
 
       // Extract model from Prisma schema
-      const modelRegex = new RegExp(`model ${"newCol"} \\{([^\\}]*)\\}`, "s");
+      const modelRegex = new RegExp(
+        `model ${customObjectName} \\{([^\\}]*)\\}`,
+        "s"
+      );
       const match = response.data.match(modelRegex);
 
       // Extract fields from model

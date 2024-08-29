@@ -24,13 +24,13 @@ export const columns: ColumnDef<Substance>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => {
-      const substance = row.original;
+      const record = row.original;
       return (
         <Link
-          href={`/substances/${substance.id}`}
+          href={`/custom-objects/${record.name}/${record.id}`}
           className="underline text-sky-700"
         >
-          {substance.name}
+          {record.name}
         </Link>
       );
     },
@@ -50,14 +50,14 @@ export const columns: ColumnDef<Substance>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const substance = row.original;
+      const record = row.original;
       const router = useRouter();
 
-      const handleEdit = (substanceId: string) => {
-        router.push(`/substances/${substanceId}`);
+      const handleEdit = (customObjectId: string) => {
+        router.push(`/custom-objects/${record.name}/${customObjectId}`);
       };
 
-      const { mutate: handleDelete } = useDeleteSubstance(substance.id);
+      // const { mutate: handleDelete } = useDeleteSubstance(record.id);
 
       return (
         <DropdownMenu>
@@ -69,7 +69,7 @@ export const columns: ColumnDef<Substance>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => handleEdit(substance.id)}>
+            <DropdownMenuItem onClick={() => handleEdit(record.id)}>
               Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />

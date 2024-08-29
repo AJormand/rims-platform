@@ -5,9 +5,14 @@ import { auth } from "@clerk/nextjs";
 
 export async function GET(
   request: Request,
-  { params }: { params: { customObjectName: string; customObjectId: string } }
+  { params }: { params: { customObjectName: string } }
 ) {
-  const { customObjectName, customObjectId } = params;
+  const { customObjectName } = params;
+
+  const { userId } = auth();
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
 
   try {
     // Type assertion to inform TypeScript that we are accessing a Prisma model

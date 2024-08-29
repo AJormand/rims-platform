@@ -9,10 +9,7 @@ import { StatusBar } from "@/components/status-bar";
 
 import { BasicDetailsForm } from "../../_components/basic-details-form";
 
-import {
-  editSubstance,
-  fetchSubstance,
-} from "@/app/services/api-client/api-client";
+import { fetchCustomObject } from "@/app/services/api-client/api-client";
 
 export default function CustomObject({
   params,
@@ -26,12 +23,12 @@ export default function CustomObject({
   const [expandedSections, setExpandedSections] = useState<Record<string, any>>(
     expandedSectionsLocalStorage
   );
-  const [substanceData, setSubstanceData] = useState();
+  const [customObjectData, setCustomObjectData] = useState();
   const { customObjectName, customObjectId } = params;
 
   const fetchData = async () => {
-    const data = await fetchSubstance(customObjectId);
-    setSubstanceData(data);
+    const data = await fetchCustomObject(customObjectName, customObjectId);
+    setCustomObjectData(data);
   };
 
   useEffect(() => {
@@ -44,19 +41,19 @@ export default function CustomObject({
     <div className="flex w-full h-screen-minus-navbar-topbar">
       <SideNav sections={sideNavSections} />
 
-      {substanceData && (
+      {customObjectData && (
         <div className="w-full px-6 overflow-scroll">
           <h1>CUSTOM</h1>
           <div className="flex border-b-2 py-2 rounded-lg bg-slate-50">
             <StatusBar
-              data={substanceData}
+              data={customObjectData}
               cvName={"product-status"}
               editApiFunction={editSubstance}
             />
           </div>
           <Section name="Basic Details" isExpanded={true}>
             <BasicDetailsForm
-              data={substanceData}
+              data={customObjectData}
               type="edit"
               customObjectName={customObjectName}
             />
