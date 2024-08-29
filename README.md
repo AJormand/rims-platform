@@ -28,7 +28,8 @@
 - Done - added status bar to Prd, Reg, App
 - Done - status bar does not need query key anymore as it is being updated via useState
 - Done - Managed to implement create custom object - but still requires fixes
-- --> Managed to fix columns for the custom-object
+- --> Managed to fix columns for the custom-object -> data fetch not working with different objects
+
 - todo - add status bar to other objects
 - todo - build expand of sections when clicking on sidenav for other objects
 - todo - add skeleton to other objects

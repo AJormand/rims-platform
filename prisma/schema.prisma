@@ -173,3 +173,12 @@ model newCol {
   address String
   age     String
 }
+
+model Codes {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  translation String
+}
