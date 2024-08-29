@@ -1,6 +1,6 @@
 "use client";
 
-import { columns } from "../_components/columns";
+import useColumns from "../_components/columns";
 import { DataTable } from "@/components/ui/data-table";
 
 import { useFetchCustomObjects } from "@/app/services/hooks/hooks";
@@ -13,6 +13,7 @@ export default function CustomObjects({
   const { customObjectName } = params;
 
   const { data, isError, isLoading } = useFetchCustomObjects(customObjectName);
+  const columns = useColumns(customObjectName);
 
   if (isLoading)
     return (

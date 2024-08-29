@@ -31,7 +31,10 @@ import {
 } from "@/components/ui/select";
 
 import { Input } from "@/components/ui/input";
-import { editSubstance } from "@/app/services/api-client/api-client";
+import {
+  editSubstance,
+  fetchColumnNames,
+} from "@/app/services/api-client/api-client";
 
 export const BasicDetailsForm: React.FC<{
   data: Substance | null;
@@ -47,46 +50,10 @@ export const BasicDetailsForm: React.FC<{
   console.log({ customObjectName });
 
   //Get columns of form from Prisma schema
-  const fetchColumnNames = async () => {
-    console.log("fetching data");
-    try {
-      const response = await axios.get(`/api/collections/${customObjectName}`);
-      const collectionData = await response.data;
-
-      // Extract model from Prisma schema
-      const modelRegex = new RegExp(
-        `model ${customObjectName} \\{([^\\}]*)\\}`,
-        "s"
-      );
-      const match = response.data.match(modelRegex);
-
-      // Extract fields from model
-      if (match) {
-        const modelBody = match[1].trim();
-        const fields = modelBody
-          .split("\n")
-          .map((field: string) => field.trim())
-          .filter((field: string) => field.length > 0);
-
-        const parsedFields = fields.map((field: string) => {
-          const fieldComponents = field.split(/\s+/);
-          return fieldComponents;
-        });
-
-        //prisma schema returns fields in 3 columns but since we only need the names take the first column
-        const fieldNames = parsedFields.map((field: string[]) => field[0]);
-        console.log(fieldNames);
-
-        return fieldNames;
-      }
-    } catch (error) {
-      console.error("Failed to fetch collection data:", error);
-    }
-  };
 
   const buildFormSchema = async () => {
     // Build dynamic Zod schema and default values
-    const fieldNames = await fetchColumnNames();
+    const fieldNames = await fetchColumnNames(customObjectName);
 
     const schema: any = {};
     const defaults: any = {};

@@ -27,7 +27,8 @@
 - Done - FIX editing of basic details not working now with expand of section
 - Done - added status bar to Prd, Reg, App
 - Done - status bar does not need query key anymore as it is being updated via useState
-- --> Managed to implement create custom object - but still requires fixes
+- Done - Managed to implement create custom object - but still requires fixes
+- --> Managed to fix columns for the custom-object
 - todo - add status bar to other objects
 - todo - build expand of sections when clicking on sidenav for other objects
 - todo - add skeleton to other objects
