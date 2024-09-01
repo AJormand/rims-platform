@@ -31,6 +31,7 @@
 - Done - Managed to fix columns for the custom-object
 - Done - data fetch not working with different objects
 - Done - data fatching not working for editing custom object
+- next - edit custom object
 
 - todo - add status bar to other objects
 - todo - build expand of sections when clicking on sidenav for other objects
