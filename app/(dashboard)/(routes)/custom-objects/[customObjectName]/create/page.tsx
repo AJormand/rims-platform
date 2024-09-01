@@ -10,10 +10,7 @@ export default function CreateCustomObject({
   const { customObjectName } = params;
   return (
     <div className="container mx-auto py-10">
-      <Section
-        name="Basic Details"
-        expandedSections={{ "Basic Details": true }}
-      >
+      <Section name="Basic Details" isExpanded={true}>
         <BasicDetailsForm
           data={null}
           type="new"
