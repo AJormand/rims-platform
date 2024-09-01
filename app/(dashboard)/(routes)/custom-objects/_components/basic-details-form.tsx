@@ -48,12 +48,14 @@ export const BasicDetailsForm: React.FC<{
   const [defaultValues, setDefaultValues] = useState<Record<string, any>>({});
 
   console.log({ customObjectName });
+  const systemSpecificFields = ["id", "createdAt", "updatedAt"];
 
   //Get columns of form from Prisma schema
-
   const buildFormSchema = async () => {
     // Build dynamic Zod schema and default values
-    const fieldNames = await fetchColumnNames(customObjectName);
+    const fieldNames = (await fetchColumnNames(customObjectName)).filter(
+      (name: string) => !systemSpecificFields.includes(name)
+    );
 
     const schema: any = {};
     const defaults: any = {};
@@ -69,7 +71,7 @@ export const BasicDetailsForm: React.FC<{
 
   useEffect(() => {
     buildFormSchema();
-  }, []);
+  }, [customObjectName, data]);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({

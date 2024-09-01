@@ -174,9 +174,10 @@ export const useDeleteControlledVocabulary = (
 // CONTROLLED VOCABULARY
 export const useFetchCustomObjects = (customObjectName: string) => {
   return useQuery({
-    queryKey: ["customObjectData"],
+    queryKey: ["customObjectData", customObjectName],
     queryFn: () => fetchCustomObjects(customObjectName),
     staleTime: Infinity, // Set to Infinity to fetch data only once and call it from cache in other calls
+    enabled: !!customObjectName, // Only fetch if customObjectName is provided
   });
 };
 
