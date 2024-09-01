@@ -48,7 +48,7 @@ export default function CustomObject({
             <StatusBar
               data={customObjectData}
               cvName={"product-status"}
-              editApiFunction={editSubstance}
+              editApiFunction={() => {}}
             />
           </div>
           <Section name="Basic Details" isExpanded={true}>

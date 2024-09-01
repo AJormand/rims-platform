@@ -3,14 +3,15 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { auth } from "@clerk/nextjs";
 
-export async function GET({
-  params,
-}: {
-  params: { customObjectName: string; customObjectId: string };
-}) {
+export async function GET(
+  request: Request,
+  {
+    params,
+  }: {
+    params: { customObjectName: string; customObjectId: string };
+  }
+) {
   const { customObjectName, customObjectId } = params;
-
-  console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
   const { userId } = auth();
   if (!userId) {

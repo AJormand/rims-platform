@@ -9,8 +9,6 @@ import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-import { Substance } from "@prisma/client";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,14 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
 import {
   editSubstance,
@@ -37,7 +27,7 @@ import {
 } from "@/app/services/api-client/api-client";
 
 export const BasicDetailsForm: React.FC<{
-  data: Substance | null;
+  data: Record<string, any> | null;
   type: "new" | "edit";
   customObjectName: string;
 }> = ({ data, type, customObjectName }) => {
@@ -46,8 +36,6 @@ export const BasicDetailsForm: React.FC<{
   const [isEditing, setIsEditing] = useState(type === "new" ? true : false);
   const [formSchema, setFormSchema] = useState<z.ZodObject<any>>(z.object({}));
   const [defaultValues, setDefaultValues] = useState<Record<string, any>>({});
-
-  console.log({ customObjectName });
   const systemSpecificFields = ["id", "createdAt", "updatedAt"];
 
   //Get columns of form from Prisma schema
@@ -64,6 +52,8 @@ export const BasicDetailsForm: React.FC<{
       schema[field] = z.string().optional(); // Customize validation per field type
       defaults[field] = data?.[field] || ""; // Set default value
     });
+
+    console.log({ defaults });
 
     setFormSchema(z.object(schema));
     setDefaultValues(defaults);
@@ -82,7 +72,7 @@ export const BasicDetailsForm: React.FC<{
   useEffect(() => {
     //reseting the form so that data is loaded in the default values properly - at time of form load data may not be available
     form.reset(defaultValues);
-  }, []);
+  }, [defaultValues, formSchema]);
 
   // 2. Define a submit handler.
   const onSubmitNew = async (values: z.infer<typeof formSchema>) => {
