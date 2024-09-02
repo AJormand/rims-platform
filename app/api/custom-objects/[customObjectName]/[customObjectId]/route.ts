@@ -37,3 +37,37 @@ export async function GET(
     return new NextResponse("[GET ORGANIZATION]", { status: 400 });
   }
 }
+
+export async function PUT(
+  request: Request,
+  { params }: { params: { customObjectName: string; customObjectId: string } }
+) {
+  const { customObjectName, customObjectId } = params;
+  const { values } = await request.json();
+  const { userId } = auth();
+  if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+
+  try {
+    const model = db[customObjectName as keyof PrismaClient] as any;
+    if (!model || typeof model.update !== "function") {
+      return new NextResponse(`Model ${customObjectName} not found`, {
+        status: 400,
+      });
+    }
+
+    await model.update({
+      where: {
+        id: customObjectId,
+      },
+      data: {
+        ...values,
+      },
+    });
+    return new NextResponse(`${customObjectName} updated successfully`, {
+      status: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    return new NextResponse(`[UPDATE ${customObjectName}]`, { status: 400 });
+  }
+}

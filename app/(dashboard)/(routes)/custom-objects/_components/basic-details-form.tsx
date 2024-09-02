@@ -22,7 +22,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import {
-  editSubstance,
+  editCustomObjectData,
   fetchColumnNames,
 } from "@/app/services/api-client/api-client";
 
@@ -86,10 +86,10 @@ export const BasicDetailsForm: React.FC<{
   };
 
   const onSubmitEdit = async (values: z.infer<typeof formSchema>) => {
-    const substanceId = data?.id;
-    if (!substanceId) return;
+    const id = data?.id;
+    if (!id) return;
 
-    editSubstance(substanceId, values);
+    editCustomObjectData(id, customObjectName, values);
   };
 
   return (

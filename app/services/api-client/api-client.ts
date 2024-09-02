@@ -436,6 +436,28 @@ export const fetchColumnNames = async (customObjectName: string) => {
   }
 };
 
+export const editCustomObjectData = async (
+  id: string,
+  customObjectName: string,
+  values: any
+) => {
+  try {
+    console.log("editCustomObjectData");
+    console.log(values);
+    const response = await axios.put(
+      `/api/custom-objects/${customObjectName}/${id}`,
+      {
+        values,
+      }
+    );
+    console.log(response);
+    toast.success("CustomObjectData updated successfully");
+    return response;
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
+
 // POPUP
 
 type ObjectWithId = {
