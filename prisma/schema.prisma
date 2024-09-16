@@ -182,3 +182,33 @@ model Codes {
   updatedAt   DateTime @updatedAt
   translation String
 }
+
+model MedicalDevices {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String   @unique
+  status     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  DeviceType String
+}
+
+
+model testCol {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String @unique
+  status   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+
+
+model test111 {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String @unique
+  status   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -75,7 +75,8 @@ export async function PUT(
 
     // Run prisma generate to apply changes
     await execAsync("npx prisma format");
-    await execAsync("npx prisma db push");
+    const pushOutput = await execAsync("npx prisma db push");
+    console.log("Prisma db push output:", pushOutput.stdout, pushOutput.stderr);
     return new NextResponse("Model updated successfully", { status: 200 });
   } catch (error) {
     console.log(error);

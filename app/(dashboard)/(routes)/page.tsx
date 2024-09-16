@@ -23,6 +23,7 @@ import {
 import { fetchCollections } from "@/app/services/api-client/api-client";
 import { builtInCollections } from "@/constants/builtInCollections";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
   const [customCollections, setCustomCollections] = useState([]);
@@ -95,9 +96,14 @@ export default function Home() {
     getCustomCollections();
   }, []);
 
+  const test = async () => {
+    axios.get("/api/collections/test")
+  };
+
   return (
     <div className="flex flex-col justify-center items-center mt-10">
       <div className="flex gap-28">
+        <button onClick={() => test()}>TEST</button>
         <div>
           <h1 className="text-center text-sm text-gray-400">
             Quick Navigation
