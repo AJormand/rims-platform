@@ -1,8 +1,35 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { PrismaClient } from "@prisma/client";
+//import { db } from "@/lib/db";
+//import { PrismaClient } from "@prisma/client";
+import { connectToDatabase, getDb } from "@/lib/mongodb";
 
+export async function GET(
+  request: Request,
+  { params }: { params: { customObjectName: string } }
+) {
+  const { userId } = auth();
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  const { customObjectName } = params;
+
+  try {
+    await connectToDatabase();
+    const db = getDb();
+
+    const collection = db.collection(customObjectName);
+    const customObjectData = await collection.find({}).toArray();
+
+    return NextResponse.json(customObjectData);
+  } catch (error) {
+    console.error("Error fetching custom object data:", error);
+    return new NextResponse("[GET CUSTOM OBJECT DATA]", { status: 400 });
+  }
+}
+
+/*
 export async function GET(
   request: Request,
   { params }: { params: { customObjectName: string } }
@@ -27,3 +54,4 @@ export async function GET(
     return new NextResponse("[GET CUSTOM OBJECT DATA]", { status: 400 });
   }
 }
+*/

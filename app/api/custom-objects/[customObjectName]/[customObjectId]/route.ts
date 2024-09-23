@@ -3,6 +3,39 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { auth } from "@clerk/nextjs";
 
+import { connectToDatabase } from "@/lib/mongodb";
+import { ObjectId } from "mongodb";
+
+export async function GET(
+  request: Request,
+  { params }: { params: { customObjectName: string; customObjectId: string } }
+) {
+  const { customObjectName, customObjectId } = params;
+  const { userId } = auth();
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection(customObjectName);
+
+    const data = await collection.findOne({
+      _id: new ObjectId(customObjectId),
+    });
+
+    if (!data) {
+      return new NextResponse("Document not found", { status: 404 });
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.log("Error fetching custom objectIds data", error);
+    return new NextResponse("[GET CUSTOM OBJECT ID DATA]", { status: 400 });
+  }
+}
+
+/*
 export async function GET(
   request: Request,
   {
@@ -71,3 +104,6 @@ export async function PUT(
     return new NextResponse(`[UPDATE ${customObjectName}]`, { status: 400 });
   }
 }
+
+
+*/

@@ -3,6 +3,40 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { auth } from "@clerk/nextjs";
 
+import { connectToDatabase, getDb } from "@/lib/mongodb";
+import { ObjectId } from "mongodb";
+
+export async function GET(
+  request: Request,
+  { params }: { params: { customObjectName: string; customObjectId: string } }
+) {
+  const { customObjectName, customObjectId } = params;
+  const { userId } = auth();
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  try {
+    await connectToDatabase();
+    const db = getDb();
+    const collection = db.collection(customObjectName);
+
+    const customObjectsData = await collection.findOne({
+      _id: new ObjectId(customObjectId),
+    });
+
+    if (!customObjectsData) {
+      return new NextResponse("Document not found", { status: 404 });
+    }
+
+    return NextResponse.json(customObjectsData);
+  } catch (error) {
+    console.log("Error fetching custom objectIds data", error);
+    return new NextResponse("[GET CUSTOM OBJECT IDS]", { status: 400 });
+  }
+}
+
+/*
 export async function GET(
   request: Request,
   { params }: { params: { customObjectName: string } }
@@ -61,3 +95,5 @@ export async function POST(
     return new NextResponse("[CREATE ORGANIZATION]", { status: 400 });
   }
 }
+
+*/
