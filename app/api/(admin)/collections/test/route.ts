@@ -8,6 +8,7 @@ import { NextResponse } from "next/server";
 const execAsync = promisify(exec);
 
 export async function GET(){
+    console.log("PRISMA UPDATE TEST!")
     const pushOutput = await execAsync("npx prisma db push");
     console.log("Prisma db push output:", pushOutput.stdout, pushOutput.stderr);
     await execAsync("npx prisma generate");
