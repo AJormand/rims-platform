@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { auth } from "@clerk/nextjs";
 
-import { connectToDatabase } from "@/lib/mongodb";
+import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 
 export async function GET(
@@ -17,8 +17,9 @@ export async function GET(
   }
 
   try {
-    const db = await connectToDatabase();
-    const collection = db.collection(customObjectName);
+    const client = await clientPromise;
+    const db = await client.db("rims-platform");
+    const collection = db.collection("Codes");
 
     const data = await collection.findOne({
       _id: new ObjectId(customObjectId),

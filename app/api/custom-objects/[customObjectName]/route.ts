@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { auth } from "@clerk/nextjs";
 
-import { connectToDatabase, getDb } from "@/lib/mongodb";
+import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 
 export async function GET(
@@ -17,13 +17,11 @@ export async function GET(
   }
 
   try {
-    await connectToDatabase();
-    const db = getDb();
-    const collection = db.collection(customObjectName);
+    const client = await clientPromise;
+    const db = await client.db();
+    const collection = db.collection("Codes");
 
-    const customObjectsData = await collection.findOne({
-      _id: new ObjectId(customObjectId),
-    });
+    const customObjectsData = await collection.find({}).toArray();
 
     if (!customObjectsData) {
       return new NextResponse("Document not found", { status: 404 });

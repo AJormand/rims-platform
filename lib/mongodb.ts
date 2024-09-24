@@ -1,36 +1,28 @@
 import { MongoClient } from "mongodb";
 
-const uri = process.env.DATABASE_URI; // Replace with your MongoDB connection string
-if (!uri) {
+const URI = process.env.MONGODB_URI; // Replace with your MongoDB connection string
+let options = {};
+
+if (!URI) {
   throw new Error("Please add your Mongo URI to .env.local");
 }
 
-let client = null;
-let cachedDb = null;
+console.log(URI);
 
-export async function connectToDatabase() {
-  // Check if the database connection is already cached
-  if (cachedDb) {
-    return cachedDb;
+let client = new MongoClient(URI, options);
+let clientPromise;
+
+if (process.env.NODE_ENV !== "production") {
+  if (!global._mongoClientPromise) {
+    global._mongoClientPromise = client.connect();
   }
 
-  // Initialize the MongoClient if it doesn't exist
-  if (!client) {
-    client = new MongoClient(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-  }
-
-  // Ensure that the client is connected
-  if (!client.isConnected) {
-    await client.connect();
-  }
-
-  // Cache the database connection and return it
-  cachedDb = client.db("rims-platform"); // Replace 'rims-platform' with your actual database name
-  return cachedDb;
+  clientPromise = global._mongoClientPromise;
+} else {
+  clientPromise = client.connect();
 }
+
+export default clientPromise;
 
 /*
 import { MongoClient } from "mongodb";
