@@ -84,26 +84,21 @@ export default function Home() {
   ];
 
   const getCustomCollections = async () => {
-    const allCollections = await fetchCollections();
-    const onlyCustomCollections = allCollections.filter(
-      (collectionName: string) => !builtInCollections.includes(collectionName)
-    );
-    console.log({ onlyCustomCollections });
-    setCustomCollections(onlyCustomCollections);
+    // const allCollections = await fetchCollections();
+    // const onlyCustomCollections = allCollections.filter(
+    //   (collectionName: string) => !builtInCollections.includes(collectionName)
+    // );
+    // console.log({ onlyCustomCollections });
+    // setCustomCollections(onlyCustomCollections);
   };
 
   useEffect(() => {
     getCustomCollections();
   }, []);
 
-  const test = async () => {
-    axios.get("/api/collections/test")
-  };
-
   return (
     <div className="flex flex-col justify-center items-center mt-10">
       <div className="flex gap-28">
-        <button onClick={() => test()}>TEST</button>
         <div>
           <h1 className="text-center text-sm text-gray-400">
             Quick Navigation

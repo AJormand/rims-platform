@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-const URI = process.env.MONGODB_URI; // Replace with your MongoDB connection string
+const URI = process.env.DATABASE_URL; // Replace with your MongoDB connection string
 let options = {};
 
 if (!URI) {
@@ -11,6 +11,10 @@ console.log(URI);
 
 let client = new MongoClient(URI, options);
 let clientPromise;
+
+declare global {
+  var _mongoClientPromise: Promise<MongoClient>;
+}
 
 if (process.env.NODE_ENV !== "production") {
   if (!global._mongoClientPromise) {
