@@ -19,7 +19,7 @@ export async function GET(
   try {
     const client = await clientPromise;
     const db = await client.db();
-    const collection = db.collection("Codes");
+    const collection = db.collection(customObjectName);
 
     const customObjectsData = await collection.find({}).toArray();
 

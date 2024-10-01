@@ -90,6 +90,9 @@ export default function Home() {
     // );
     // console.log({ onlyCustomCollections });
     // setCustomCollections(onlyCustomCollections);
+    const collections = await axios.get("/api/custom-objects");
+    console.log(collections.data);
+    setCustomCollections(collections.data);
   };
 
   useEffect(() => {
@@ -166,15 +169,15 @@ export default function Home() {
         <div>
           <h1 className="text-center text-sm text-gray-400">Custom Objects</h1>
           <div className="gap-5 grid grid-cols-1 justify-center items-center mt-5">
-            {customCollections.map((item, index) => (
+            {customCollections.map((item: any, index) => (
               <Link
-                href={`/custom-objects/${item}`}
+                href={`/custom-objects/${item.name}`}
                 key={`item` + index}
                 className="hover:shadow-lg"
               >
                 <Card className="flex items-center">
                   <CardHeader>
-                    <CardTitle className="text-sm">{item}</CardTitle>
+                    <CardTitle className="text-sm">{item.name}</CardTitle>
                   </CardHeader>
                   {/* <CardContent className="flex justify-center items-center py-0 px-4">
                     {item.icon}

@@ -2,24 +2,21 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 //import { db } from "@/lib/db";
 //import { PrismaClient } from "@prisma/client";
-import { connectToDatabase, getDb } from "@/lib/mongodb";
+import clientPromise from "@/lib/mongodb";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { customObjectName: string } }
-) {
+export async function GET(request: Request) {
+  console.log("-----------------GET CUSTOM OBJECTS----------------");
+
   const { userId } = auth();
   if (!userId) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { customObjectName } = params;
-
   try {
-    await connectToDatabase();
-    const db = getDb();
+    const client = await clientPromise;
+    const db = await client.db();
 
-    const collection = db.collection(customObjectName);
+    const collection = db.collection("CustomObjects");
     const customObjectData = await collection.find({}).toArray();
 
     return NextResponse.json(customObjectData);

@@ -32,6 +32,7 @@
 - Done - data fetch not working with different objects
 - Done - data fatching not working for editing custom object
 - Done - edit custom object api function
+- I added CustomObjects object where collection name and rules would be stored -> next I need to add code to add new custom objects to this collection and also programatically I need to create these collections and later add data to them
 
 - todo - add status bar to other objects
 - todo - build expand of sections when clicking on sidenav for other objects
