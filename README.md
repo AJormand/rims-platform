@@ -33,6 +33,7 @@
 - Done - data fatching not working for editing custom object
 - Done - edit custom object api function
 - I added CustomObjects object where collection name and rules would be stored -> next I need to add code to add new custom objects to this collection and also programatically I need to create these collections and later add data to them
+- custom object templates API call added and collection added -> idea is to store the rules into this collection whereas the objects themselves would be all stored in 1 collection named custom objects..
 
 - todo - add status bar to other objects
 - todo - build expand of sections when clicking on sidenav for other objects
