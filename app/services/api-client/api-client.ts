@@ -484,8 +484,8 @@ export const fetchPopUpData = async (
   }
 };
 
-// COLLECTIONS
-export const fetchCollections = async () => {
+// CUSTOM COLLECTIONS
+export const fetchCustomCollections = async () => {
   try {
     const response = await axios.get("/api/collections");
     const responseCollections = response.data.cursor.firstBatch;
@@ -494,6 +494,18 @@ export const fetchCollections = async () => {
     );
     console.log(collectionNames);
     return collectionNames;
+  } catch (error) {
+    toast.error(`"${error}`);
+  }
+};
+
+
+//CUSTOM OBJECT TEMPLATES
+export const fetchCustomObjectTemplates = async () => {
+  try {
+    const response = await axios.get("/api/custom-objects/templates");
+    const responseTemplates = response.data;
+    return responseTemplates;
   } catch (error) {
     toast.error(`"${error}`);
   }

@@ -166,59 +166,12 @@ model ControlledVocabulary {
   updatedAt DateTime @updatedAt
 }
 
-model Collections {
+model CustomObjectTemplates {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  fields    String[]
+  attributes    String[]
   
   status    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model newCol {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  surname String
-  address String
-  age     String
-}
-
-model Codes {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
-  status      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  translation String
-}
-
-model MedicalDevices {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  name       String   @unique
-  status     String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  DeviceType String
-}
-
-
-model testCol {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String @unique
-  status   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-
-
-
-
-model test111 {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String @unique
-  status   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

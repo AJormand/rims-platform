@@ -17,6 +17,7 @@ import {
   deleteControlledVocabulary,
   fetchCustomObjects,
   fetchCustomObject,
+  fetchCustomObjectTemplates
 } from "@/app/services/api-client/api-client";
 import toast from "react-hot-toast";
 
@@ -171,7 +172,7 @@ export const useDeleteControlledVocabulary = (
   });
 };
 
-// CONTROLLED VOCABULARY
+// CUSTOM OBJECTS
 export const useFetchCustomObjects = (customObjectName: string) => {
   return useQuery({
     queryKey: ["customObjectData", customObjectName],
@@ -180,6 +181,7 @@ export const useFetchCustomObjects = (customObjectName: string) => {
     enabled: !!customObjectName, // Only fetch if customObjectName is provided
   });
 };
+
 
 export const useFetchCustomObject = (
   customObjectName: string,
@@ -191,3 +193,14 @@ export const useFetchCustomObject = (
     staleTime: Infinity, // Set to Infinity to fetch data only once and call it from cache in other calls
   });
 };
+
+
+//CUSTOM OBJECT TEMPLATES
+export const useFetchCustomObjectTemplates = () => {
+  return useQuery({
+    queryKey: ["customObjectTemplates"],
+    queryFn: () => fetchCustomObjectTemplates(),
+    staleTime: Infinity, // Set to Infinity to fetch data only once and call it from cache in other calls
+  });
+};
+

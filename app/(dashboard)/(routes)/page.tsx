@@ -20,12 +20,15 @@ import {
   CaseUpper,
   Settings,
 } from "lucide-react";
-import { fetchCollections } from "@/app/services/api-client/api-client";
+
+import { useFetchCustomObjectTemplates } from "@/app/services/hooks/hooks";
+import { fetchCustomCollections } from "@/app/services/api-client/api-client";
 import { builtInCollections } from "@/constants/builtInCollections";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Home() {
+  const {data:customObjectsData, isError, isLoading} = useFetchCustomObjectTemplates();
   const [customCollections, setCustomCollections] = useState([]);
 
   const quickNavigations = [
@@ -169,7 +172,16 @@ export default function Home() {
         <div>
           <h1 className="text-center text-sm text-gray-400">Custom Objects</h1>
           <div className="gap-5 grid grid-cols-1 justify-center items-center mt-5">
-            {customCollections.map((item: any, index) => (
+
+            {
+              isLoading && (
+                <div className="flex justify-center items-center">
+                  Loading....
+                </div>
+              )
+            }
+
+            {customObjectsData && customObjectsData.map((item: any, index:number) => (
               <Link
                 href={`/custom-objects/${item.name}`}
                 key={`item` + index}
