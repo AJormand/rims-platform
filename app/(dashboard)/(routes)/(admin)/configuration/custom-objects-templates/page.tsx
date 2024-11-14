@@ -6,27 +6,14 @@ import axios from "axios";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { CreateNewTemplatePopup } from "./_components/create-new-template-popup";
 
 import { builtInCollections } from "@/constants/builtInCollections";
 import { fetchCustomObjectTemplates } from "@/app/services/api-client/api-client";
 
-export default function Configurations() {
+export default function CustomObjectsTemplates() {
   const [customObjectsTemplates, setCustomObjectsTemplates] = useState([]);
-  const [newCollectionName, setNewCollectionName] = useState("");
-
-  const createNewCollection = async () => {
-    if (!newCollectionName) {
-      throw new Error("Collection name is required");
-    }
-
-    try {
-      const response = await axios.post("/api/custom-objects-templates", {
-        name: newCollectionName,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const [createNewPopupVisisble, setCreateNewPopupVisisble] = useState(false);
 
   useEffect(() => {
     getCustomObjectsTemplates();
@@ -37,14 +24,14 @@ export default function Configurations() {
     setCustomObjectsTemplates(data);
   };
 
-  const deleteCollection = async (collectionName: string) => {
+  const deleteCustomObjectTemplate = async (name: string) => {
     try {
-      const response = await axios.delete("/api/collections", {
-        data: { collectionName },
-      });
+      const response = await axios.delete(
+        `/api/custom-objects-templates/${name}`
+      );
       console.log(response);
       if (response.status === 200) {
-        getCollections();
+        getCustomObjectsTemplates();
       }
     } catch (error) {
       console.log(error);
@@ -52,41 +39,45 @@ export default function Configurations() {
   };
 
   return (
-    <div className="container mx-auto py-10">
-      <input
-        className="p-1"
-        placeholder="Collection name"
-        value={newCollectionName}
-        onChange={(e) => setNewCollectionName(e.target.value)}
-      />
-      <Button variant={"outline"} onClick={createNewCollection}>
-        Create Custom Object Template
-      </Button>
-      <Button variant={"outline"} onClick={getCustomObjectsTemplates}>
-        Get Custom Object Templates
-      </Button>
+    <div className="container py-10">
+      <div className="flex flex-col items-center">
+        <Button
+          variant={"outline"}
+          onClick={() => setCreateNewPopupVisisble(true)}
+        >
+          Create Custom Object Template
+        </Button>
 
-      <div className="mt-5">
-        {customObjectsTemplates.map((customObjectsTemplate: any) => (
-          <div className="flex max-w-sm justify-between">
-            <div key={customObjectsTemplate.name}>{customObjectsTemplate.name}</div>
-            <div>
-              <Button
-                variant={"outline"}
-                disabled={builtInCollections.includes(customObjectsTemplate.name)}
-                onClick={() => deleteCollection(customObjectsTemplate)}
-              >
-                Delete
-              </Button>
-              <Button variant={"outline"}>
-                <Link href={`/configuration/custom-objects-templates/${customObjectsTemplate.name}`}>
-                  Edit
-                </Link>
-              </Button>
+        <div className="mt-5 flex flex-col w-full bg-slate-200">
+          {customObjectsTemplates.map((template: any) => (
+            <div className="flex max-w-sm justify-between">
+              <div key={template.name}>{template.name}</div>
+              <div>
+                <Button
+                  variant={"outline"}
+                  disabled={builtInCollections.includes(template.name)}
+                  onClick={() => deleteCustomObjectTemplate(template.name)}
+                >
+                  Delete
+                </Button>
+                <Button variant={"outline"}>
+                  <Link
+                    href={`/configuration/custom-objects-templates/${template.name}`}
+                  >
+                    Edit
+                  </Link>
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
+
+      {createNewPopupVisisble && (
+        <CreateNewTemplatePopup
+          setCreateNewPopupVisisble={setCreateNewPopupVisisble}
+        />
+      )}
     </div>
   );
 }

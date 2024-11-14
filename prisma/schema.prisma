@@ -170,9 +170,9 @@ model ControlledVocabulary {
 //"{ "name": "make", "type": "string", "required": true }"
 //"{ "name": "model", "type": "string", "required": true }"
 //"{ "name": "year", "type": "number", "required": false }"
-model CustomObjectTemplates {
+model CustomObjectsTemplates {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
+  name      String @unique
   attributes    String[]
   
   status    String
