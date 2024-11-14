@@ -503,7 +503,7 @@ export const fetchCustomCollections = async () => {
 //CUSTOM OBJECT TEMPLATES
 export const fetchCustomObjectTemplates = async () => {
   try {
-    const response = await axios.get("/api/custom-objects/templates");
+    const response = await axios.get("/api/custom-objects-templates");
     const responseTemplates = response.data;
     return responseTemplates;
   } catch (error) {

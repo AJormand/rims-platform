@@ -8,10 +8,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 import { builtInCollections } from "@/constants/builtInCollections";
-import { fetchCollections } from "@/app/services/api-client/api-client";
+import { fetchCustomObjectTemplates } from "@/app/services/api-client/api-client";
 
 export default function Configurations() {
-  const [collections, setCollections] = useState([]);
+  const [customObjectsTemplates, setCustomObjectsTemplates] = useState([]);
   const [newCollectionName, setNewCollectionName] = useState("");
 
   const createNewCollection = async () => {
@@ -19,32 +19,22 @@ export default function Configurations() {
       throw new Error("Collection name is required");
     }
 
-    const schemaDefinition = `
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String @unique
-  status   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt`;
-
-    console.log("CREATE COLLECTION FE");
     try {
-      const response = await axios.post("/api/collections", {
-        collectionName: newCollectionName,
-        schemaDefinition: schemaDefinition,
+      const response = await axios.post("/api/custom-objects-templates", {
+        name: newCollectionName,
       });
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   useEffect(() => {
-    getCollections();
+    getCustomObjectsTemplates();
   }, []);
 
-  const getCollections = async () => {
-    const data = await fetchCollections();
-    setCollections(data);
+  const getCustomObjectsTemplates = async () => {
+    const data = await fetchCustomObjectTemplates();
+    setCustomObjectsTemplates(data);
   };
 
   const deleteCollection = async (collectionName: string) => {
@@ -70,26 +60,26 @@ export default function Configurations() {
         onChange={(e) => setNewCollectionName(e.target.value)}
       />
       <Button variant={"outline"} onClick={createNewCollection}>
-        Create New List
+        Create Custom Object Template
       </Button>
-      <Button variant={"outline"} onClick={getCollections}>
-        Get Collections
+      <Button variant={"outline"} onClick={getCustomObjectsTemplates}>
+        Get Custom Object Templates
       </Button>
 
       <div className="mt-5">
-        {collections.map((collection: any) => (
+        {customObjectsTemplates.map((customObjectsTemplate: any) => (
           <div className="flex max-w-sm justify-between">
-            <div key={collection}>{collection}</div>
+            <div key={customObjectsTemplate.name}>{customObjectsTemplate.name}</div>
             <div>
               <Button
                 variant={"outline"}
-                disabled={builtInCollections.includes(collection)}
-                onClick={() => deleteCollection(collection)}
+                disabled={builtInCollections.includes(customObjectsTemplate.name)}
+                onClick={() => deleteCollection(customObjectsTemplate)}
               >
                 Delete
               </Button>
               <Button variant={"outline"}>
-                <Link href={`/configuration/collections/${collection}`}>
+                <Link href={`/configuration/custom-objects-templates/${customObjectsTemplate.name}`}>
                   Edit
                 </Link>
               </Button>

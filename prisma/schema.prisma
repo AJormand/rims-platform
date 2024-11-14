@@ -166,10 +166,24 @@ model ControlledVocabulary {
   updatedAt DateTime @updatedAt
 }
 
+//Stores Names of the custom objects, Attributes and Rules
+//"{ "name": "make", "type": "string", "required": true }"
+//"{ "name": "model", "type": "string", "required": true }"
+//"{ "name": "year", "type": "number", "required": false }"
 model CustomObjectTemplates {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   attributes    String[]
+  
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//Stores CustomObjects data -> Attributes and rules are defined and verified vs CustomObjectTemplates
+model CustomObjects {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
   
   status    String
   createdAt DateTime @default(now())
