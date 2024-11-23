@@ -22,8 +22,10 @@ export const CreateNewTemplatePopup = ({
   };
 
   return (
-    <div className="left-0 right-0 top-0 bottom-0 flex items-center justify-center">
+    <div className="left-0 right-0 top-0 bottom-0 flex items-center justify-center absolute">
+      {/* screen blocker */}
       <div className="left-0 right-0 top-0 bottom-0 absolute bg-slate-300 opacity-60 z-40" />
+      {/* container */}
       <div className="z-50 bg-white rounded-md shadow-sm flex flex-col">
         <button
           className="ml-auto hover:bg-slate-100 px-4 py-3 rounded-md"
