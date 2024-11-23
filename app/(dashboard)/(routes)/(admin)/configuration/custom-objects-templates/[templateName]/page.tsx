@@ -12,47 +12,21 @@ import { Button } from "@/components/ui/button";
 export default function Collection({
   params,
 }: {
-  params: { collectionName: string };
+  params: { templateName: string };
 }) {
-  const [collectionData, setCollectionData] = useState<[string,string,string][]>([]);
-  const { collectionName } = params;
+  const [templateData, setTemplateData] = useState<[string,string,string][]>([]);
+  const { templateName } = params;
 
-  const getListData = async () => {
-    const response = await axios.get(`/api/collections/${collectionName}`);
+  const getTemplateData = async () => {
+    const response = await axios.get(`/api/custom-objects-templates/${templateName}`);
 
-    // Extract model from Prisma schema
-    const modelRegex = new RegExp(
-      `model ${collectionName} \\{([^\\}]*)\\}`,
-      "s"
-    );
-    const match = response.data.match(modelRegex);
+   console.log(response.data);
 
-    // Extract fields from model
-    if (match) {
-      const modelBody = match[1].trim();
-      const fields = modelBody
-        .split("\n")
-        .map((field: string) => field.trim())
-        .filter((field: string) => field.length > 0);
 
-      const parsedFields = fields.map((field: string) => {
-        const fieldComponents = field.split(/\s+/);
-        return fieldComponents;
-      });
-
-      // join fields into three columns as prisma schema contains 3 columns - last column in prisma schema can contain spaces therefore joined together
-      const parsedFieldsInThreeColumns = parsedFields.map((field: string[]) => [
-        field[0],
-        field[1],
-        field.slice(2).join(" "),
-      ]);
-      setCollectionData(parsedFieldsInThreeColumns);
-      console.log({ parsedFieldsInThreeColumns });
-    }
-  };
+  }
 
   useEffect(() => {
-    getListData();
+    getTemplateData();
   }, []);
 
   const handleInputChange = (
@@ -60,15 +34,15 @@ export default function Collection({
     fieldIndex: number,
     value: string
   ) => {
-    const newCollectionData = [...collectionData];
+    const newCollectionData = [...templateData];
     newCollectionData[index][fieldIndex] = value;
-    setCollectionData(newCollectionData);
+    setTemplateData(newCollectionData);
   };
 
   const removeListData = (index: number) => {
     console.log({ index });
     console.log("removing list data");
-    setCollectionData((prev) => {
+    setTemplateData((prev) => {
       const newCollectionData = [...prev];
       newCollectionData.splice(index, 1);
       return newCollectionData;
@@ -78,16 +52,16 @@ export default function Collection({
   const updateListData = async () => {
     console.log("updating list data");
 
-    const schemaDefinition = collectionData
+    const schemaDefinition = templateData
       .map((fieldElements: [string, string, string]) => fieldElements.join(" "))
       .join("\n");
     console.log({ schemaDefinition });
 
-    const updatedModel = `model ${collectionName} {
+    const updatedModel = `model ${templateName} {
       ${schemaDefinition}
     }`;
 
-    const response = await axios.put(`/api/collections/${collectionName}`, {
+    const response = await axios.put(`/api/collections/${templateName}`, {
       updatedModel,
     });
     console.log(response);
@@ -99,12 +73,12 @@ export default function Collection({
     <div className="flex w-full h-screen-minus-navbar-topbar">
       <SideNav sections={sideNavSections} />
 
-      {collectionData && (
+      {templateData && (
         <div className="w-full px-6 overflow-scroll">
           <div className="flex border-b-2 py-2 rounded-lg bg-slate-50"></div>
           <Section name="Basic Details" isExpanded={true}>
             <div className="flex flex-col gap-3">
-              {collectionData.map((field: string[], index: number) => (
+              {templateData.map((field: string[], index: number) => (
                 <div className="flex gap-10" key={index}>
                   <input
                     className="bg-slate-100 rounded-md p-1"
@@ -146,7 +120,7 @@ export default function Collection({
               variant={"outline"}
               className="mt-5"
               onClick={() =>
-                setCollectionData([...collectionData, ["", "", ""]])
+                setTemplateData([...templateData, ["", "", ""]])
               }
             >
               Add Field

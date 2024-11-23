@@ -2,6 +2,8 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 import clientPromise from "@/lib/mongodb";
+import { db } from "@/lib/db";
+import { custom } from "zod";
 
 export async function GET() {
   const userId = auth();
@@ -10,13 +12,9 @@ export async function GET() {
   }
 
   try {
-    const client = await clientPromise;
-    const db = await client.db("rims-platform");
-    const collection = db.collection("CustomObjectsTemplates");
+    const customObjectTemplates = await db.customObjectsTemplates.findMany();
 
-    const templates = await collection.find({}).toArray();
-
-    return NextResponse.json(templates);
+    return NextResponse.json(customObjectTemplates);
   } catch (error) {
     console.log(error);
     return new NextResponse("[GET TEMPLATE]", { status: 400 });
@@ -31,12 +29,20 @@ export async function POST(request: Request) {
 
   const receivedData = await request.json();
 
-  try {
-    const client = await clientPromise;
-    const db = await client.db("rims-platform");
-    const collection = db.collection("CustomObjectsTemplates");
+  const defaultAttributes = [
+    { name: "name", type: "string", required: true, customAttribute: false },
+    { name: "status", type: "string", required: true, customAttribute: false },
+  ];
 
-    const newTemplate = await collection.insertOne(receivedData);
+  try {
+    const newTemplate = await db.customObjectsTemplates.create({
+      data: {
+        name: receivedData.name,
+        attributes: defaultAttributes,
+        status: "Active",
+      }
+    })
+    
 
     return NextResponse.json(newTemplate);
   } catch (error) {

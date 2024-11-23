@@ -6,7 +6,6 @@ export async function DELETE(
   request: Request,
   { params }: { params: { templateName: string } }
 ) {
-  console.log("xxxxxx");
   const userId = auth();
   if (!userId) {
     return new NextResponse("Unauthorized", { status: 401 });
@@ -27,3 +26,28 @@ export async function DELETE(
     return new NextResponse("[DELETE TEMPLATE]", { status: 400 });
   }
 }
+
+export async function GET(
+  request: Request, {params}: {params: {templateName: string  }}){
+
+    const userId = auth();
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    
+    const { templateName } = params;
+
+    try {
+      const template = await db.customObjectsTemplates.findUnique({
+        where: {
+          name:templateName
+        }
+      })
+
+      return NextResponse.json(template, { status: 200 });
+    } catch (error) {
+      console.log(error);
+      return new NextResponse("[GET TEMPLATE]", { status: 400 });
+    }
+    
+  }

@@ -173,7 +173,7 @@ model ControlledVocabulary {
 model CustomObjectsTemplates {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   name      String @unique
-  attributes    String[]
+  attributes    Json
   
   status    String
   createdAt DateTime @default(now())
