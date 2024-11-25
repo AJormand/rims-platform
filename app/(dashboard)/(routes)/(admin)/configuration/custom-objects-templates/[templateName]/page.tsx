@@ -8,7 +8,7 @@ import { BasicDetailsForm } from "../_components/basic-details-form";
 import axios from "axios";
 
 import { Button } from "@/components/ui/button";
-import { custom } from "zod";
+import { custom, set } from "zod";
 
 interface template {
   name: string;
@@ -39,13 +39,21 @@ export default function Collection({
   }, []);
 
   const handleInputChange = (
-    index: number,
     fieldIndex: number,
-    value: string
+    fieldName: string,
+    value: string | boolean
   ) => {
-    const newCollectionData = [...templateData];
-    newCollectionData[index][fieldIndex] = value;
-    setTemplateData(newCollectionData);
+    console.log({ fieldIndex, fieldName, value });
+    console.log(templateData);
+
+    setTemplateData((prev) => {
+      const updated = [...prev];
+      updated[fieldIndex] = {
+        ...updated[fieldIndex],
+        [fieldName]: value,
+      };
+      return updated;
+    });
   };
 
   const removeListData = (index: number) => {
@@ -88,42 +96,55 @@ export default function Collection({
           <Section name="Basic Details" isExpanded={true}>
             <div className="flex flex-col gap-3">
               {/* Column names */}
-              <div className="grid grid-cols-[3fr_2fr_1fr_auto] gap-4 font-semibold bg-gray-200 p-2 rounded-md">
+              <div className="grid grid-cols-[3fr_2fr_1fr_1fr_auto] gap-4 font-semibold bg-gray-200 p-2 rounded-md">
                 <p className="font-semibold">Name</p>
                 <p className="font-semibold">Type</p>
                 <p className="text-center">Required</p>
+                <p className="text-center">Custom</p>
                 <p className="text-center">Remove</p>
               </div>
               {/* Columns */}
               {templateData.map((field: template, index: number) => (
                 <div
-                  className="grid grid-cols-[3fr_2fr_1fr_auto] gap-4 items-center"
-                  key={field.name}
+                  className="grid grid-cols-[3fr_2fr_1fr_1fr_auto] gap-4 items-center"
+                  key={index}
                 >
                   <input
                     className="bg-slate-100 rounded-md p-1"
+                    name="name"
                     type="text"
                     value={field.name}
                     onChange={(e) =>
-                      handleInputChange(index, 0, e.target.value)
+                      handleInputChange(index, "name", e.target.value)
                     }
                   />
                   <input
                     className="bg-slate-100 rounded-md p-1"
+                    name="type"
                     type="text"
                     value={field.type}
                     onChange={(e) =>
-                      handleInputChange(index, 1, e.target.value)
+                      handleInputChange(index, "type", e.target.value)
                     }
                   />
 
                   <input
                     className="bg-slate-100 rounded-md p-1"
+                    name="required"
                     type="checkbox"
                     checked={field.required}
+                    disabled={!field.customAttribute}
                     onChange={(e) =>
-                      handleInputChange(index, 2, e.target.value)
+                      handleInputChange(index, "required", e.target.checked)
                     }
+                  />
+
+                  <input
+                    className="bg-slate-100 rounded-md p-1"
+                    name="customAttribute"
+                    type="checkbox"
+                    disabled={true}
+                    checked={field.customAttribute}
                   />
 
                   <Button
@@ -141,7 +162,17 @@ export default function Collection({
             <Button
               variant={"outline"}
               className="mt-5"
-              onClick={() => setTemplateData([...templateData, ["", "", ""]])}
+              onClick={() =>
+                setTemplateData([
+                  ...templateData,
+                  {
+                    name: "",
+                    type: "string",
+                    required: false,
+                    customAttribute: true,
+                  },
+                ])
+              }
             >
               Add Field
             </Button>
