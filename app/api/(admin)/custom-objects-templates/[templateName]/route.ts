@@ -51,3 +51,28 @@ export async function GET(
     }
     
   }
+
+  export async function PUT(request: Request, {params}: {params: {templateName: string  }}) {
+    const { templateName } = params;
+    const { templateData } = await request.json();
+
+    const userId = auth();
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    try {
+      const updatedTemplate = await db.customObjectsTemplates.update({
+        where: { id: templateData.id }, // Use `id` as defined in your Prisma schema
+        data: {
+          attributes: templateData.attributes,
+          updatedAt: new Date(), // Automatically update `updatedAt` field
+        },
+      });
+      return NextResponse.json(updatedTemplate, { status: 200 }); 
+      
+    } catch (error) {
+      console.log(error)
+      return new NextResponse("[PUT TEMPLATE]", { status: 400 });
+    }
+  }

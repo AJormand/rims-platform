@@ -10,19 +10,28 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { custom, set } from "zod";
 
-interface template {
+
+interface attribute {
   name: string;
   type: string;
   required: boolean;
   customAttribute: boolean;
 }
+interface template {
+  id: string;
+  name: string;
+  attributes: attribute[];
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-export default function Collection({
+export default function Template({
   params,
 }: {
   params: { templateName: string };
 }) {
-  const [templateData, setTemplateData] = useState<template[]>([]);
+  const [templateData, setTemplateData] = useState<template>({} as template);
   const { templateName } = params;
 
   const getTemplateData = async () => {
@@ -30,8 +39,9 @@ export default function Collection({
       `/api/custom-objects-templates/${templateName}`
     );
 
+    console.log(response)
     console.log(response.data.attributes);
-    setTemplateData(response.data.attributes);
+    setTemplateData(response.data);
   };
 
   useEffect(() => {
@@ -39,24 +49,30 @@ export default function Collection({
   }, []);
 
   const handleInputChange = (
-    fieldIndex: number,
-    fieldName: string,
-    value: string | boolean
+    attributeIndex: number,
+    attributeFieldName: string,
+    attributeFieldValue: string | boolean
   ) => {
-    console.log({ fieldIndex, fieldName, value });
+    console.log({ attributeIndex, attributeFieldName, attributeFieldValue });
     console.log(templateData);
 
-    setTemplateData((prev) => {
-      const updated = [...prev];
-      updated[fieldIndex] = {
-        ...updated[fieldIndex],
-        [fieldName]: value,
-      };
-      return updated;
-    });
+    setTemplateData((prev)=> {
+      if(!prev) return prev
+      const updatedAttributes = [...prev.attributes];
+      updatedAttributes[attributeIndex] = {
+        ...updatedAttributes[attributeIndex],
+        [attributeFieldName]: attributeFieldValue
+      }
+
+      return {
+        ...prev,
+        attributes: updatedAttributes
+      }
+    })
+    console.log(templateData);
   };
 
-  const removeListData = (index: number) => {
+  const removeAttribute = (index: number) => {
     console.log({ index });
     console.log("removing list data");
     setTemplateData((prev) => {
@@ -66,20 +82,12 @@ export default function Collection({
     });
   };
 
-  const updateListData = async () => {
+  const updateTemplateData = async () => {
     console.log("updating list data");
 
-    const schemaDefinition = templateData
-      .map((fieldElements: [string, string, string]) => fieldElements.join(" "))
-      .join("\n");
-    console.log({ schemaDefinition });
 
-    const updatedModel = `model ${templateName} {
-      ${schemaDefinition}
-    }`;
-
-    const response = await axios.put(`/api/collections/${templateName}`, {
-      updatedModel,
+    const response = await axios.put(`/api/custom-objects-templates/${templateName}`, {
+      templateData,
     });
     console.log(response);
   };
@@ -104,7 +112,7 @@ export default function Collection({
                 <p className="text-center">Remove</p>
               </div>
               {/* Columns */}
-              {templateData.map((field: template, index: number) => (
+              {templateData.attributes?.map((field: attribute, index: number) => (
                 <div
                   className="grid grid-cols-[3fr_2fr_1fr_1fr_auto] gap-4 items-center"
                   key={index}
@@ -151,7 +159,7 @@ export default function Collection({
                     variant={"outline"}
                     size={"sm"}
                     onClick={() => {
-                      removeListData(index);
+                      removeAttribute(index);
                     }}
                   >
                     X
@@ -163,23 +171,26 @@ export default function Collection({
               variant={"outline"}
               className="mt-5"
               onClick={() =>
-                setTemplateData([
-                  ...templateData,
-                  {
-                    name: "",
-                    type: "string",
-                    required: false,
-                    customAttribute: true,
-                  },
-                ])
-              }
+                setTemplateData((prev: template) => ({
+                  ...prev,
+                  attributes: [
+                    ...prev.attributes,
+                    {
+                      name: "",
+                      type: "string",
+                      required: false,
+                      customAttribute: true,
+                    },
+                  ],
+                }))
+            }
             >
               Add Field
             </Button>
             <Button
               variant={"outline"}
               className="mt-5"
-              onClick={() => updateListData()}
+              onClick={() => updateTemplateData()}
             >
               Save
             </Button>
