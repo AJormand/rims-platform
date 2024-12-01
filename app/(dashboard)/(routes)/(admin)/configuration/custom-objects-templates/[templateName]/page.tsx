@@ -165,6 +165,7 @@ export default function Template({
                     <Button
                       variant={"outline"}
                       size={"sm"}
+                      disabled={!field.customAttribute}
                       onClick={() => {
                         removeAttribute(index);
                       }}

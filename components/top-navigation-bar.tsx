@@ -38,7 +38,6 @@ export const TopNavigationBar = () => {
           {routeItems.map((item, index) => {
             // Construct the full path for the current breadcrumb
             fullPath += `/${item}`;
-            if (fullPath === "/configuration") fullPath = "/";
 
             return (
               <div key={index} className="flex">
