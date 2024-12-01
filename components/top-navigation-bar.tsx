@@ -16,6 +16,7 @@ export const TopNavigationBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const routeItems = pathname.split("/").slice(1);
+  let fullPath = "";
 
   // Handle navigation back
   const navigateBack = () => {
@@ -34,20 +35,26 @@ export const TopNavigationBar = () => {
           </BreadcrumbItem>
 
           {/* ROUTES */}
-          {routeItems.map((item, index) => (
-            <div key={index} className="flex">
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                {index === routeItems.length - 1 ? (
-                  <BreadcrumbPage className="text-gray-400">
-                    {item}
-                  </BreadcrumbPage>
-                ) : (
-                  <BreadcrumbLink href={`/${item}`}>{item}</BreadcrumbLink>
-                )}
-              </BreadcrumbItem>
-            </div>
-          ))}
+          {routeItems.map((item, index) => {
+            // Construct the full path for the current breadcrumb
+            fullPath += `/${item}`;
+            if (fullPath === "/configuration") fullPath = "/";
+
+            return (
+              <div key={index} className="flex">
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  {index === routeItems.length - 1 ? (
+                    <BreadcrumbPage className="text-gray-400">
+                      {item}
+                    </BreadcrumbPage>
+                  ) : (
+                    <BreadcrumbLink href={fullPath}>{item}</BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+              </div>
+            );
+          })}
         </BreadcrumbList>
       </Breadcrumb>
     </div>

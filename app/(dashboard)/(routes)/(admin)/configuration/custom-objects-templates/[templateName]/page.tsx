@@ -10,7 +10,6 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { custom, set } from "zod";
 
-
 interface attribute {
   name: string;
   type: string;
@@ -39,7 +38,7 @@ export default function Template({
       `/api/custom-objects-templates/${templateName}`
     );
 
-    console.log(response)
+    console.log(response);
     console.log(response.data.attributes);
     setTemplateData(response.data);
   };
@@ -56,19 +55,19 @@ export default function Template({
     console.log({ attributeIndex, attributeFieldName, attributeFieldValue });
     console.log(templateData);
 
-    setTemplateData((prev)=> {
-      if(!prev) return prev
+    setTemplateData((prev) => {
+      if (!prev) return prev;
       const updatedAttributes = [...prev.attributes];
       updatedAttributes[attributeIndex] = {
         ...updatedAttributes[attributeIndex],
-        [attributeFieldName]: attributeFieldValue
-      }
+        [attributeFieldName]: attributeFieldValue,
+      };
 
       return {
         ...prev,
-        attributes: updatedAttributes
-      }
-    })
+        attributes: updatedAttributes,
+      };
+    });
     console.log(templateData);
   };
 
@@ -76,19 +75,26 @@ export default function Template({
     console.log({ index });
     console.log("removing list data");
     setTemplateData((prev) => {
-      const newCollectionData = [...prev];
-      newCollectionData.splice(index, 1);
-      return newCollectionData;
+      if (!prev) return prev;
+      const updatedAttributes = [...prev.attributes];
+      updatedAttributes.splice(index, 1);
+
+      return {
+        ...prev,
+        attributes: updatedAttributes,
+      };
     });
   };
 
   const updateTemplateData = async () => {
     console.log("updating list data");
 
-
-    const response = await axios.put(`/api/custom-objects-templates/${templateName}`, {
-      templateData,
-    });
+    const response = await axios.put(
+      `/api/custom-objects-templates/${templateName}`,
+      {
+        templateData,
+      }
+    );
     console.log(response);
   };
 
@@ -112,60 +118,62 @@ export default function Template({
                 <p className="text-center">Remove</p>
               </div>
               {/* Columns */}
-              {templateData.attributes?.map((field: attribute, index: number) => (
-                <div
-                  className="grid grid-cols-[3fr_2fr_1fr_1fr_auto] gap-4 items-center"
-                  key={index}
-                >
-                  <input
-                    className="bg-slate-100 rounded-md p-1"
-                    name="name"
-                    type="text"
-                    value={field.name}
-                    onChange={(e) =>
-                      handleInputChange(index, "name", e.target.value)
-                    }
-                  />
-                  <input
-                    className="bg-slate-100 rounded-md p-1"
-                    name="type"
-                    type="text"
-                    value={field.type}
-                    onChange={(e) =>
-                      handleInputChange(index, "type", e.target.value)
-                    }
-                  />
-
-                  <input
-                    className="bg-slate-100 rounded-md p-1"
-                    name="required"
-                    type="checkbox"
-                    checked={field.required}
-                    disabled={!field.customAttribute}
-                    onChange={(e) =>
-                      handleInputChange(index, "required", e.target.checked)
-                    }
-                  />
-
-                  <input
-                    className="bg-slate-100 rounded-md p-1"
-                    name="customAttribute"
-                    type="checkbox"
-                    disabled={true}
-                    checked={field.customAttribute}
-                  />
-
-                  <Button
-                    variant={"outline"}
-                    size={"sm"}
-                    onClick={() => {
-                      removeAttribute(index);
-                    }}
+              {templateData.attributes?.map(
+                (field: attribute, index: number) => (
+                  <div
+                    className="grid grid-cols-[3fr_2fr_1fr_1fr_auto] gap-4 items-center"
+                    key={index}
                   >
-                    X
-                  </Button>
-                </div>
-              ))}
+                    <input
+                      className="bg-slate-100 rounded-md p-1"
+                      name="name"
+                      type="text"
+                      value={field.name}
+                      onChange={(e) =>
+                        handleInputChange(index, "name", e.target.value)
+                      }
+                    />
+                    <input
+                      className="bg-slate-100 rounded-md p-1"
+                      name="type"
+                      type="text"
+                      value={field.type}
+                      onChange={(e) =>
+                        handleInputChange(index, "type", e.target.value)
+                      }
+                    />
+
+                    <input
+                      className="bg-slate-100 rounded-md p-1"
+                      name="required"
+                      type="checkbox"
+                      checked={field.required}
+                      disabled={!field.customAttribute}
+                      onChange={(e) =>
+                        handleInputChange(index, "required", e.target.checked)
+                      }
+                    />
+
+                    <input
+                      className="bg-slate-100 rounded-md p-1"
+                      name="customAttribute"
+                      type="checkbox"
+                      disabled={true}
+                      checked={field.customAttribute}
+                    />
+
+                    <Button
+                      variant={"outline"}
+                      size={"sm"}
+                      onClick={() => {
+                        removeAttribute(index);
+                      }}
+                    >
+                      X
+                    </Button>
+                  </div>
+                )
+              )}
             </div>
             <Button
               variant={"outline"}
@@ -183,7 +191,7 @@ export default function Template({
                     },
                   ],
                 }))
-            }
+              }
             >
               Add Field
             </Button>
