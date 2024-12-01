@@ -23,8 +23,14 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   editCustomObjectData,
-  fetchColumnNames,
+  fetchCustomObjectTemplate,
 } from "@/app/services/api-client/api-client";
+
+interface Field {
+  name: string;
+  type: "string" | "number";
+  required: boolean;
+}
 
 export const BasicDetailsForm: React.FC<{
   data: Record<string, any> | null;
@@ -38,25 +44,47 @@ export const BasicDetailsForm: React.FC<{
   const [defaultValues, setDefaultValues] = useState<Record<string, any>>({});
   const systemSpecificFields = ["id", "createdAt", "updatedAt"];
 
+  const buildFieldSchema = (field: Field) => {
+    let schema;
+
+    // Determine the type of the field
+    switch (field.type) {
+      case "string":
+        schema = z.string();
+        break;
+      case "number":
+        schema = z.number();
+        break;
+      default:
+        throw new Error(`Unsupported type: ${field.type}`);
+    }
+
+    // Apply required or optional
+    schema = field.required ? schema : schema.optional();
+
+    return schema;
+  };
+
   //Get columns of form from Prisma schema
   const buildFormSchema = async () => {
-    // Build dynamic Zod schema and default values
-    const fieldNames = (await fetchColumnNames(customObjectName)).filter(
-      (name: string) => !systemSpecificFields.includes(name)
+    const customObjectTemplate = await fetchCustomObjectTemplate(
+      customObjectName
     );
+
+    console.log("customObjectTemplate", customObjectTemplate);
 
     const schema: any = {};
     const defaults: any = {};
 
-    fieldNames.forEach((field: string) => {
-      schema[field] = z.string().optional(); // Customize validation per field type
-      defaults[field] = data?.[field] || ""; // Set default value
+    customObjectTemplate.attributes.forEach((field: Field) => {
+      schema[field.name] = buildFieldSchema(field); // Use dynamic field schema
+      defaults[field.name] = data?.[field.name] || ""; // Set default value
     });
 
     console.log({ defaults });
 
-    setFormSchema(z.object(schema));
-    setDefaultValues(defaults);
+    setFormSchema(z.object(schema)); // Update the Zod schema
+    setDefaultValues(defaults); // Update default values
   };
 
   useEffect(() => {

@@ -36,6 +36,7 @@
 - Done - added CustomObjects to schema prisma -> store custom objects data
 - I added CustomObjects-templates object where collection name and rules would be stored -> next I need to add code to add new custom objects to this collection and also programatically I need to create these collections and later add data to them
 - working on custom-objects-templates -> template name
+- need to finish custom-object basic details form
 
 - left here -> trying to fix delete of the custom template
 

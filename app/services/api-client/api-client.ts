@@ -373,6 +373,32 @@ export const deleteControlledVocabulary = async (
   }
 };
 
+//CUSTOM OBJECT TEMPLATES
+export const fetchCustomObjectTemplates = async () => {
+  try {
+    const response = await axios.get("/api/custom-objects-templates");
+    const responseTemplates = response.data;
+    return responseTemplates;
+  } catch (error) {
+    toast.error(`"${error}`);
+  }
+};
+
+export const fetchCustomObjectTemplate = async (
+  customObjectTemplateName: string
+) => {
+  console.log("fetching data");
+  try {
+    const response = await axios.get(
+      `/api/custom-objects-templates/${customObjectTemplateName}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
+
 // CUSTOM OBJECT
 export const fetchCustomObjects = async (customObjectName: string) => {
   try {
@@ -396,43 +422,6 @@ export const fetchCustomObject = async (
   } catch (error) {
     console.log(error);
     toast.error("Something went wrong");
-  }
-};
-
-export const fetchColumnNames = async (customObjectName: string) => {
-  console.log("fetching data");
-  try {
-    const response = await axios.get(`/api/collections/${customObjectName}`);
-    const collectionData = await response.data;
-
-    // Extract model from Prisma schema
-    const modelRegex = new RegExp(
-      `model ${customObjectName} \\{([^\\}]*)\\}`,
-      "s"
-    );
-    const match = response.data.match(modelRegex);
-
-    // Extract fields from model
-    if (match) {
-      const modelBody = match[1].trim();
-      const fields = modelBody
-        .split("\n")
-        .map((field: string) => field.trim())
-        .filter((field: string) => field.length > 0);
-
-      const parsedFields = fields.map((field: string) => {
-        const fieldComponents = field.split(/\s+/);
-        return fieldComponents;
-      });
-
-      //prisma schema returns fields in 3 columns but since we only need the names take the first column
-      const fieldNames = parsedFields.map((field: string[]) => field[0]);
-      console.log(fieldNames);
-
-      return fieldNames;
-    }
-  } catch (error) {
-    console.error("Failed to fetch collection data:", error);
   }
 };
 
@@ -479,33 +468,6 @@ export const fetchPopUpData = async (
         )
     );
     return filteredData;
-  } catch (error) {
-    toast.error(`"${error}`);
-  }
-};
-
-// CUSTOM COLLECTIONS
-export const fetchCustomCollections = async () => {
-  try {
-    const response = await axios.get("/api/collections");
-    const responseCollections = response.data.cursor.firstBatch;
-    const collectionNames = responseCollections.map(
-      (collection: any) => collection.name
-    );
-    console.log(collectionNames);
-    return collectionNames;
-  } catch (error) {
-    toast.error(`"${error}`);
-  }
-};
-
-
-//CUSTOM OBJECT TEMPLATES
-export const fetchCustomObjectTemplates = async () => {
-  try {
-    const response = await axios.get("/api/custom-objects-templates");
-    const responseTemplates = response.data;
-    return responseTemplates;
   } catch (error) {
     toast.error(`"${error}`);
   }
